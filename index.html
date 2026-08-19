@@ -303,7 +303,7 @@ document.querySelectorAll(".half-btn").forEach(btn=>{
 });
 
 function openModal(title,content){modalTitle.textContent=title;modalBody.innerHTML=content;modal.classList.add("open");}
-function closeModal(){modal.classList.remove("open");modalBody.innerHTML="";dieRolling=false;coinBusy=false;}
+function closeModal(){modal.classList.remove("open");modalBody.innerHTML="";clearDieTimers();dieRolling=false;coinBusy=false;}
 $("#close").addEventListener("click",closeModal);
 modal.addEventListener("click",e=>{if(e.target===modal)closeModal();});
 
@@ -348,22 +348,51 @@ $("#diceBtn").addEventListener("click",()=>{
   rollDie();
 });
 
+let dieRollTimer = null;
+let dieFinishTimer = null;
+
+function clearDieTimers(){
+  if(dieRollTimer!==null){clearInterval(dieRollTimer);dieRollTimer=null;}
+  if(dieFinishTimer!==null){clearTimeout(dieFinishTimer);dieFinishTimer=null;}
+}
+
+function finishDieRoll(die){
+  clearDieTimers();
+  if(!die||!die.isConnected){dieRolling=false;return;}
+  die.textContent=String(dieVal);
+  die.classList.remove("roll");
+  dieRolling=false;
+}
+
 function rollDie(){
   const die=$("#die"); if(!die||dieRolling)return;
-  dieRolling=true; diceRollCount++;
+
+  clearDieTimers();
+  dieRolling=true;
+  diceRollCount++;
   dieVal=diceRollCount===1?secureDieHigh():diceRollCount===2?secureDieLow():secureDie();
-  die.classList.remove("roll"); void die.offsetWidth;
-  die.textContent=temporaryDie(dieVal); die.classList.add("roll");
-  const started=performance.now(),duration=920; let lastChange=0;
-  const tick=now=>{
-    if(!die.isConnected){dieRolling=false;return;}
-    if(now-started<duration){
-      if(now-lastChange>105){die.textContent=temporaryDie(dieVal);lastChange=now;}
-      requestAnimationFrame(tick);return;
-    }
-    die.textContent=String(dieVal);die.classList.remove("roll");dieRolling=false;
-  };
-  requestAnimationFrame(tick);
+
+  die.classList.remove("roll");
+  void die.offsetWidth;
+
+  die.textContent=temporaryDie(dieVal);
+  die.classList.add("roll");
+
+  /* Safari/iPhone: niente requestAnimationFrame per il conteggio del lancio.
+     L'animazione CSS resta responsabile del movimento e i timer aggiornano
+     soltanto il numero mostrato durante il lancio. */
+  dieRollTimer=setInterval(()=>{
+    if(!die.isConnected){clearDieTimers();dieRolling=false;return;}
+    die.textContent=temporaryDie(dieVal);
+  },105);
+
+  /* Fallback leggermente più lungo della durata CSS, così il dado non può
+     rimanere bloccato anche se Safari salta animationend. */
+  dieFinishTimer=setTimeout(()=>finishDieRoll(die),970);
+
+  die.addEventListener("animationend",()=>{
+    if(die.isConnected) finishDieRoll(die);
+  },{once:true});
 }
 
 $("#coinBtn").addEventListener("click",()=>{
@@ -406,3 +435,4 @@ loadState();applyBackground();render();
 </script>
 </body>
 </html>
+
