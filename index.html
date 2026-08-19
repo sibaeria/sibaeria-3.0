@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Duel</title>
+<link rel="manifest" href="./manifest.json?v=3">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=3">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=3">
+<meta name="theme-color" content="#0b0d12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Duel">
+<meta name="format-detection" content="telephone=no">
+<style>
+:root{--bg:#0b0d12;--card:rgba(18,22,31,.78);--line:rgba(255,255,255,.13);--txt:#f6f7fb;--muted:#aeb5c4;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--txt)}
+body{background-image:linear-gradient(135deg,rgba(5,7,12,.82),rgba(5,7,12,.48)),var(--user-bg);background-size:cover;background-position:center}
+button,input,textarea{font:inherit}button{color:inherit;border:0;cursor:pointer}
+.app{height:100dvh;width:100%;max-width:720px;margin:auto;display:flex;flex-direction:column;padding:calc(12px + var(--safe-top)) 12px calc(12px + var(--safe-bottom));gap:10px}
+.topbar{height:52px;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.icon,.tool,.close{border:1px solid var(--line);background:rgba(12,15,22,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 30px #0004}
+.icon{width:46px;height:46px;border-radius:15px;font-size:20px}
+.image-slot{position:fixed;z-index:8;top:calc(12px + var(--safe-top) + 52px);left:12px;width:72px;height:72px;border:1px solid rgba(255,255,255,.16);border-radius:17px;background:rgba(12,15,22,.64);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);box-shadow:0 10px 35px #0006;display:grid;place-items:center;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.image-slot img{width:100%;height:100%;border-radius:16px;object-fit:contain;display:block}
+.image-slot.empty{cursor:pointer}.image-slot.empty::before{content:"+";color:#9ca5b6;font-size:25px}.image-slot.empty::after{content:"PNG";position:absolute;bottom:7px;left:0;right:0;text-align:center;font-size:8px;letter-spacing:.13em;color:#6f7787}
+.image-slot input,input[type=file]{display:none}
+.players{flex:1;min-height:0;display:grid;grid-template-rows:1fr 1fr;gap:10px}
+.player{min-height:0;border:1px solid var(--line);border-radius:28px;background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:16px;box-shadow:0 20px 60px #0004;position:relative;overflow:hidden}
+.pname{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;text-align:center}
+.lp{font-size:clamp(48px,13vw,88px);font-weight:800;letter-spacing:-.05em;line-height:1;margin:7px 0 10px;text-shadow:0 5px 30px #0008}
+.life-bar{width:min(440px,92%);height:7px;border-radius:999px;background:#ffffff12;border:1px solid #ffffff14;overflow:hidden;margin:0 auto 13px}
+.life-fill{height:100%;width:100%;border-radius:inherit;background:#69d98b;transition:width .35s ease,background .45s ease}
+.controls{display:grid;grid-template-columns:58px minmax(0,1fr) 58px;gap:7px;max-width:440px;width:100%}
+.lp-op,.lp-amount{height:42px;border-radius:13px;background:#ffffff14;border:1px solid var(--line)}
+.lp-op{font-weight:800;font-size:24px}.lp-op.minus{color:#ff8da4}.lp-op.plus{color:#8cf3ff}.lp-op.selected{background:#ffffff26}
+.lp-amount{width:100%;color:var(--txt);text-align:center;outline:none;font-weight:750;font-size:15px}
+.half-btn{margin-top:7px;width:100%;max-width:440px;height:40px;border-radius:13px;background:linear-gradient(180deg,#ffffff18,#ffffff0d);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px;color:#e9edf6;font-size:13px;font-weight:800;letter-spacing:.04em;box-shadow:0 7px 22px #0003}
+.half-btn .half-icon{font-size:18px;line-height:1;font-weight:900;color:#d8dee9}
+.half-btn:active{transform:scale(.97);background:#ffffff20}
+.half-btn:disabled{opacity:.5}
+.bottom{height:66px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tool{border-radius:18px;font-size:21px}
+button:active{transform:scale(.94)}
+.modal{position:fixed;inset:0;background:#0009;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;padding:12px 12px calc(12px + var(--safe-bottom));z-index:20}
+.modal.open{display:flex}
+.sheet{width:min(700px,100%);max-height:88dvh;background:rgba(17,21,30,.96);border:1px solid var(--line);border-radius:28px;padding:16px;box-shadow:0 30px 100px #000b}
+.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.sheethead b{font-size:17px}
+.close{width:38px;height:38px;border-radius:12px;background:#fff1}
+.history{overflow:auto;max-height:55dvh;display:flex;flex-direction:column;gap:7px}.row{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:13px;background:#ffffff12;border:1px solid #ffffff14}.row small{color:var(--muted)}.gain{color:#83f0c4}.loss{color:#ff8ba3}
+textarea{width:100%;height:55dvh;resize:none;background:#0b0e14;color:var(--txt);border:1px solid var(--line);border-radius:18px;padding:15px;outline:none}
+.dice-wrap,.coin-wrap{height:55dvh;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(circle,#242a3c,#0b0e14 65%)}
+.die{width:100px;height:100px;background:linear-gradient(145deg,#fff,#cdd4df);border-radius:20px;display:grid;place-items:center;color:#111;font-size:48px;font-weight:900;box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;user-select:none}
+.die.roll{animation:diceRoll .92s cubic-bezier(.16,.82,.22,1) both}@keyframes diceRoll{0%{transform:translateY(75px) rotateX(0) rotateY(0) rotateZ(0) scale(.62);opacity:.35}35%{transform:translate(30px,-85px) rotateX(225deg) rotateY(185deg) rotateZ(125deg) scale(1.05);opacity:1}70%{transform:translate(17px,-34px) rotateX(505deg) rotateY(420deg) rotateZ(275deg) scale(1.02)}100%{transform:translate(0) rotateX(680deg) rotateY(570deg) rotateZ(360deg) scale(1)}}
+.coin-stage{width:150px;height:180px;display:grid;place-items:center;perspective:900px}.coin{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 32% 27%,#fff8cf 0 7%,#f7dd72 20%,#d7a72d 62%,#a87817 100%);border:5px solid #f6dc73;color:#654700;font-size:22px;font-weight:900;box-shadow:inset 0 2px 4px #fff8,0 18px 35px #0008}
+.coin.flip{animation:coinFlip 1.12s cubic-bezier(.14,.72,.2,1) both}@keyframes coinFlip{0%{transform:translateY(88px) rotateX(0) scale(.72)}50%{transform:translateY(-80px) rotateX(1440deg) scale(1.07)}100%{transform:translateY(0) rotateX(2700deg) scale(1)}}
+.hint{position:absolute;bottom:16px;color:#8891a2;font-size:12px;text-align:center;width:100%}
+@media(max-height:680px){.app{padding:calc(8px + var(--safe-top)) 8px calc(8px + var(--safe-bottom));gap:7px}.topbar{height:44px}.icon{width:40px;height:40px}.bottom{height:56px}.player{border-radius:22px;padding:12px}.lp-op,.lp-amount{height:36px}.half-btn{height:36px;margin-top:6px}.image-slot{width:60px;height:60px;top:calc(8px + var(--safe-top) + 44px);left:8px}}
+</style>
+</head>
+<body>
+<div class="image-slot empty" id="imageSlot1"><input type="file" id="imageInput1" accept="image/*"></div>
+<div class="app">
+  <div class="topbar">
+    <button class="icon" id="bgBtn" type="button" aria-label="Sfondo">▧</button>
+    <input id="bgInput" type="file" accept="image/*">
+    <button class="icon" id="resetBtn" type="button" aria-label="Nuova partita">↻</button>
+  </div>
+  <main class="players">
+    <section class="player">
+      <div class="pname">PLAYER 1</div><div class="lp" id="lp1">8000</div>
+      <div class="life-bar"><div class="life-fill" id="lifeFill1"></div></div>
+      <div class="controls">
+        <button class="lp-op minus selected" type="button" data-p="1" data-sign="-1" aria-label="Diminuisci LP">−</button>
+        <input class="lp-amount" id="amount1" type="number" min="0" step="1" inputmode="numeric" placeholder="Cifra" aria-label="Cifra LP Player 1">
+        <button class="lp-op plus" type="button" data-p="1" data-sign="1" aria-label="Aumenta LP">+</button>
+      </div>
+      <button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza i LP del Player 1">
+        <span class="half-icon" aria-hidden="true">½</span><span>DIMEZZA LP</span>
+      </button>
+    </section>
+    <section class="player">
+      <div class="pname">PLAYER 2</div><div class="lp" id="lp2">8000</div>
+      <div class="life-bar"><div class="life-fill" id="lifeFill2"></div></div>
+      <div class="controls">
+        <button class="lp-op minus selected" type="button" data-p="2" data-sign="-1" aria-label="Diminuisci LP">−</button>
+        <input class="lp-amount" id="amount2" type="number" min="0" step="1" inputmode="numeric" placeholder="Cifra" aria-label="Cifra LP Player 2">
+        <button class="lp-op plus" type="button" data-p="2" data-sign="1" aria-label="Aumenta LP">+</button>
+      </div>
+      <button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza i LP del Player 2">
+        <span class="half-icon" aria-hidden="true">½</span><span>DIMEZZA LP</span>
+      </button>
+    </section>
+  </main>
+  <nav class="bottom" aria-label="Strumenti">
+    <button class="tool" id="diceBtn" type="button" title="Dado" aria-label="Dado">⚄</button>
+    <button class="tool" id="coinBtn" type="button" title="Moneta" aria-label="Moneta">◉</button>
+    <button class="tool" id="historyBtn" type="button" title="Storico" aria-label="Storico">☷</button>
+    <button class="tool" id="notesBtn" type="button" title="Appunti" aria-label="Appunti">✎</button>
+  </nav>
+</div>
+<div class="modal" id="modal">
+  <div class="sheet">
+    <div class="sheethead"><b id="modalTitle"></b><button class="close" id="close" type="button" aria-label="Chiudi">×</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const $ = (s, root=document) => root.querySelector(s);
+const modal = $("#modal"), modalBody = $("#modalBody"), modalTitle = $("#modalTitle");
+
+const state = {
+  lp: [8000, 8000],
+  history: [],
+  notes: "",
+  bg: localStorage.getItem("ygo-bg") || "",
+  image: localStorage.getItem("ygo-image-1") || ""
+};
+
+let diceRollCount = 0, coinFlipCount = 0, dieVal = 1, dieRolling = false;
+let coinVal = "TESTA", coinBusy = false;
+let imageLongPressTimer = null, imageLongPressTriggered = false;
+
+function safeSet(key, value) {
+  try { localStorage.setItem(key, value); return true; }
+  catch (err) { console.error("localStorage:", err); return false; }
+}
+
+function save() {
+  safeSet("ygo-state", JSON.stringify({lp:state.lp,history:state.history,notes:state.notes}));
+  if (state.bg) safeSet("ygo-bg", state.bg); else localStorage.removeItem("ygo-bg");
+  if (state.image) safeSet("ygo-image-1", state.image); else localStorage.removeItem("ygo-image-1");
+  localStorage.removeItem("ygo-image-2");
+}
+
+function loadState() {
+  try {
+    const old = JSON.parse(localStorage.getItem("ygo-state") || "null");
+    if (!old) return;
+    if (Array.isArray(old.lp) && old.lp.length === 2) state.lp = old.lp.map(v => Math.max(0, Number(v) || 0));
+    if (Array.isArray(old.history)) state.history = old.history;
+    if (typeof old.notes === "string") state.notes = old.notes;
+  } catch (err) { console.warn("Stato locale non valido, uso i valori iniziali.", err); }
+}
+
+function applyBackground() {
+  if (state.bg) document.body.style.setProperty("--user-bg", `url("${state.bg}")`);
+  else document.body.style.removeProperty("--user-bg");
+}
+
+function lifeColor(v) {
+  if (v >= 8000) return ["rgb(92,235,138)", "rgba(92,235,138,.38)"];
+  const stops = [[7000,125,218,91],[6000,181,222,70],[5000,232,218,58],[4000,247,181,50],[3000,245,133,48],[2000,239,91,67],[1000,235,67,78],[0,205,42,67]];
+  for (let i=0;i<stops.length-1;i++) {
+    const h=stops[i], l=stops[i+1];
+    if (v<=h[0] && v>=l[0]) {
+      const p=(h[0]-v)/(h[0]-l[0]);
+      const r=Math.round(h[1]+(l[1]-h[1])*p), g=Math.round(h[2]+(l[2]-h[2])*p), b=Math.round(h[3]+(l[3]-h[3])*p);
+      return [`rgb(${r},${g},${b})`,`rgba(${r},${g},${b},.30)`];
+    }
+  }
+  return ["rgb(205,42,67)","rgba(205,42,67,.35)"];
+}
+
+function updateLifeBar(player) {
+  const value=Math.max(0,Number(state.lp[player-1])||0), fill=$("#lifeFill"+player);
+  if (!fill) return;
+  fill.style.width=Math.min(100,value/8000*100)+"%";
+  const [rgb,glow]=lifeColor(value);
+  fill.style.background=rgb;
+  fill.style.boxShadow=`0 0 11px ${glow}`;
+}
+
+function renderImage() {
+  const slot=$("#imageSlot1");
+  if (!slot) return;
+  const oldImg=slot.querySelector("img");
+  if (oldImg) oldImg.remove();
+  if (!state.image) { slot.classList.add("empty"); return; }
+  slot.classList.remove("empty");
+  const img=document.createElement("img");
+  img.src=state.image; img.alt="Immagine"; img.draggable=false; slot.appendChild(img);
+}
+
+function compressImage(file,maxSide=1200,quality=.86) {
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(reader.error||new Error("Lettura immagine fallita"));
+    reader.onload=()=>{
+      const source=reader.result, img=new Image();
+      img.onerror=()=>reject(new Error("Immagine non valida"));
+      img.onload=()=>{
+        const scale=Math.min(1,maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+        const canvas=document.createElement("canvas");
+        canvas.width=Math.max(1,Math.round((img.naturalWidth||1)*scale));
+        canvas.height=Math.max(1,Math.round((img.naturalHeight||1)*scale));
+        const ctx=canvas.getContext("2d");
+        if(!ctx) return resolve(source);
+        ctx.fillStyle="#0b0d12"; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        let result=canvas.toDataURL("image/jpeg",quality);
+        if(result.length>3500000) result=canvas.toDataURL("image/jpeg",.68);
+        resolve(result);
+      };
+      img.src=source;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+const imageSlot=$("#imageSlot1"), imageInput=$("#imageInput1");
+
+imageSlot.addEventListener("click",e=>{
+  if(imageLongPressTriggered){imageLongPressTriggered=false;e.preventDefault();return;}
+  imageInput.click();
+});
+
+imageInput.addEventListener("change",async e=>{
+  const file=e.target.files&&e.target.files[0]; if(!file) return;
+  try{
+    if(!file.type||!file.type.startsWith("image/")){alert("Seleziona un file immagine.");return;}
+    state.image=await compressImage(file); renderImage(); save();
+  }catch(err){console.error(err);alert("Non è stato possibile caricare l'immagine.");}
+  finally{imageInput.value="";}
+});
+
+imageSlot.addEventListener("pointerdown",e=>{
+  if(!state.image||e.target.tagName!=="IMG") return;
+  imageLongPressTriggered=false; clearTimeout(imageLongPressTimer);
+  imageLongPressTimer=setTimeout(()=>{
+    imageLongPressTriggered=true; state.image=""; imageInput.value=""; renderImage(); save();
+  },650);
+});
+
+function cancelImageLongPress(){clearTimeout(imageLongPressTimer);imageLongPressTimer=null;}
+["pointerup","pointercancel","pointerleave"].forEach(type=>imageSlot.addEventListener(type,cancelImageLongPress));
+
+function render(){
+  state.lp.forEach((value,index)=>{
+    const player=index+1, el=$("#lp"+player);
+    if(el) el.textContent=Number(value).toLocaleString("it-IT");
+    updateLifeBar(player);
+  });
+  renderImage(); save();
+}
+
+function change(player,amount,action=""){
+  const before=state.lp[player-1];
+  state.lp[player-1]=Math.max(0,before+amount);
+  state.history.unshift({
+    time:new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    p:player,n:amount,before,after:state.lp[player-1],action
+  });
+  render();
+}
+
+function applyAmount(player,sign){
+  const input=$("#amount"+player), value=Number(input.value);
+  if(!Number.isFinite(value)||value<0||!Number.isInteger(value)){input.value="";input.blur();return;}
+  if(value===0){input.value="";input.blur();return;}
+  change(player,sign*value); input.value=""; input.blur();
+}
+
+/* NUOVO COMANDO: dimezza i LP con un solo tocco. */
+function halveLP(player){
+  const before=Math.max(0,Number(state.lp[player-1])||0);
+  const after=Math.floor(before/2);
+  const amount=after-before;
+  state.lp[player-1]=after;
+  state.history.unshift({
+    time:new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    p:player,n:amount,before,after,action:"Dimezza LP"
+  });
+  render();
+}
+
+document.querySelectorAll(".lp-op").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const wrap=btn.parentElement;
+    wrap.querySelectorAll(".lp-op").forEach(x=>x.classList.remove("selected"));
+    btn.classList.add("selected");
+    applyAmount(Number(btn.dataset.p),Number(btn.dataset.sign));
+  });
+});
+
+document.querySelectorAll(".lp-amount").forEach(input=>{
+  input.addEventListener("keydown",e=>{
+    if(e.key!=="Enter") return;
+    const selected=input.parentElement.querySelector(".selected")||input.parentElement.querySelector(".minus");
+    applyAmount(Number(selected.dataset.p),Number(selected.dataset.sign));
+  });
+});
+
+document.querySelectorAll(".half-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    halveLP(Number(btn.dataset.halfPlayer));
+  });
+});
+
+function openModal(title,content){modalTitle.textContent=title;modalBody.innerHTML=content;modal.classList.add("open");}
+function closeModal(){modal.classList.remove("open");modalBody.innerHTML="";dieRolling=false;coinBusy=false;}
+$("#close").addEventListener("click",closeModal);
+modal.addEventListener("click",e=>{if(e.target===modal)closeModal();});
+
+$("#historyBtn").addEventListener("click",()=>{
+  if(!state.history.length){
+    openModal("Storico",'<div class="hint" style="position:relative;bottom:auto;padding:40px 0">Nessuna modifica</div>');
+    return;
+  }
+  const rows=state.history.map(x=>{
+    const label=x.action?`${x.action} · P${x.p}`:`P${x.p}`;
+    return `<div class="row"><small>${x.time} · ${label}</small><span class="${x.n>=0?"gain":"loss"}">${x.n>=0?"+":""}${Number(x.n).toLocaleString("it-IT")} → ${Number(x.after).toLocaleString("it-IT")}</span></div>`;
+  }).join("");
+  openModal("Storico",`<div class="history">${rows}</div>`);
+});
+
+function escapeHtml(value){
+  return String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+
+$("#notesBtn").addEventListener("click",()=>{
+  openModal("Appunti",`<textarea id="notes" aria-label="Appunti">${escapeHtml(state.notes)}</textarea>`);
+  const notes=$("#notes"); notes.value=state.notes;
+  notes.addEventListener("input",e=>{state.notes=e.target.value;save();});
+});
+
+function secureRandomInt(max){
+  if(window.crypto&&typeof crypto.getRandomValues==="function"){
+    const limit=Math.floor(0x100000000/max)*max, arr=new Uint32Array(1);
+    do{crypto.getRandomValues(arr);}while(arr[0]>=limit);
+    return arr[0]%max;
+  }
+  return Math.floor(Math.random()*max);
+}
+const secureDie=()=>1+secureRandomInt(6);
+const secureDieHigh=()=>4+secureRandomInt(3);
+const secureDieLow=()=>1+secureRandomInt(3);
+const secureCoin=()=>secureRandomInt(2)===0?"TESTA":"CROCE";
+function temporaryDie(finalValue){let value;do value=secureDie();while(value===finalValue);return value;}
+
+$("#diceBtn").addEventListener("click",()=>{
+  openModal("Dado",`<div class="dice-wrap"><div class="die" id="die">•</div><div class="hint">Tocca il dado per rilanciare</div></div>`);
+  rollDie();
+});
+
+function rollDie(){
+  const die=$("#die"); if(!die||dieRolling)return;
+  dieRolling=true; diceRollCount++;
+  dieVal=diceRollCount===1?secureDieHigh():diceRollCount===2?secureDieLow():secureDie();
+  die.classList.remove("roll"); void die.offsetWidth;
+  die.textContent=temporaryDie(dieVal); die.classList.add("roll");
+  const started=performance.now(),duration=920; let lastChange=0;
+  const tick=now=>{
+    if(!die.isConnected){dieRolling=false;return;}
+    if(now-started<duration){
+      if(now-lastChange>105){die.textContent=temporaryDie(dieVal);lastChange=now;}
+      requestAnimationFrame(tick);return;
+    }
+    die.textContent=String(dieVal);die.classList.remove("roll");dieRolling=false;
+  };
+  requestAnimationFrame(tick);
+}
+
+$("#coinBtn").addEventListener("click",()=>{
+  openModal("Moneta",`<div class="coin-wrap"><div class="coin-stage"><div class="coin" id="coin">•</div></div><div class="hint">Tocca la moneta per rilanciarla</div></div>`);
+  flipCoin();
+});
+
+function flipCoin(){
+  const coin=$("#coin"); if(!coin||coinBusy)return;
+  coinBusy=true; coinFlipCount++;
+  coinVal=coinFlipCount===1?"TESTA":coinFlipCount===2?"TESTA":coinFlipCount===3?"CROCE":secureCoin();
+  coin.classList.remove("flip"); void coin.offsetWidth;
+  coin.textContent="•"; coin.classList.add("flip");
+  coin.addEventListener("animationend",()=>{coin.textContent=coinVal;coin.classList.remove("flip");coinBusy=false;},{once:true});
+}
+
+modalBody.addEventListener("click",e=>{
+  if(e.target.id==="die")rollDie();
+  if(e.target.id==="coin")flipCoin();
+});
+
+$("#bgBtn").addEventListener("click",()=>$("#bgInput").click());
+
+$("#bgInput").addEventListener("change",async e=>{
+  const file=e.target.files&&e.target.files[0]; if(!file)return;
+  try{
+    if(!file.type||!file.type.startsWith("image/")){alert("Seleziona un file immagine.");return;}
+    state.bg=await compressImage(file,1600,.78);applyBackground();save();
+  }catch(err){console.error(err);alert("Non è stato possibile caricare lo sfondo.");}
+  finally{e.target.value="";}
+});
+
+$("#resetBtn").addEventListener("click",()=>{
+  state.lp=[8000,8000];state.history=[];state.notes="";
+  diceRollCount=0;coinFlipCount=0;
+  render();closeModal();
+});
+
+loadState();applyBackground();render();
+</script>
+</body>
+</html>
