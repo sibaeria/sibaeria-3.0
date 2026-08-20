@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Duel</title>
-<link rel="manifest" href="./manifest.json?v=4">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=4">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=4">
+
+<link rel="manifest" href="./manifest.json?v=5">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5">
+
 <meta name="theme-color" content="#0b0d12">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,836 +18,4098 @@
 
 <style>
 :root{
---bg:#0b0d12;--card:rgba(18,22,31,.78);--line:rgba(255,255,255,.13);
---txt:#f6f7fb;--muted:#aeb5c4;--p1:#62d9ff;--p2:#b58cff;
---safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)
+  --bg:#0b0d12;
+  --card:rgba(18,22,31,.78);
+  --line:rgba(255,255,255,.13);
+  --txt:#f6f7fb;
+  --muted:#aeb5c4;
+  --p1:#62d9ff;
+  --p2:#b58cff;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --safe-right:env(safe-area-inset-right,0px);
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{
-margin:0;width:100%;height:100%;overflow:hidden;
-overscroll-behavior:none;background:var(--bg)
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
+
+html,
 body{
-position:fixed;inset:0;margin:0;width:100%;height:100%;
-overflow:hidden;overscroll-behavior:none;
-background:var(--bg);
-background-image:linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),var(--user-bg);
-background-size:cover;background-position:center;
-font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--txt);
--webkit-text-size-adjust:100%;
-touch-action:manipulation
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  overscroll-behavior:none;
+  background:var(--bg);
 }
-button,input,textarea{font:inherit}
-button{color:inherit;border:0;cursor:pointer;touch-action:manipulation}
-button:active{transform:scale(.96)}
-.hidden-file{display:none!important}
+
+html{
+  touch-action:manipulation;
+}
+
+body{
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),
+    var(--user-bg);
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--txt);
+  -webkit-text-size-adjust:100%;
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+  border:0;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+
+button:active{
+  transform:scale(.96);
+}
+
+.hidden-file{
+  display:none!important;
+}
+
+/* =========================
+   APP / IPHONE
+========================= */
 
 .app{
-width:100%;height:100svh;max-width:720px;margin:auto;
-display:flex;flex-direction:column;
-padding:calc(8px + var(--safe-top)) 9px calc(8px + var(--safe-bottom));
-gap:8px
+  width:100%;
+  height:100vh;
+  height:100svh;
+  height:100dvh;
+  max-width:720px;
+  margin:auto;
+
+  display:flex;
+  flex-direction:column;
+
+  padding:
+    max(8px,var(--safe-top))
+    max(9px,var(--safe-right))
+    max(8px,var(--safe-bottom))
+    max(9px,var(--safe-left));
+
+  gap:8px;
 }
+
+@media all and (display-mode: standalone){
+  .app{
+    height:100vh;
+  }
+}
+
+/* =========================
+   TOP BAR
+========================= */
 
 .topbar{
-height:44px;flex:0 0 44px;
-display:grid;grid-template-columns:repeat(4,1fr);gap:7px
+  height:44px;
+  flex:0 0 44px;
+
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
 }
-.icon,.tool{
-height:100%;width:100%;border-radius:14px;
-border:1px solid var(--line);
-background:rgba(12,15,22,.78);
-backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-box-shadow:0 8px 30px #0004;font-size:19px
+
+.icon,
+.tool{
+  min-width:0;
+  height:100%;
+  width:100%;
+  border-radius:14px;
+
+  border:1px solid var(--line);
+  background:rgba(12,15,22,.78);
+
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+
+  box-shadow:0 8px 30px #0004;
+  font-size:19px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  -webkit-touch-callout:none;
 }
-.icon.timer,.tool.timer{color:#8cf3ff}
-.icon.undo,.tool.undo{color:#ffd27d}
+
+.icon.timer,
+.tool.timer{
+  color:#8cf3ff;
+}
+
+.icon.undo,
+.tool.undo{
+  color:#ffd27d;
+}
+
+.icon.refresh{
+  color:#f6f7fb;
+}
+
+.icon.background{
+  color:#bdefff;
+}
+
+/* =========================
+   PLAYERS
+========================= */
 
 .players{
-flex:1;min-height:0;
-display:grid;grid-template-rows:1fr 1fr;gap:8px
+  flex:1;
+  min-height:0;
+
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  gap:8px;
 }
+
 .player{
-min-height:0;border:1px solid var(--line);border-radius:24px;
-background:var(--card);
-backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-display:flex;flex-direction:column;justify-content:center;align-items:center;
-padding:12px;box-shadow:0 20px 60px #0004;
-position:relative;overflow:hidden;isolation:isolate
+  min-height:0;
+
+  border:1px solid var(--line);
+  border-radius:24px;
+
+  background:var(--card);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  padding:12px;
+
+  box-shadow:0 20px 60px #0004;
+
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
 }
+
 .player:before{
-content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.075
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.075;
 }
-.p1:before{background:radial-gradient(circle at 50% 0%,var(--p1),transparent 55%)}
-.p2:before{background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%)}
+
+.p1:before{
+  background:radial-gradient(circle at 50% 0%,var(--p1),transparent 55%);
+}
+
+.p2:before{
+  background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%);
+}
 
 .player-image{
-position:absolute;top:9px;left:9px;width:58px;height:58px;
-border-radius:15px;border:1px solid rgba(255,255,255,.16);
-background:rgba(12,15,22,.66);
-backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
-box-shadow:0 10px 30px #0006;display:grid;place-items:center;
-overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none
+  position:absolute;
+  top:9px;
+  left:9px;
+
+  width:58px;
+  height:58px;
+
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.16);
+
+  background:rgba(12,15,22,.66);
+
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+
+  box-shadow:0 10px 30px #0006;
+
+  display:grid;
+  place-items:center;
+
+  overflow:hidden;
+
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
 }
-.player-image img{width:100%;height:100%;object-fit:contain;border-radius:14px;display:block}
-.player-image.empty{cursor:pointer}
-.player-image.empty:before{content:"+";color:#9ca5b6;font-size:23px;line-height:1}
+
+.player-image img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:14px;
+  display:block;
+}
+
+.player-image.empty{
+  cursor:pointer;
+}
+
+.player-image.empty:before{
+  content:"+";
+  color:#9ca5b6;
+  font-size:23px;
+  line-height:1;
+}
+
 .player-image.empty:after{
-content:"IMG";position:absolute;bottom:4px;left:0;right:0;
-text-align:center;font-size:7px;letter-spacing:.12em;color:#6f7787
+  content:"IMG";
+  position:absolute;
+  bottom:4px;
+  left:0;
+  right:0;
+
+  text-align:center;
+
+  font-size:7px;
+  letter-spacing:.12em;
+  color:#6f7787;
 }
-.player-image input{display:none}
+
+.player-image input{
+  display:none;
+}
 
 .pname{
-font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;
-text-align:center;padding:7px 12px;border-radius:10px;transition:.2s;
-max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+
+  text-align:center;
+
+  padding:7px 12px;
+  border-radius:10px;
+
+  transition:.2s;
+
+  max-width:70%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+  cursor:pointer;
 }
-.pname:active{background:#ffffff12;transform:scale(.97)}
-.p1 .pname{color:#a9edff}.p2 .pname{color:#d1bdff}
+
+.pname:active{
+  background:#ffffff12;
+  transform:scale(.97);
+}
+
+.p1 .pname{
+  color:#a9edff;
+}
+
+.p2 .pname{
+  color:#d1bdff;
+}
 
 .lp{
-font-size:clamp(48px,13vw,82px);font-weight:800;letter-spacing:-.05em;
-line-height:1;margin:5px 0 8px;text-shadow:0 5px 30px #0008;
-font-variant-numeric:tabular-nums
+  font-size:clamp(48px,13vw,82px);
+  font-weight:800;
+  letter-spacing:-.05em;
+  line-height:1;
+
+  margin:5px 0 8px;
+
+  text-shadow:0 5px 30px #0008;
+
+  font-variant-numeric:tabular-nums;
 }
 
 .life-bar{
-width:min(440px,92%);height:7px;border-radius:999px;
-background:#ffffff12;border:1px solid #ffffff14;overflow:hidden;margin:0 auto 10px
+  width:min(440px,92%);
+  height:7px;
+
+  border-radius:999px;
+
+  background:#ffffff12;
+  border:1px solid #ffffff14;
+
+  overflow:hidden;
+
+  margin:0 auto 10px;
 }
+
 .life-fill{
-height:100%;width:100%;border-radius:inherit;
-transition:width .3s ease,background-color .3s ease,box-shadow .3s ease
+  height:100%;
+  width:100%;
+
+  border-radius:inherit;
+
+  transition:
+    width .3s ease,
+    background-color .3s ease,
+    box-shadow .3s ease;
 }
 
 .controls{
-display:grid;grid-template-columns:46px minmax(0,1fr) 46px;
-gap:6px;max-width:390px;width:100%
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) 46px;
+  gap:6px;
+
+  max-width:390px;
+  width:100%;
 }
-.lp-op,.lp-amount{
-height:39px;border-radius:12px;background:#ffffff12;border:1px solid var(--line)
-}
-.lp-op{font-weight:800;font-size:22px}
-.lp-op.minus{color:#ff8da4}.lp-op.plus{color:#8cf3ff}.lp-op.selected{background:#ffffff25}
+
+.lp-op,
 .lp-amount{
-width:100%;color:var(--txt);text-align:center;outline:none;
-font-weight:750;font-size:14px;cursor:pointer;
--webkit-user-select:none;user-select:none
+  height:39px;
+  border-radius:12px;
+
+  background:#ffffff12;
+  border:1px solid var(--line);
 }
-.lp-amount::placeholder{color:#8e96a6}
+
+.lp-op{
+  font-weight:800;
+  font-size:22px;
+}
+
+.lp-op.minus{
+  color:#ff8da4;
+}
+
+.lp-op.plus{
+  color:#8cf3ff;
+}
+
+.lp-op.selected{
+  background:#ffffff25;
+}
+
+.lp-amount{
+  width:100%;
+
+  color:var(--txt);
+  text-align:center;
+
+  outline:none;
+
+  font-weight:750;
+  font-size:14px;
+
+  cursor:pointer;
+
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+.lp-amount::placeholder{
+  color:#8e96a6;
+}
 
 .half-btn{
-margin-top:6px;width:98px;height:39px;border-radius:12px;
-background:#ffffff10;border:1px solid var(--line);
-display:flex;align-items:center;justify-content:center;gap:5px;
-color:#e9edf6;font-size:9px;font-weight:800;letter-spacing:.05em;
-box-shadow:0 6px 20px #0003
+  margin-top:6px;
+
+  width:98px;
+  height:39px;
+
+  border-radius:12px;
+
+  background:#ffffff10;
+  border:1px solid var(--line);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:5px;
+
+  color:#e9edf6;
+
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.05em;
+
+  box-shadow:0 6px 20px #0003;
 }
-.half-btn .half-icon{font-size:16px;line-height:1;font-weight:900}
+
+.half-btn .half-icon{
+  font-size:16px;
+  line-height:1;
+  font-weight:900;
+}
+
+/* =========================
+   BOTTOM
+========================= */
 
 .bottom{
-height:51px;flex:0 0 51px;
-display:grid;grid-template-columns:repeat(4,1fr);gap:7px
+  height:51px;
+  flex:0 0 51px;
+
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
 }
-.tool{font-size:19px}
-.tool.timer{color:#8cf3ff}.tool.undo{color:#ffd27d}
+
+.tool{
+  font-size:19px;
+}
+
+.tool.timer{
+  color:#8cf3ff;
+}
+
+.tool.undo{
+  color:#ffd27d;
+}
+
+/* =========================
+   MODAL
+========================= */
 
 .modal{
-position:fixed;inset:0;background:#0009;
-backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-display:none;align-items:flex-end;justify-content:center;
-padding:9px 9px calc(9px + var(--safe-bottom));z-index:20;
-overscroll-behavior:none
+  position:fixed;
+  inset:0;
+
+  background:#0009;
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  display:none;
+
+  align-items:flex-end;
+  justify-content:center;
+
+  padding:
+    9px
+    max(9px,var(--safe-right))
+    max(9px,var(--safe-bottom))
+    max(9px,var(--safe-left));
+
+  z-index:20;
+
+  overscroll-behavior:none;
 }
-.modal.open{display:flex}
+
+.modal.open{
+  display:flex;
+}
+
 .sheet{
-width:min(700px,100%);max-height:90svh;
-background:rgba(17,21,30,.98);border:1px solid var(--line);
-border-radius:23px;padding:13px;box-shadow:0 30px 100px #000b;
-overflow:hidden
+  width:min(700px,100%);
+  max-height:92svh;
+  max-height:92dvh;
+
+  background:rgba(17,21,30,.98);
+
+  border:1px solid var(--line);
+  border-radius:23px;
+
+  padding:13px;
+
+  box-shadow:0 30px 100px #000b;
+
+  overflow:hidden;
 }
+
 .sheethead{
-display:flex;justify-content:space-between;align-items:center;margin-bottom:8px
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:8px;
 }
-.sheethead b{font-size:17px}
+
+.sheethead b{
+  font-size:17px;
+}
+
 .close{
-width:35px;height:35px;border-radius:11px;background:#ffffff10;
-border:1px solid var(--line);font-size:22px
+  width:38px;
+  height:38px;
+
+  flex:0 0 38px;
+
+  border-radius:11px;
+
+  background:#ffffff10;
+  border:1px solid var(--line);
+
+  font-size:22px;
 }
+
+/* =========================
+   HISTORY
+========================= */
 
 .history{
-overflow:auto;max-height:64svh;display:flex;flex-direction:column;gap:6px;
--webkit-overflow-scrolling:touch
+  overflow:auto;
+
+  max-height:64svh;
+  max-height:64dvh;
+
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+
+  -webkit-overflow-scrolling:touch;
 }
+
 .history-row{
-display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;
-padding:10px 11px;border-radius:13px;background:#ffffff0d;border:1px solid #ffffff12
-}
-.history-main{min-width:0}
-.history-title{font-size:13px;font-weight:750}
-.history-meta{color:var(--muted);font-size:10px;margin-top:3px}
-.history-values{text-align:right;white-space:nowrap}
-.history-change{font-weight:800;font-size:13px}
-.history-change.gain{color:#83f0c4}.history-change.loss{color:#ff8ba3}
-.history-after{color:#aeb5c4;font-size:10px;margin-top:3px}
-.empty-state{color:#8d96a7;text-align:center;padding:45px 10px;font-size:13px}
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
 
-textarea{
-width:100%;height:55svh;resize:none;background:#0b0e14;color:var(--txt);
-border:1px solid var(--line);border-radius:16px;padding:14px;outline:none;font-size:15px
+  gap:8px;
+
+  padding:10px 11px;
+
+  border-radius:13px;
+
+  background:#ffffff0d;
+  border:1px solid #ffffff12;
 }
 
-.dice-wrap,.coin-wrap{
-height:55svh;display:grid;place-items:center;position:relative;overflow:hidden;
-border-radius:18px;background:radial-gradient(circle,#242a3c,#0b0e14 65%)
+.history-main{
+  min-width:0;
 }
+
+.history-title{
+  font-size:13px;
+  font-weight:750;
+}
+
+.history-meta{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.history-values{
+  text-align:right;
+  white-space:nowrap;
+}
+
+.history-change{
+  font-weight:800;
+  font-size:13px;
+}
+
+.history-change.gain{
+  color:#83f0c4;
+}
+
+.history-change.loss{
+  color:#ff8ba3;
+}
+
+.history-after{
+  color:#aeb5c4;
+  font-size:10px;
+  margin-top:3px;
+}
+
+.empty-state{
+  color:#8d96a7;
+  text-align:center;
+  padding:45px 10px;
+  font-size:13px;
+}
+
+/* =========================
+   DICE
+========================= */
+
+.dice-wrap,
+.coin-wrap{
+  height:55svh;
+  height:55dvh;
+
+  min-height:250px;
+
+  display:grid;
+  place-items:center;
+
+  position:relative;
+  overflow:hidden;
+
+  border-radius:18px;
+
+  background:
+    radial-gradient(circle,#242a3c,#0b0e14 65%);
+}
+
 .die{
-width:100px;height:100px;background:linear-gradient(145deg,#fff,#cdd4df);
-border-radius:20px;display:grid;place-items:center;color:#111;font-size:48px;font-weight:900;
-box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;user-select:none;
-transform:translate3d(0,0,0);will-change:transform
-}
-.die.rolling{animation:diceRoll .9s cubic-bezier(.16,.82,.22,1) both}
-@keyframes diceRoll{
-0%{transform:translate3d(0,75px,0) rotateX(0) rotateY(0) rotateZ(0) scale(.62);opacity:.35}
-22%{transform:translate3d(22px,-55px,0) rotateX(120deg) rotateY(100deg) rotateZ(70deg) scale(.92);opacity:1}
-45%{transform:translate3d(-26px,-88px,0) rotateX(270deg) rotateY(230deg) rotateZ(155deg) scale(1.07)}
-68%{transform:translate3d(18px,-35px,0) rotateX(470deg) rotateY(390deg) rotateZ(245deg) scale(1.03)}
-85%{transform:translate3d(-7px,-8px,0) rotateX(600deg) rotateY(510deg) rotateZ(315deg) scale(1.01)}
-100%{transform:translate3d(0,0,0) rotateX(680deg) rotateY(570deg) rotateZ(360deg) scale(1);opacity:1}
+  width:100px;
+  height:100px;
+
+  background:linear-gradient(145deg,#fff,#cdd4df);
+
+  border-radius:20px;
+
+  display:grid;
+  place-items:center;
+
+  color:#111;
+
+  font-size:48px;
+  font-weight:900;
+
+  box-shadow:
+    0 18px 40px #0008,
+    inset 0 2px 3px #fff;
+
+  user-select:none;
+  -webkit-user-select:none;
+
+  /* IMPORTANTISSIMO PER SAFARI/iOS:
+     niente rotateX/rotateY/3D matrix */
+
+  transform:translate3d(0,0,0) rotate(0deg) scale(1);
+
+  -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
+
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+
+  isolation:isolate;
 }
 
-.coin-stage{width:150px;height:180px;display:grid;place-items:center;perspective:900px}
+.die.rolling{
+  animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both;
+  -webkit-animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both;
+}
+
+@keyframes diceRollIOS{
+  0%{
+    transform:translate3d(0,72px,0) rotate(0deg) scale(.62);
+    opacity:.35;
+  }
+
+  15%{
+    transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);
+    opacity:1;
+  }
+
+  30%{
+    transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03);
+  }
+
+  45%{
+    transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08);
+  }
+
+  60%{
+    transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04);
+  }
+
+  75%{
+    transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01);
+  }
+
+  88%{
+    transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1);
+  }
+
+  100%{
+    transform:translate3d(0,0,0) rotate(720deg) scale(1);
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes diceRollIOS{
+  0%{
+    -webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);
+    opacity:.35;
+  }
+
+  15%{
+    -webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);
+    opacity:1;
+  }
+
+  30%{
+    -webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03);
+  }
+
+  45%{
+    -webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08);
+  }
+
+  60%{
+    -webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04);
+  }
+
+  75%{
+    -webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01);
+  }
+
+  88%{
+    -webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1);
+  }
+
+  100%{
+    -webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);
+    opacity:1;
+  }
+}
+
+/* =========================
+   COIN
+========================= */
+
+.coin-stage{
+  width:150px;
+  height:180px;
+
+  display:grid;
+  place-items:center;
+}
+
 .coin{
-width:118px;height:118px;border-radius:50%;display:grid;place-items:center;
-background:radial-gradient(circle at 32% 27%,#fff8cf 0 7%,#f7dd72 20%,#d7a72d 62%,#a87817 100%);
-border:5px solid #f6dc73;color:#654700;font-size:22px;font-weight:900;
-box-shadow:inset 0 2px 4px #fff8,0 18px 35px #0008;will-change:transform
-}
-.coin.flip{animation:coinFlip 1.05s cubic-bezier(.14,.72,.2,1) both}
-@keyframes coinFlip{
-0%{transform:translateY(88px) rotateX(0) scale(.72)}
-50%{transform:translateY(-80px) rotateX(1440deg) scale(1.07)}
-100%{transform:translateY(0) rotateX(2700deg) scale(1)}
-}
-.hint{position:absolute;bottom:14px;color:#8891a2;font-size:11px;text-align:center;width:100%}
+  width:118px;
+  height:118px;
 
-.name-editor{display:flex;flex-direction:column;gap:10px}
-.name-editor input{
-width:100%;height:48px;border-radius:13px;background:#0b0e14;border:1px solid var(--line);
-color:white;padding:0 13px;outline:none;font-size:16px
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  background:
+    radial-gradient(
+      circle at 32% 27%,
+      #fff8cf 0 7%,
+      #f7dd72 20%,
+      #d7a72d 62%,
+      #a87817 100%
+    );
+
+  border:5px solid #f6dc73;
+
+  color:#654700;
+
+  font-size:22px;
+  font-weight:900;
+
+  box-shadow:
+    inset 0 2px 4px #fff8,
+    0 18px 35px #0008;
+
+  transform:translate3d(0,0,0) rotate(0deg) scale(1);
+
+  -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
+
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
 }
-.primary-btn,.timer-btn{
-height:44px;border-radius:13px;background:#ffffff15;border:1px solid var(--line);font-weight:800
+
+.coin.flip{
+  animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
+  -webkit-animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
 }
+
+@keyframes coinFlipIOS{
+  0%{
+    transform:translate3d(0,88px,0) rotate(0deg) scale(.72);
+  }
+
+  25%{
+    transform:translate3d(0,-45px,0) rotate(360deg) scale(.92);
+  }
+
+  50%{
+    transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07);
+  }
+
+  75%{
+    transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03);
+  }
+
+  100%{
+    transform:translate3d(0,0,0) rotate(1440deg) scale(1);
+  }
+}
+
+@-webkit-keyframes coinFlipIOS{
+  0%{
+    -webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72);
+  }
+
+  25%{
+    -webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92);
+  }
+
+  50%{
+    -webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07);
+  }
+
+  75%{
+    -webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03);
+  }
+
+  100%{
+    -webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1);
+  }
+}
+
+.hint{
+  position:absolute;
+  bottom:14px;
+
+  color:#8891a2;
+
+  font-size:11px;
+  text-align:center;
+
+  width:100%;
+}
+
+/* =========================
+   TIMER
+========================= */
 
 .timer-display{
-text-align:center;font-variant-numeric:tabular-nums;
-font-size:clamp(52px,17vw,82px);font-weight:800;letter-spacing:-.05em;margin:8px 0 14px
+  text-align:center;
+
+  font-variant-numeric:tabular-nums;
+
+  font-size:clamp(52px,17vw,82px);
+
+  font-weight:800;
+
+  letter-spacing:-.05em;
+
+  margin:8px 0 14px;
 }
-.timer-display.warning{color:#ffbd6f;text-shadow:0 0 25px rgba(255,189,111,.35)}
-.timer-display.danger{color:#ff718b;text-shadow:0 0 25px rgba(255,113,139,.35)}
-.timer-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.timer-btn:disabled{pointer-events:none}
+
+.timer-display.warning{
+  color:#ffbd6f;
+  text-shadow:0 0 25px rgba(255,189,111,.35);
+}
+
+.timer-display.danger{
+  color:#ff718b;
+  text-shadow:0 0 25px rgba(255,113,139,.35);
+}
+
+.timer-controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.timer-btn{
+  height:46px;
+
+  border-radius:13px;
+
+  background:#ffffff15;
+  border:1px solid var(--line);
+
+  font-weight:800;
+}
+
+.timer-btn:disabled{
+  pointer-events:none;
+}
+
 .timer-edit{
-height:40px;width:100%;border-radius:12px;background:#ffffff0d;border:1px solid var(--line);
-margin-bottom:9px;color:#cfd5e1;font-size:12px;font-weight:800
+  height:42px;
+  width:100%;
+
+  border-radius:12px;
+
+  background:#ffffff0d;
+  border:1px solid var(--line);
+
+  margin-bottom:9px;
+
+  color:#cfd5e1;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+/* =========================
+   CUSTOM KEYPADS
+========================= */
+
+.keypad-wrap{
+  width:100%;
+  max-height:66dvh;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 .keypad{
-width:min(290px,100%);margin:auto;
-display:grid;grid-template-columns:repeat(3,1fr);gap:6px
+  width:min(330px,100%);
+  margin:auto;
+
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:7px;
 }
+
 .key{
-height:44px;border-radius:12px;background:#ffffff0d;border:1px solid var(--line);
-font-size:17px;font-weight:700;color:#f3f5fa;touch-action:manipulation;
--webkit-user-select:none;user-select:none
+  min-height:46px;
+
+  border-radius:13px;
+
+  background:#ffffff0d;
+  border:1px solid var(--line);
+
+  font-size:18px;
+  font-weight:700;
+
+  color:#f3f5fa;
+
+  touch-action:manipulation;
+
+  -webkit-user-select:none;
+  user-select:none;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.key.action{background:#ffffff15}.key.confirm{
-background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
-border-color:rgba(98,217,255,.35);color:#bdf3ff
+
+.key:active{
+  background:#ffffff20;
+  transform:scale(.95);
 }
-.key.clear{color:#ff9bad}
+
+.key.action{
+  background:#ffffff15;
+}
+
+.key.confirm{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(98,217,255,.23),
+      rgba(98,217,255,.12)
+    );
+
+  border-color:rgba(98,217,255,.35);
+
+  color:#bdf3ff;
+}
+
+.key.clear{
+  color:#ff9bad;
+}
+
+.key.wide{
+  grid-column:span 2;
+}
+
 .keypad-value{
-text-align:center;font-size:27px;font-weight:800;min-height:38px;margin:2px 0 8px;
-overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums
+  text-align:center;
+
+  font-size:27px;
+  font-weight:800;
+
+  min-height:38px;
+
+  margin:2px 0 8px;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+
+  font-variant-numeric:tabular-nums;
 }
-.keypad-operation{text-align:center;color:#8f98a9;font-size:11px;margin-top:-3px;margin-bottom:3px}
+
+.keypad-operation{
+  text-align:center;
+
+  color:#8f98a9;
+
+  font-size:11px;
+
+  margin-top:-3px;
+  margin-bottom:3px;
+}
+
+/* =========================
+   TEXT KEYPAD
+========================= */
+
+.text-editor{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.text-preview{
+  width:100%;
+
+  min-height:54px;
+  max-height:125px;
+
+  overflow:auto;
+
+  padding:12px;
+
+  border-radius:14px;
+
+  background:#0b0e14;
+  border:1px solid var(--line);
+
+  color:#f6f7fb;
+
+  font-size:16px;
+  line-height:1.35;
+
+  white-space:pre-wrap;
+  word-break:break-word;
+
+  -webkit-overflow-scrolling:touch;
+}
+
+.text-preview.empty{
+  color:#727b8d;
+}
+
+.text-editor-info{
+  text-align:center;
+
+  color:#818a9b;
+
+  font-size:10px;
+
+  min-height:14px;
+}
+
+.text-keypad{
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:6px;
+}
+
+.text-row{
+  display:grid;
+
+  gap:5px;
+}
+
+.text-row.row10{
+  grid-template-columns:repeat(10,1fr);
+}
+
+.text-row.row9{
+  grid-template-columns:repeat(9,1fr);
+  padding:0 4.5%;
+}
+
+.text-row.row7{
+  grid-template-columns:repeat(7,1fr);
+  padding:0 13%;
+}
+
+.text-key{
+  min-width:0;
+  height:42px;
+
+  border-radius:10px;
+
+  background:#ffffff0d;
+  border:1px solid var(--line);
+
+  font-size:14px;
+  font-weight:700;
+
+  color:#f3f5fa;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  touch-action:manipulation;
+}
+
+.text-key:active{
+  background:#ffffff20;
+  transform:scale(.95);
+}
+
+.text-key.special{
+  background:#ffffff15;
+}
+
+.text-key.back{
+  color:#ff9bad;
+}
+
+.text-key.space{
+  font-size:11px;
+  letter-spacing:.05em;
+}
+
+.text-key.confirm{
+  color:#bdf3ff;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(98,217,255,.23),
+      rgba(98,217,255,.12)
+    );
+
+  border-color:rgba(98,217,255,.35);
+}
+
+.text-key.clear{
+  color:#ff9bad;
+}
+
+.text-key.shift{
+  color:#8cf3ff;
+}
+
+.text-key.shift.active{
+  background:rgba(98,217,255,.22);
+  border-color:rgba(98,217,255,.4);
+}
+
+/* =========================
+   NOTES
+========================= */
+
+.notes-editor .text-preview{
+  min-height:105px;
+  max-height:155px;
+}
+
+.notes-editor .text-key{
+  height:40px;
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-height:680px){
-.app{padding:calc(6px + var(--safe-top)) 6px calc(6px + var(--safe-bottom));gap:6px}
-.topbar{height:40px;flex-basis:40px;gap:6px}.icon{border-radius:12px}
-.players{gap:6px}.player{border-radius:21px;padding:9px}
-.player-image{width:51px;height:51px;top:7px;left:7px;border-radius:13px}
-.player-image img{border-radius:12px}
-.lp{margin:3px 0 6px}.life-bar{margin-bottom:7px}
-.lp-op,.lp-amount,.half-btn{height:35px}.half-btn{margin-top:4px}
-.bottom{height:45px;flex-basis:45px;gap:6px}.tool{border-radius:12px}
-.sheet{padding:11px}.dice-wrap,.coin-wrap{height:50svh}
-.key{height:42px}
+
+  .app{
+    padding:
+      max(6px,var(--safe-top))
+      max(6px,var(--safe-right))
+      max(6px,var(--safe-bottom))
+      max(6px,var(--safe-left));
+
+    gap:6px;
+  }
+
+  .topbar{
+    height:40px;
+    flex-basis:40px;
+    gap:6px;
+  }
+
+  .icon{
+    border-radius:12px;
+  }
+
+  .players{
+    gap:6px;
+  }
+
+  .player{
+    border-radius:21px;
+    padding:9px;
+  }
+
+  .player-image{
+    width:51px;
+    height:51px;
+    top:7px;
+    left:7px;
+    border-radius:13px;
+  }
+
+  .player-image img{
+    border-radius:12px;
+  }
+
+  .lp{
+    margin:3px 0 6px;
+  }
+
+  .life-bar{
+    margin-bottom:7px;
+  }
+
+  .lp-op,
+  .lp-amount,
+  .half-btn{
+    height:35px;
+  }
+
+  .half-btn{
+    margin-top:4px;
+  }
+
+  .bottom{
+    height:45px;
+    flex-basis:45px;
+    gap:6px;
+  }
+
+  .tool{
+    border-radius:12px;
+  }
+
+  .sheet{
+    padding:11px;
+  }
+
+  .dice-wrap,
+  .coin-wrap{
+    height:50svh;
+    height:50dvh;
+  }
+
+  .key{
+    min-height:42px;
+  }
+
+  .text-key{
+    height:38px;
+  }
+}
+
+@media(max-width:390px){
+
+  .text-row{
+    gap:4px;
+  }
+
+  .text-key{
+    height:39px;
+    border-radius:9px;
+    font-size:13px;
+  }
+
+  .text-row.row9{
+    padding:0 4%;
+  }
+
+  .text-row.row7{
+    padding:0 11%;
+  }
 }
 
 @media(orientation:landscape) and (max-height:500px){
-.app{max-width:1000px}
-.players{grid-template-columns:1fr 1fr;grid-template-rows:1fr}
+
+  .app{
+    max-width:1000px;
+  }
+
+  .players{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr;
+  }
+
+  .sheet{
+    max-height:94vh;
+  }
+
+  .dice-wrap,
+  .coin-wrap{
+    height:60vh;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <header class="topbar">
-<button class="icon" id="bgBtn" type="button" aria-label="Sfondo">▧</button>
-<input id="bgInput" class="hidden-file" type="file" accept="image/*">
-<button class="icon" id="resetBtn" type="button" aria-label="Nuova partita">↻</button>
-<button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button>
-<button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button>
+
+  <!-- ORDINE:
+       Undo | Timer | Cambia sfondo | Refresh
+       Refresh è sempre tutto a destra,
+       sfondo è immediatamente alla sua sinistra.
+  -->
+
+  <button
+    class="icon undo"
+    id="undoBtn"
+    type="button"
+    aria-label="Annulla">
+    ↶
+  </button>
+
+  <button
+    class="icon timer"
+    id="timerBtn"
+    type="button"
+    aria-label="Timer">
+    ◷
+  </button>
+
+  <button
+    class="icon background"
+    id="bgBtn"
+    type="button"
+    aria-label="Cambia sfondo">
+    ▧
+  </button>
+
+  <button
+    class="icon refresh"
+    id="resetBtn"
+    type="button"
+    aria-label="Refresh">
+    ↻
+  </button>
+
+  <input
+    id="bgInput"
+    class="hidden-file"
+    type="file"
+    accept="image/*">
+
 </header>
 
 <main class="players">
 
 <section class="player p1">
-<div class="player-image empty" id="imageSlot1" title="Immagine Player 1">
-<input type="file" id="imageInput1" accept="image/*">
-</div>
-<div class="pname" id="name1" data-player="1" role="button" tabindex="0">PLAYER 1</div>
-<div class="lp" id="lp1">8000</div>
-<div class="life-bar"><div class="life-fill" id="lifeFill1"></div></div>
-<div class="controls">
-<button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button>
-<input class="lp-amount" id="amount1" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 1">
-<button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button>
-</div>
-<button class="half-btn" type="button" data-half-player="1"><span class="half-icon">½</span><span>DIMEZZA</span></button>
+
+  <div
+    class="player-image empty"
+    id="imageSlot1"
+    title="Immagine Player 1">
+
+    <input
+      type="file"
+      id="imageInput1"
+      accept="image/*">
+
+  </div>
+
+  <div
+    class="pname"
+    id="name1"
+    data-player="1"
+    role="button"
+    tabindex="0">
+    PLAYER 1
+  </div>
+
+  <div
+    class="lp"
+    id="lp1">
+    8000
+  </div>
+
+  <div class="life-bar">
+    <div
+      class="life-fill"
+      id="lifeFill1">
+    </div>
+  </div>
+
+  <div class="controls">
+
+    <button
+      class="lp-op minus selected"
+      type="button"
+      data-p="1"
+      data-sign="-1">
+      −
+    </button>
+
+    <input
+      class="lp-amount"
+      id="amount1"
+      type="text"
+      readonly
+      inputmode="none"
+      placeholder="Cifra"
+      aria-label="Cifra LP Player 1">
+
+    <button
+      class="lp-op plus"
+      type="button"
+      data-p="1"
+      data-sign="1">
+      +
+    </button>
+
+  </div>
+
+  <button
+    class="half-btn"
+    type="button"
+    data-half-player="1">
+
+    <span class="half-icon">½</span>
+    <span>DIMEZZA</span>
+
+  </button>
+
 </section>
 
 <section class="player p2">
-<div class="player-image empty" id="imageSlot2" title="Immagine Player 2">
-<input type="file" id="imageInput2" accept="image/*">
-</div>
-<div class="pname" id="name2" data-player="2" role="button" tabindex="0">PLAYER 2</div>
-<div class="lp" id="lp2">8000</div>
-<div class="life-bar"><div class="life-fill" id="lifeFill2"></div></div>
-<div class="controls">
-<button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button>
-<input class="lp-amount" id="amount2" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 2">
-<button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button>
-</div>
-<button class="half-btn" type="button" data-half-player="2"><span class="half-icon">½</span><span>DIMEZZA</span></button>
+
+  <div
+    class="player-image empty"
+    id="imageSlot2"
+    title="Immagine Player 2">
+
+    <input
+      type="file"
+      id="imageInput2"
+      accept="image/*">
+
+  </div>
+
+  <div
+    class="pname"
+    id="name2"
+    data-player="2"
+    role="button"
+    tabindex="0">
+    PLAYER 2
+  </div>
+
+  <div
+    class="lp"
+    id="lp2">
+    8000
+  </div>
+
+  <div class="life-bar">
+    <div
+      class="life-fill"
+      id="lifeFill2">
+    </div>
+  </div>
+
+  <div class="controls">
+
+    <button
+      class="lp-op minus selected"
+      type="button"
+      data-p="2"
+      data-sign="-1">
+      −
+    </button>
+
+    <input
+      class="lp-amount"
+      id="amount2"
+      type="text"
+      readonly
+      inputmode="none"
+      placeholder="Cifra"
+      aria-label="Cifra LP Player 2">
+
+    <button
+      class="lp-op plus"
+      type="button"
+      data-p="2"
+      data-sign="1">
+      +
+    </button>
+
+  </div>
+
+  <button
+    class="half-btn"
+    type="button"
+    data-half-player="2">
+
+    <span class="half-icon">½</span>
+    <span>DIMEZZA</span>
+
+  </button>
+
 </section>
 
 </main>
 
-<nav class="bottom" aria-label="Strumenti">
-<button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button>
-<button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button>
-<button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button>
-<button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button>
+<nav
+  class="bottom"
+  aria-label="Strumenti">
+
+  <button
+    class="tool"
+    id="diceBtn"
+    type="button"
+    aria-label="Dado">
+    ⚄
+  </button>
+
+  <button
+    class="tool"
+    id="coinBtn"
+    type="button"
+    aria-label="Moneta">
+    ◉
+  </button>
+
+  <button
+    class="tool"
+    id="historyBtn"
+    type="button"
+    aria-label="Storico">
+    ☷
+  </button>
+
+  <button
+    class="tool"
+    id="notesBtn"
+    type="button"
+    aria-label="Appunti">
+    ✎
+  </button>
+
 </nav>
 
 </div>
 
-<div class="modal" id="modal">
-<div class="sheet">
-<div class="sheethead">
-<b id="modalTitle"></b>
-<button class="close" id="close" type="button" aria-label="Chiudi">×</button>
-</div>
-<div id="modalBody"></div>
-</div>
+<div
+  class="modal"
+  id="modal">
+
+  <div class="sheet">
+
+    <div class="sheethead">
+
+      <b id="modalTitle"></b>
+
+      <button
+        class="close"
+        id="close"
+        type="button"
+        aria-label="Chiudi">
+        ×
+      </button>
+
+    </div>
+
+    <div id="modalBody"></div>
+
+  </div>
+
 </div>
 
 <script>
 "use strict";
 
+/* =========================================================
+   HELPERS
+========================================================= */
+
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-const modal=$("#modal"),modalBody=$("#modalBody"),modalTitle=$("#modalTitle");
+
+const modal=$("#modal");
+const modalBody=$("#modalBody");
+const modalTitle=$("#modalTitle");
 
 const state={
-lp:[8000,8000],
-names:["PLAYER 1","PLAYER 2"],
-history:[],
-notes:"",
-bg:localStorage.getItem("ygo-bg")||"",
-images:[
-localStorage.getItem("ygo-image-1")||"",
-localStorage.getItem("ygo-image-2")||""
-],
-timerSeconds:2700,
-timerInitialSeconds:2700
+  lp:[8000,8000],
+
+  names:[
+    "PLAYER 1",
+    "PLAYER 2"
+  ],
+
+  history:[],
+  notes:"",
+
+  bg:localStorage.getItem("ygo-bg")||"",
+
+  images:[
+    localStorage.getItem("ygo-image-1")||"",
+    localStorage.getItem("ygo-image-2")||""
+  ],
+
+  timerSeconds:2700,
+  timerInitialSeconds:2700
 };
 
-let currentAmountPlayer=null,currentAmountSign=-1,keypadValue="";
-let diceRolling=false,coinBusy=false,timerInterval=null,timerRunning=false;
-const imageLongPressTimers={},imageLongPressTriggered={};
+/* =========================================================
+   SESSION RANDOM SEQUENCES
+
+   NON vengono salvate in localStorage.
+
+   DADO:
+   1° -> 4..6
+   2° -> 1..3
+   dal 3° -> 1..6
+
+   MONETA:
+   1° -> TESTA
+   2° -> TESTA
+   3° -> CROCE
+   dal 4° -> casuale
+========================================================= */
+
+let diceSequenceIndex=0;
+let coinSequenceIndex=0;
+
+function resetRandomSequences(){
+  diceSequenceIndex=0;
+  coinSequenceIndex=0;
+}
+
+function nextDieResult(){
+
+  if(diceSequenceIndex===0){
+    diceSequenceIndex++;
+    return 4+secureRandomInt(3);
+  }
+
+  if(diceSequenceIndex===1){
+    diceSequenceIndex++;
+    return 1+secureRandomInt(3);
+  }
+
+  diceSequenceIndex++;
+  return secureDie();
+}
+
+function nextCoinResult(){
+
+  if(coinSequenceIndex===0){
+    coinSequenceIndex++;
+    return "TESTA";
+  }
+
+  if(coinSequenceIndex===1){
+    coinSequenceIndex++;
+    return "TESTA";
+  }
+
+  if(coinSequenceIndex===2){
+    coinSequenceIndex++;
+    return "CROCE";
+  }
+
+  coinSequenceIndex++;
+  return secureCoin();
+}
+
+/* =========================================================
+   GENERAL STATE
+========================================================= */
+
+let currentAmountPlayer=null;
+let currentAmountSign=-1;
+let keypadValue="";
+
+let diceRolling=false;
+let coinBusy=false;
+
+let timerInterval=null;
+let timerRunning=false;
+
+const imageLongPressTimers={};
+const imageLongPressTriggered={};
 
 function safeSet(k,v){
-try{localStorage.setItem(k,v);return true}catch(e){console.warn(e);return false}
+  try{
+    localStorage.setItem(k,v);
+    return true;
+  }catch(e){
+    console.warn(e);
+    return false;
+  }
 }
 
 function save(){
-safeSet("ygo-state",JSON.stringify({
-lp:state.lp,names:state.names,history:state.history,notes:state.notes,
-timerSeconds:state.timerSeconds,timerInitialSeconds:state.timerInitialSeconds
-}));
-if(state.bg)safeSet("ygo-bg",state.bg);else localStorage.removeItem("ygo-bg");
-state.images.forEach((x,i)=>x?safeSet("ygo-image-"+(i+1),x):localStorage.removeItem("ygo-image-"+(i+1)));
+
+  safeSet(
+    "ygo-state",
+    JSON.stringify({
+      lp:state.lp,
+      names:state.names,
+      history:state.history,
+      notes:state.notes,
+      timerSeconds:state.timerSeconds,
+      timerInitialSeconds:state.timerInitialSeconds
+    })
+  );
+
+  if(state.bg){
+    safeSet("ygo-bg",state.bg);
+  }else{
+    localStorage.removeItem("ygo-bg");
+  }
+
+  state.images.forEach((x,i)=>{
+
+    if(x){
+      safeSet(
+        "ygo-image-"+(i+1),
+        x
+      );
+    }else{
+      localStorage.removeItem(
+        "ygo-image-"+(i+1)
+      );
+    }
+
+  });
 }
 
 function loadState(){
-try{
-const x=JSON.parse(localStorage.getItem("ygo-state")||"null");
-if(!x)return;
-if(Array.isArray(x.lp)&&x.lp.length===2)state.lp=x.lp.map(v=>Math.max(0,Number(v)||0));
-if(Array.isArray(x.names)&&x.names.length===2)state.names=x.names.map(v=>String(v||"PLAYER"));
-if(Array.isArray(x.history))state.history=x.history;
-if(typeof x.notes==="string")state.notes=x.notes;
-if(Number.isFinite(Number(x.timerSeconds)))state.timerSeconds=Math.max(0,Number(x.timerSeconds));
-if(Number.isFinite(Number(x.timerInitialSeconds)))state.timerInitialSeconds=Math.max(1,Number(x.timerInitialSeconds));
-}catch(e){console.warn("Stato locale non valido",e)}
+
+  try{
+
+    const x=JSON.parse(
+      localStorage.getItem("ygo-state")||"null"
+    );
+
+    if(!x)return;
+
+    if(
+      Array.isArray(x.lp)&&
+      x.lp.length===2
+    ){
+      state.lp=x.lp.map(
+        v=>Math.max(0,Number(v)||0)
+      );
+    }
+
+    if(
+      Array.isArray(x.names)&&
+      x.names.length===2
+    ){
+      state.names=x.names.map(
+        v=>String(v||"PLAYER")
+      );
+    }
+
+    if(Array.isArray(x.history)){
+      state.history=x.history;
+    }
+
+    if(typeof x.notes==="string"){
+      state.notes=x.notes;
+    }
+
+    if(
+      Number.isFinite(
+        Number(x.timerSeconds)
+      )
+    ){
+      state.timerSeconds=Math.max(
+        0,
+        Number(x.timerSeconds)
+      );
+    }
+
+    if(
+      Number.isFinite(
+        Number(x.timerInitialSeconds)
+      )
+    ){
+      state.timerInitialSeconds=Math.max(
+        1,
+        Number(x.timerInitialSeconds)
+      );
+    }
+
+  }catch(e){
+
+    console.warn(
+      "Stato locale non valido",
+      e
+    );
+
+  }
 }
 
 function applyBackground(){
-if(state.bg)document.body.style.setProperty("--user-bg",`url("${state.bg}")`);
-else document.body.style.removeProperty("--user-bg");
+
+  if(state.bg){
+
+    document.body.style.setProperty(
+      "--user-bg",
+      `url("${state.bg}")`
+    );
+
+  }else{
+
+    document.body.style.removeProperty(
+      "--user-bg"
+    );
+
+  }
 }
 
+/* =========================================================
+   LP
+========================================================= */
+
 function lifeColor(v){
-v=Math.max(0,Number(v)||0);
-const s=[[8000,92,235,138],[7000,105,228,126],[6000,151,225,91],[5000,196,222,70],[4000,232,218,58],[3000,245,181,50],[2000,245,133,48],[1000,239,91,67],[0,205,42,67]];
-if(v>=8000)return["rgb(92,235,138)","rgba(92,235,138,.38)"];
-for(let i=0;i<s.length-1;i++){
-const h=s[i],l=s[i+1];
-if(v<=h[0]&&v>=l[0]){
-const p=(h[0]-v)/(h[0]-l[0]);
-const r=Math.round(h[1]+(l[1]-h[1])*p),g=Math.round(h[2]+(l[2]-h[2])*p),b=Math.round(h[3]+(l[3]-h[3])*p);
-return[`rgb(${r},${g},${b})`,`rgba(${r},${g},${b},.30)`]
-}}
-return["rgb(205,42,67)","rgba(205,42,67,.35)"]
+
+  v=Math.max(
+    0,
+    Number(v)||0
+  );
+
+  const s=[
+    [8000,92,235,138],
+    [7000,105,228,126],
+    [6000,151,225,91],
+    [5000,196,222,70],
+    [4000,232,218,58],
+    [3000,245,181,50],
+    [2000,245,133,48],
+    [1000,239,91,67],
+    [0,205,42,67]
+  ];
+
+  if(v>=8000){
+
+    return[
+      "rgb(92,235,138)",
+      "rgba(92,235,138,.38)"
+    ];
+
+  }
+
+  for(
+    let i=0;
+    i<s.length-1;
+    i++
+  ){
+
+    const h=s[i];
+    const l=s[i+1];
+
+    if(
+      v<=h[0]&&
+      v>=l[0]
+    ){
+
+      const p=
+        (h[0]-v)/
+        (h[0]-l[0]);
+
+      const r=Math.round(
+        h[1]+
+        (l[1]-h[1])*p
+      );
+
+      const g=Math.round(
+        h[2]+
+        (l[2]-h[2])*p
+      );
+
+      const b=Math.round(
+        h[3]+
+        (l[3]-h[3])*p
+      );
+
+      return[
+        `rgb(${r},${g},${b})`,
+        `rgba(${r},${g},${b},.30)`
+      ];
+    }
+  }
+
+  return[
+    "rgb(205,42,67)",
+    "rgba(205,42,67,.35)"
+  ];
 }
 
 function updateLifeBar(p){
-const v=Math.max(0,Number(state.lp[p-1])||0),f=$("#lifeFill"+p);
-if(!f)return;
-f.style.width=Math.min(100,v/8000*100)+"%";
-const[c,g]=lifeColor(v);f.style.backgroundColor=c;f.style.boxShadow=`0 0 11px ${g}`;
+
+  const v=Math.max(
+    0,
+    Number(state.lp[p-1])||0
+  );
+
+  const f=$("#lifeFill"+p);
+
+  if(!f)return;
+
+  f.style.width=
+    Math.min(
+      100,
+      v/8000*100
+    )+"%";
+
+  const[c,g]=lifeColor(v);
+
+  f.style.backgroundColor=c;
+  f.style.boxShadow=
+    `0 0 11px ${g}`;
 }
 
-function compressImage(file,maxSide=1200,quality=.86){
-return new Promise((resolve,reject)=>{
-const r=new FileReader();
-r.onerror=()=>reject(r.error||new Error("Lettura fallita"));
-r.onload=()=>{
-const img=new Image();
-img.onerror=()=>reject(new Error("Immagine non valida"));
-img.onload=()=>{
-const scale=Math.min(1,maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1));
-const c=document.createElement("canvas");
-c.width=Math.max(1,Math.round((img.naturalWidth||1)*scale));
-c.height=Math.max(1,Math.round((img.naturalHeight||1)*scale));
-const ctx=c.getContext("2d");
-if(!ctx)return resolve(r.result);
-ctx.fillStyle="#0b0d12";ctx.fillRect(0,0,c.width,c.height);
-ctx.drawImage(img,0,0,c.width,c.height);
-let out=c.toDataURL("image/jpeg",quality);
-if(out.length>3500000)out=c.toDataURL("image/jpeg",.68);
-resolve(out)
-};
-img.src=r.result
-};
-r.readAsDataURL(file)
-})
+/* =========================================================
+   IMAGES
+========================================================= */
+
+function compressImage(
+  file,
+  maxSide=1200,
+  quality=.86
+){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      const r=new FileReader();
+
+      r.onerror=()=>reject(
+        r.error||
+        new Error("Lettura fallita")
+      );
+
+      r.onload=()=>{
+
+        const img=new Image();
+
+        img.onerror=()=>reject(
+          new Error("Immagine non valida")
+        );
+
+        img.onload=()=>{
+
+          const scale=Math.min(
+            1,
+            maxSide/
+            Math.max(
+              img.naturalWidth||1,
+              img.naturalHeight||1
+            )
+          );
+
+          const c=
+            document.createElement("canvas");
+
+          c.width=Math.max(
+            1,
+            Math.round(
+              (img.naturalWidth||1)*
+              scale
+            )
+          );
+
+          c.height=Math.max(
+            1,
+            Math.round(
+              (img.naturalHeight||1)*
+              scale
+            )
+          );
+
+          const ctx=
+            c.getContext("2d");
+
+          if(!ctx){
+            return resolve(r.result);
+          }
+
+          ctx.fillStyle="#0b0d12";
+
+          ctx.fillRect(
+            0,
+            0,
+            c.width,
+            c.height
+          );
+
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            c.width,
+            c.height
+          );
+
+          let out=
+            c.toDataURL(
+              "image/jpeg",
+              quality
+            );
+
+          if(out.length>3500000){
+
+            out=c.toDataURL(
+              "image/jpeg",
+              .68
+            );
+
+          }
+
+          resolve(out);
+
+        };
+
+        img.src=r.result;
+
+      };
+
+      r.readAsDataURL(file);
+
+    }
+  );
 }
 
 function renderImages(){
-for(let p=1;p<=2;p++){
-const slot=$("#imageSlot"+p);if(!slot)continue;
-const old=slot.querySelector("img");if(old)old.remove();
-if(!state.images[p-1]){slot.classList.add("empty");continue}
-slot.classList.remove("empty");
-const img=document.createElement("img");
-img.src=state.images[p-1];img.alt="Immagine Player "+p;img.draggable=false;slot.appendChild(img)
-}
+
+  for(let p=1;p<=2;p++){
+
+    const slot=
+      $("#imageSlot"+p);
+
+    if(!slot)continue;
+
+    const old=
+      slot.querySelector("img");
+
+    if(old)old.remove();
+
+    if(!state.images[p-1]){
+
+      slot.classList.add("empty");
+      continue;
+
+    }
+
+    slot.classList.remove("empty");
+
+    const img=
+      document.createElement("img");
+
+    img.src=
+      state.images[p-1];
+
+    img.alt=
+      "Immagine Player "+p;
+
+    img.draggable=false;
+
+    slot.appendChild(img);
+  }
 }
 
 function setupImageSlot(p){
-const slot=$("#imageSlot"+p),input=$("#imageInput"+p);if(!slot||!input)return;
-slot.addEventListener("click",e=>{
-if(imageLongPressTriggered[p]){
-imageLongPressTriggered[p]=false;e.preventDefault();return
+
+  const slot=
+    $("#imageSlot"+p);
+
+  const input=
+    $("#imageInput"+p);
+
+  if(!slot||!input)return;
+
+  slot.addEventListener(
+    "click",
+    e=>{
+
+      if(
+        imageLongPressTriggered[p]
+      ){
+
+        imageLongPressTriggered[p]=false;
+
+        e.preventDefault();
+
+        return;
+      }
+
+      input.click();
+    }
+  );
+
+  input.addEventListener(
+    "change",
+    async e=>{
+
+      const f=e.target.files?.[0];
+
+      if(!f)return;
+
+      try{
+
+        if(!f.type.startsWith("image/")){
+          throw new Error("file");
+        }
+
+        state.images[p-1]=
+          await compressImage(f);
+
+        renderImages();
+        save();
+
+      }catch(err){
+
+        console.error(err);
+
+        alert(
+          "Non è stato possibile caricare l'immagine."
+        );
+
+      }finally{
+
+        input.value="";
+
+      }
+
+    }
+  );
+
+  slot.addEventListener(
+    "pointerdown",
+    e=>{
+
+      if(
+        !state.images[p-1]||
+        e.target.tagName!=="IMG"
+      )return;
+
+      imageLongPressTriggered[p]=false;
+
+      clearTimeout(
+        imageLongPressTimers[p]
+      );
+
+      imageLongPressTimers[p]=
+        setTimeout(()=>{
+
+          imageLongPressTriggered[p]=true;
+
+          state.images[p-1]="";
+
+          renderImages();
+          save();
+
+        },650);
+    }
+  );
+
+  [
+    "pointerup",
+    "pointercancel",
+    "pointerleave"
+  ].forEach(t=>{
+
+    slot.addEventListener(
+      t,
+      ()=>{
+        clearTimeout(
+          imageLongPressTimers[p]
+        );
+
+        imageLongPressTimers[p]=null;
+      }
+    );
+
+  });
 }
-input.click()
-});
-input.addEventListener("change",async e=>{
-const f=e.target.files?.[0];if(!f)return;
-try{
-if(!f.type.startsWith("image/"))throw new Error("file");
-state.images[p-1]=await compressImage(f);renderImages();save()
-}catch(err){console.error(err);alert("Non è stato possibile caricare l'immagine.")}
-finally{input.value=""}
-});
-slot.addEventListener("pointerdown",e=>{
-if(!state.images[p-1]||e.target.tagName!=="IMG")return;
-imageLongPressTriggered[p]=false;
-clearTimeout(imageLongPressTimers[p]);
-imageLongPressTimers[p]=setTimeout(()=>{
-imageLongPressTriggered[p]=true;state.images[p-1]="";renderImages();save()
-},650)
-});
-["pointerup","pointercancel","pointerleave"].forEach(t=>slot.addEventListener(t,()=>{
-clearTimeout(imageLongPressTimers[p]);imageLongPressTimers[p]=null
-}))
-}
+
+/* =========================================================
+   RENDER
+========================================================= */
 
 function render(){
-state.lp.forEach((v,i)=>{
-const p=i+1,el=$("#lp"+p);
-if(el)el.textContent=Number(v).toLocaleString("it-IT");
-updateLifeBar(p)
-});
-state.names.forEach((n,i)=>{const e=$("#name"+(i+1));if(e)e.textContent=n});
-renderImages();save()
+
+  state.lp.forEach(
+    (v,i)=>{
+
+      const p=i+1;
+
+      const el=$("#lp"+p);
+
+      if(el){
+
+        el.textContent=
+          Number(v).toLocaleString("it-IT");
+
+      }
+
+      updateLifeBar(p);
+
+    }
+  );
+
+  state.names.forEach(
+    (n,i)=>{
+
+      const e=
+        $("#name"+(i+1));
+
+      if(e)e.textContent=n;
+
+    }
+  );
+
+  renderImages();
+
+  save();
 }
 
-function addHistory(player,n,before,after,action){
-state.history.unshift({
-id:Date.now()+Math.random(),
-time:new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),
-player,n,before,after,action:action||""
-})
+/* =========================================================
+   HISTORY / LP
+========================================================= */
+
+function addHistory(
+  player,
+  n,
+  before,
+  after,
+  action
+){
+
+  state.history.unshift({
+
+    id:Date.now()+Math.random(),
+
+    time:new Date().toLocaleTimeString(
+      "it-IT",
+      {
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+      }
+    ),
+
+    player,
+    n,
+    before,
+    after,
+    action:action||""
+
+  });
 }
 
-function change(player,amount,action=""){
-const before=Math.max(0,Number(state.lp[player-1])||0);
-const after=Math.max(0,before+amount);
-state.lp[player-1]=after;
-addHistory(player,amount,before,after,action);
-render()
+function change(
+  player,
+  amount,
+  action=""
+){
+
+  const before=Math.max(
+    0,
+    Number(
+      state.lp[player-1]
+    )||0
+  );
+
+  const after=Math.max(
+    0,
+    before+amount
+  );
+
+  state.lp[player-1]=after;
+
+  addHistory(
+    player,
+    amount,
+    before,
+    after,
+    action
+  );
+
+  render();
 }
 
 function halveLP(player){
-const before=Math.max(0,Number(state.lp[player-1])||0);
-const after=Math.floor(before/2);
-state.lp[player-1]=after;
-addHistory(player,after-before,before,after,"Dimezza LP");
-render()
+
+  const before=Math.max(
+    0,
+    Number(
+      state.lp[player-1]
+    )||0
+  );
+
+  const after=
+    Math.floor(before/2);
+
+  state.lp[player-1]=after;
+
+  addHistory(
+    player,
+    after-before,
+    before,
+    after,
+    "Dimezza LP"
+  );
+
+  render();
 }
 
 function undo(){
-if(!state.history.length)return;
-const last=state.history.shift();
-if(last&&last.player&&Number.isFinite(Number(last.before)))
-state.lp[last.player-1]=Math.max(0,Number(last.before));
-render()
+
+  if(!state.history.length)return;
+
+  const last=
+    state.history.shift();
+
+  if(
+    last&&
+    last.player&&
+    Number.isFinite(
+      Number(last.before)
+    )
+  ){
+
+    state.lp[last.player-1]=
+      Math.max(
+        0,
+        Number(last.before)
+      );
+  }
+
+  render();
 }
 
-$$(".lp-op").forEach(b=>b.addEventListener("pointerdown",e=>{
-e.preventDefault();
-const wrap=b.parentElement;
-wrap.querySelectorAll(".lp-op").forEach(x=>x.classList.remove("selected"));
-b.classList.add("selected")
-}));
+/* =========================================================
+   LP CONTROLS
+========================================================= */
 
-$$(".lp-amount").forEach(input=>input.addEventListener("pointerdown",e=>{
-e.preventDefault();
-const p=Number(input.id.replace("amount",""));
-const selected=input.parentElement.querySelector(".lp-op.selected");
-currentAmountPlayer=p;
-currentAmountSign=Number(selected?.dataset.sign||-1);
-openKeypad()
-}));
+$$(".lp-op").forEach(
+  b=>b.addEventListener(
+    "pointerdown",
+    e=>{
 
-$$(".half-btn").forEach(b=>b.addEventListener("pointerdown",e=>{
-e.preventDefault();halveLP(Number(b.dataset.halfPlayer))
-}));
+      e.preventDefault();
 
-function openModal(title,content){
-modalTitle.textContent=title;modalBody.innerHTML=content;modal.classList.add("open")
+      const wrap=b.parentElement;
+
+      wrap
+        .querySelectorAll(".lp-op")
+        .forEach(
+          x=>x.classList.remove(
+            "selected"
+          )
+        );
+
+      b.classList.add("selected");
+
+    }
+  )
+);
+
+$$(".lp-amount").forEach(
+  input=>input.addEventListener(
+    "pointerdown",
+    e=>{
+
+      e.preventDefault();
+
+      const p=
+        Number(
+          input.id.replace(
+            "amount",
+            ""
+          )
+        );
+
+      const selected=
+        input.parentElement
+          .querySelector(
+            ".lp-op.selected"
+          );
+
+      currentAmountPlayer=p;
+
+      currentAmountSign=
+        Number(
+          selected?.dataset.sign||-1
+        );
+
+      openKeypad();
+
+    }
+  )
+);
+
+$$(".half-btn").forEach(
+  b=>b.addEventListener(
+    "pointerdown",
+    e=>{
+
+      e.preventDefault();
+
+      halveLP(
+        Number(
+          b.dataset.halfPlayer
+        )
+      );
+
+    }
+  )
+);
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openModal(
+  title,
+  content
+){
+
+  modalTitle.textContent=title;
+  modalBody.innerHTML=content;
+
+  modal.classList.add("open");
 }
+
 function closeModal(){
-modal.classList.remove("open");modalBody.innerHTML=""
+
+  modal.classList.remove("open");
+  modalBody.innerHTML="";
+
 }
-$("#close").addEventListener("pointerdown",e=>{e.preventDefault();closeModal()});
-modal.addEventListener("pointerdown",e=>{if(e.target===modal){e.preventDefault();closeModal()}});
+
+$("#close").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    closeModal();
+
+  }
+);
+
+modal.addEventListener(
+  "pointerdown",
+  e=>{
+
+    if(e.target===modal){
+
+      e.preventDefault();
+
+      closeModal();
+
+    }
+  }
+);
+
+/* =========================================================
+   NUMERIC KEYPAD - LP
+========================================================= */
 
 function openKeypad(){
-keypadValue="";
-const sign=currentAmountSign<0?"SOTTRAI":"AGGIUNGI";
-openModal("Inserisci LP",`
-<div class="keypad-operation">PLAYER ${currentAmountPlayer} · ${sign}</div>
-<div class="keypad-value" id="keypadValue">0</div>
-<div class="keypad">
-<button class="key" data-key="1" type="button">1</button><button class="key" data-key="2" type="button">2</button><button class="key" data-key="3" type="button">3</button>
-<button class="key" data-key="4" type="button">4</button><button class="key" data-key="5" type="button">5</button><button class="key" data-key="6" type="button">6</button>
-<button class="key" data-key="7" type="button">7</button><button class="key" data-key="8" type="button">8</button><button class="key" data-key="9" type="button">9</button>
-<button class="key clear" data-key="clear" type="button">C</button><button class="key" data-key="0" type="button">0</button><button class="key action" data-key="back" type="button">⌫</button>
-<button class="key confirm" data-key="confirm" type="button" style="grid-column:1/-1">CONFERMA</button>
-</div>`);
-$$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{
-e.preventDefault();e.stopPropagation();handleKeypad(b.dataset.key)
-}))
+
+  keypadValue="";
+
+  const sign=
+    currentAmountSign<0
+      ?"SOTTRAI"
+      :"AGGIUNGI";
+
+  openModal(
+    "Inserisci LP",
+    `
+    <div class="keypad-wrap">
+
+      <div class="keypad-operation">
+        PLAYER ${currentAmountPlayer} · ${sign}
+      </div>
+
+      <div
+        class="keypad-value"
+        id="keypadValue">
+        0
+      </div>
+
+      <div class="keypad">
+
+        <button class="key" data-key="1" type="button">1</button>
+        <button class="key" data-key="2" type="button">2</button>
+        <button class="key" data-key="3" type="button">3</button>
+
+        <button class="key" data-key="4" type="button">4</button>
+        <button class="key" data-key="5" type="button">5</button>
+        <button class="key" data-key="6" type="button">6</button>
+
+        <button class="key" data-key="7" type="button">7</button>
+        <button class="key" data-key="8" type="button">8</button>
+        <button class="key" data-key="9" type="button">9</button>
+
+        <button class="key clear" data-key="clear" type="button">C</button>
+        <button class="key" data-key="0" type="button">0</button>
+        <button class="key action" data-key="back" type="button">⌫</button>
+
+        <button
+          class="key confirm"
+          data-key="confirm"
+          type="button"
+          style="grid-column:1/-1">
+          CONFERMA
+        </button>
+
+      </div>
+
+    </div>
+    `
+  );
+
+  $$(".key",modalBody).forEach(
+    b=>b.addEventListener(
+      "pointerdown",
+      e=>{
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        handleKeypad(
+          b.dataset.key
+        );
+
+      }
+    )
+  );
 }
 
 function updateKeypad(){
-const e=$("#keypadValue");if(e)e.textContent=keypadValue||"0"
+
+  const e=$("#keypadValue");
+
+  if(e){
+    e.textContent=
+      keypadValue||"0";
+  }
 }
 
 function handleKeypad(k){
-if(/^\d$/.test(k)){
-if(keypadValue.length>=7)return;
-keypadValue=keypadValue==="0"?k:keypadValue+k;
-updateKeypad();return
+
+  if(/^\d$/.test(k)){
+
+    if(keypadValue.length>=7)return;
+
+    keypadValue=
+      keypadValue==="0"
+        ?k
+        :keypadValue+k;
+
+    updateKeypad();
+
+    return;
+  }
+
+  if(k==="clear"){
+
+    keypadValue="";
+
+    updateKeypad();
+
+    return;
+  }
+
+  if(k==="back"){
+
+    keypadValue=
+      keypadValue.slice(0,-1);
+
+    updateKeypad();
+
+    return;
+  }
+
+  if(k==="confirm"){
+
+    const v=
+      Number(keypadValue);
+
+    if(
+      !Number.isInteger(v)||
+      v<=0
+    )return;
+
+    change(
+      currentAmountPlayer,
+      currentAmountSign*v
+    );
+
+    closeModal();
+  }
 }
-if(k==="clear"){keypadValue="";updateKeypad();return}
-if(k==="back"){keypadValue=keypadValue.slice(0,-1);updateKeypad();return}
-if(k==="confirm"){
-const v=Number(keypadValue);
-if(!Number.isInteger(v)||v<=0)return;
-change(currentAmountPlayer,currentAmountSign*v);closeModal()
+
+/* =========================================================
+   TEXT KEYPAD
+========================================================= */
+
+const TEXT_ROWS=[
+  ["Q","W","E","R","T","Y","U","I","O","P"],
+  ["A","S","D","F","G","H","J","K","L"],
+  ["Z","X","C","V","B","N","M"]
+];
+
+const TEXT_SYMBOLS=[
+  ".",
+  ",",
+  "-",
+  "'",
+  "!",
+  "?",
+  ":",
+  "/"
+];
+
+let textBuffer="";
+let textMaxLength=18;
+let textMode="name";
+let textPlayer=null;
+let textShift=true;
+let textCursor=0;
+let textSaveCallback=null;
+
+function renderTextKeyboard(){
+
+  const preview=
+    $("#textPreview");
+
+  if(preview){
+
+    preview.textContent=
+      textBuffer||
+      (
+        textMode==="name"
+          ?"Nome giocatore"
+          :"Scrivi qui..."
+      );
+
+    preview.classList.toggle(
+      "empty",
+      !textBuffer
+    );
+  }
+
+  const count=
+    $("#textCount");
+
+  if(count){
+
+    count.textContent=
+      `${textBuffer.length}/${textMaxLength}`;
+
+  }
+
+  $$(".text-key[data-letter]",modalBody)
+    .forEach(
+      key=>{
+
+        const letter=
+          key.dataset.letter;
+
+        key.textContent=
+          textShift
+            ?letter
+            :letter.toLowerCase();
+
+      }
+    );
+
+  const shiftButton=
+    $(".text-key.shift",modalBody);
+
+  if(shiftButton){
+
+    shiftButton.classList.toggle(
+      "active",
+      textShift
+    );
+  }
+
+  const p=
+    $("#textPreview");
+
+  if(p){
+    p.scrollTop=p.scrollHeight;
+  }
 }
+
+function insertText(value){
+
+  if(
+    textBuffer.length>=
+    textMaxLength
+  )return;
+
+  const maxAdd=
+    textMaxLength-
+    textBuffer.length;
+
+  value=
+    value.slice(0,maxAdd);
+
+  textBuffer=
+    textBuffer.slice(
+      0,
+      textCursor
+    )+
+    value+
+    textBuffer.slice(
+      textCursor
+    );
+
+  textCursor+=value.length;
+
+  renderTextKeyboard();
 }
+
+function backspaceText(){
+
+  if(textCursor<=0)return;
+
+  textBuffer=
+    textBuffer.slice(
+      0,
+      textCursor-1
+    )+
+    textBuffer.slice(
+      textCursor
+    );
+
+  textCursor--;
+
+  renderTextKeyboard();
+}
+
+function clearText(){
+
+  textBuffer="";
+  textCursor=0;
+
+  renderTextKeyboard();
+}
+
+function openTextKeyboard(options={}){
+
+  textBuffer=
+    String(
+      options.value||
+      ""
+    );
+
+  textMaxLength=
+    Number(
+      options.maxLength||
+      18
+    );
+
+  textMode=
+    options.mode||
+    "name";
+
+  textPlayer=
+    options.player||
+    null;
+
+  textShift=true;
+
+  textCursor=textBuffer.length;
+
+  textSaveCallback=
+    options.onSave||
+    null;
+
+  const title=
+    textMode==="name"
+      ?"Nome giocatore"
+      :"Appunti";
+
+  const keyboardRows=
+    TEXT_ROWS.map(
+      row=>{
+
+        const cls=
+          row.length===10
+            ?"row10"
+            :row.length===9
+              ?"row9"
+              :"row7";
+
+        return`
+          <div class="text-row ${cls}">
+            ${
+              row.map(
+                letter=>`
+                  <button
+                    class="text-key"
+                    data-letter="${letter}"
+                    type="button">
+                    ${letter}
+                  </button>
+                `
+              ).join("")
+            }
+          </div>
+        `;
+
+      }
+    ).join("");
+
+  const symbolButtons=
+    TEXT_SYMBOLS.map(
+      symbol=>`
+        <button
+          class="text-key"
+          data-text="${escapeHtml(symbol)}"
+          type="button">
+          ${escapeHtml(symbol)}
+        </button>
+      `
+    ).join("");
+
+  openModal(
+    title,
+    `
+    <div class="text-editor">
+
+      <div
+        class="text-preview"
+        id="textPreview">
+      </div>
+
+      <div
+        class="text-editor-info"
+        id="textCount">
+        0/${textMaxLength}
+      </div>
+
+      <div class="text-keypad">
+
+        ${keyboardRows}
+
+        <div class="text-row row10">
+          <button
+            class="text-key shift"
+            type="button"
+            data-text-action="shift">
+            ⇧
+          </button>
+
+          ${symbolButtons}
+
+          <button
+            class="text-key back"
+            type="button"
+            data-text-action="back">
+            ⌫
+          </button>
+        </div>
+
+        <div class="text-row row7">
+
+          <button
+            class="text-key clear"
+            type="button"
+            data-text-action="clear">
+            C
+          </button>
+
+          <button
+            class="text-key space"
+            type="button"
+            data-text-action="space"
+            style="grid-column:span 4">
+            SPAZIO
+          </button>
+
+          <button
+            class="text-key confirm"
+            type="button"
+            data-text-action="confirm">
+            ✓
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+    `
+  );
+
+  $$(".text-key",modalBody).forEach(
+    button=>{
+
+      button.addEventListener(
+        "pointerdown",
+        e=>{
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          const letter=
+            button.dataset.letter;
+
+          if(letter){
+
+            insertText(
+              textShift
+                ?letter
+                :letter.toLowerCase()
+            );
+
+            if(textShift){
+              textShift=false;
+              renderTextKeyboard();
+            }
+
+            return;
+          }
+
+          const text=
+            button.dataset.text;
+
+          if(text){
+
+            insertText(text);
+            return;
+          }
+
+          const action=
+            button.dataset.textAction;
+
+          if(action==="shift"){
+
+            textShift=!textShift;
+            renderTextKeyboard();
+
+          }else if(action==="back"){
+
+            backspaceText();
+
+          }else if(action==="clear"){
+
+            clearText();
+
+          }else if(action==="space"){
+
+            insertText(" ");
+
+          }else if(action==="confirm"){
+
+            if(
+              typeof textSaveCallback==="function"
+            ){
+
+              textSaveCallback(
+                textBuffer
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+  renderTextKeyboard();
+}
+
+/* =========================================================
+   ESCAPE
+========================================================= */
 
 function escapeHtml(v){
-return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")
+
+  return String(v)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
 }
+
+/* =========================================================
+   NAMES
+========================================================= */
 
 function openNameEditor(p){
-const current=state.names[p-1];
-openModal("Nome giocatore",`
-<div class="name-editor">
-<input id="nameInput" type="text" maxlength="18" autocomplete="off" value="${escapeHtml(current)}" placeholder="Nome giocatore">
-<button class="primary-btn" id="saveNameBtn" type="button">SALVA</button>
-</div>`);
-const input=$("#nameInput");input.focus();input.select();
-$("#saveNameBtn").addEventListener("pointerdown",e=>{
-e.preventDefault();
-state.names[p-1]=input.value.trim()||"PLAYER "+p;render();closeModal()
-});
-input.addEventListener("keydown",e=>{if(e.key==="Enter")$("#saveNameBtn").click()})
+
+  openTextKeyboard({
+
+    mode:"name",
+
+    player:p,
+
+    value:state.names[p-1],
+
+    maxLength:18,
+
+    onSave:value=>{
+
+      state.names[p-1]=
+        value.trim()||
+        "PLAYER "+p;
+
+      render();
+      closeModal();
+
+    }
+
+  });
 }
 
-[1,2].forEach(p=>{
-const e=$("#name"+p);
-e.addEventListener("click",()=>openNameEditor(p));
-e.addEventListener("keydown",x=>{
-if(x.key==="Enter"||x.key===" "){x.preventDefault();openNameEditor(p)}
-})
-});
+[1,2].forEach(
+  p=>{
 
-$("#historyBtn").addEventListener("pointerdown",e=>{
-e.preventDefault();
-if(!state.history.length){
-openModal("Storico",`<div class="empty-state">Nessuna modifica registrata</div>`);return
-}
-const rows=state.history.map(x=>{
-const gain=Number(x.n)>=0;
-const action=x.action||(gain?"Aggiunta LP":"Perdita LP");
-return `<div class="history-row"><div class="history-main"><div class="history-title">${escapeHtml(action)} · ${escapeHtml(state.names[x.player-1])}</div><div class="history-meta">${escapeHtml(x.time)} · ${Number(x.before).toLocaleString("it-IT")} → ${Number(x.after).toLocaleString("it-IT")}</div></div><div class="history-values"><div class="history-change ${gain?"gain":"loss"}">${gain?"+":""}${Number(x.n).toLocaleString("it-IT")}</div><div class="history-after">LP ${Number(x.after).toLocaleString("it-IT")}</div></div></div>`
-}).join("");
-openModal("Storico",`<div class="history">${rows}</div>`)
-});
+    const e=
+      $("#name"+p);
 
-$("#undoBtn").addEventListener("pointerdown",e=>{e.preventDefault();undo()});
+    e.addEventListener(
+      "click",
+      ()=>{
+        openNameEditor(p);
+      }
+    );
 
-$("#notesBtn").addEventListener("pointerdown",e=>{
-e.preventDefault();
-openModal("Appunti",`<textarea id="notes" aria-label="Appunti"></textarea>`);
-const n=$("#notes");n.value=state.notes;
-n.addEventListener("input",e=>{state.notes=e.target.value;save()})
-});
+    e.addEventListener(
+      "keydown",
+      x=>{
+
+        if(
+          x.key==="Enter"||
+          x.key===" "
+        ){
+
+          x.preventDefault();
+
+          openNameEditor(p);
+        }
+
+      }
+    );
+  }
+);
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+$("#historyBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    if(!state.history.length){
+
+      openModal(
+        "Storico",
+        `
+        <div class="empty-state">
+          Nessuna modifica registrata
+        </div>
+        `
+      );
+
+      return;
+    }
+
+    const rows=
+      state.history.map(
+        x=>{
+
+          const gain=
+            Number(x.n)>=0;
+
+          const action=
+            x.action||
+            (
+              gain
+                ?"Aggiunta LP"
+                :"Perdita LP"
+            );
+
+          return`
+            <div class="history-row">
+
+              <div class="history-main">
+
+                <div class="history-title">
+                  ${escapeHtml(action)}
+                  ·
+                  ${escapeHtml(
+                    state.names[x.player-1]
+                  )}
+                </div>
+
+                <div class="history-meta">
+                  ${escapeHtml(x.time)}
+                  ·
+                  ${Number(x.before).toLocaleString("it-IT")}
+                  →
+                  ${Number(x.after).toLocaleString("it-IT")}
+                </div>
+
+              </div>
+
+              <div class="history-values">
+
+                <div
+                  class="history-change ${
+                    gain?"gain":"loss"
+                  }">
+
+                  ${
+                    gain?"+":""
+                  }${
+                    Number(x.n)
+                      .toLocaleString("it-IT")
+                  }
+
+                </div>
+
+                <div class="history-after">
+                  LP ${
+                    Number(x.after)
+                      .toLocaleString("it-IT")
+                  }
+                </div>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      ).join("");
+
+    openModal(
+      "Storico",
+      `
+      <div class="history">
+        ${rows}
+      </div>
+      `
+    );
+
+  }
+);
+
+$("#undoBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    undo();
+
+  }
+);
+
+/* =========================================================
+   NOTES - CUSTOM TEXT KEYBOARD
+========================================================= */
+
+$("#notesBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    openTextKeyboard({
+
+      mode:"notes",
+
+      value:state.notes,
+
+      maxLength:1000,
+
+      onSave:value=>{
+
+        state.notes=value;
+
+        save();
+
+        closeModal();
+
+      }
+
+    });
+
+  }
+);
+
+/* =========================================================
+   RANDOM
+========================================================= */
 
 function secureRandomInt(max){
-if(window.crypto&&typeof crypto.getRandomValues==="function"){
-const limit=Math.floor(0x100000000/max)*max,arr=new Uint32Array(1);
-do{crypto.getRandomValues(arr)}while(arr[0]>=limit);
-return arr[0]%max
-}
-return Math.floor(Math.random()*max)
-}
-const secureDie=()=>1+secureRandomInt(6);
-const secureCoin=()=>secureRandomInt(2)?"CROCE":"TESTA";
-function temporaryDie(final){let v;do{v=secureDie()}while(v===final);return v}
 
-$("#diceBtn").addEventListener("pointerdown",e=>{
-e.preventDefault();
-openModal("Dado",`<div class="dice-wrap"><div class="die" id="die">•</div><div class="hint">Tocca il dado per rilanciare</div></div>`);
-setTimeout(rollDie,40)
-});
+  if(
+    window.crypto&&
+    typeof crypto.getRandomValues==="function"
+  ){
+
+    const limit=
+      Math.floor(
+        0x100000000/max
+      )*max;
+
+    const arr=
+      new Uint32Array(1);
+
+    do{
+
+      crypto.getRandomValues(arr);
+
+    }while(
+      arr[0]>=limit
+    );
+
+    return arr[0]%max;
+  }
+
+  return Math.floor(
+    Math.random()*max
+  );
+}
+
+const secureDie=
+  ()=>1+secureRandomInt(6);
+
+const secureCoin=
+  ()=>secureRandomInt(2)
+    ?"CROCE"
+    :"TESTA";
+
+function temporaryDie(final){
+
+  let v;
+
+  do{
+    v=secureDie();
+  }while(v===final);
+
+  return v;
+}
+
+/* =========================================================
+   DICE
+========================================================= */
+
+$("#diceBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    openModal(
+      "Dado",
+      `
+      <div class="dice-wrap">
+
+        <div
+          class="die"
+          id="die">
+          •
+        </div>
+
+        <div class="hint">
+          Tocca il dado per rilanciare
+        </div>
+
+      </div>
+      `
+    );
+
+    setTimeout(
+      rollDie,
+      40
+    );
+  }
+);
 
 function rollDie(){
-const die=$("#die");if(!die||diceRolling)return;
-diceRolling=true;
-const final=secureDie();
-die.textContent=temporaryDie(final);
-die.classList.remove("rolling");void die.offsetWidth;die.classList.add("rolling");
-const start=performance.now();
-function anim(now){
-if(!die.isConnected){diceRolling=false;return}
-if(now-start<820){die.textContent=temporaryDie(final);requestAnimationFrame(anim)}
-}
-requestAnimationFrame(anim);
-setTimeout(()=>{
-if(!die.isConnected){diceRolling=false;return}
-die.textContent=final;die.classList.remove("rolling");diceRolling=false
-},930)
+
+  const die=$("#die");
+
+  if(
+    !die||
+    diceRolling
+  )return;
+
+  diceRolling=true;
+
+  /*
+    IMPORTANTISSIMO:
+    il risultato viene scelto dalla sequenza
+    PRIMA dell'animazione.
+  */
+
+  const final=
+    nextDieResult();
+
+  die.textContent=
+    temporaryDie(final);
+
+  die.classList.remove(
+    "rolling"
+  );
+
+  /*
+    Forza il reflow senza usare
+    transform 3D.
+  */
+
+  void die.offsetWidth;
+
+  die.classList.add(
+    "rolling"
+  );
+
+  const start=
+    performance.now();
+
+  function anim(now){
+
+    if(!die.isConnected){
+
+      diceRolling=false;
+      return;
+    }
+
+    if(
+      now-start<820
+    ){
+
+      die.textContent=
+        temporaryDie(final);
+
+      requestAnimationFrame(
+        anim
+      );
+
+    }
+  }
+
+  requestAnimationFrame(
+    anim
+  );
+
+  setTimeout(
+    ()=>{
+
+      if(!die.isConnected){
+
+        diceRolling=false;
+        return;
+      }
+
+      die.textContent=final;
+
+      die.classList.remove(
+        "rolling"
+      );
+
+      diceRolling=false;
+
+    },
+    930
+  );
 }
 
-$("#coinBtn").addEventListener("pointerdown",e=>{
-e.preventDefault();
-openModal("Moneta",`<div class="coin-wrap"><div class="coin-stage"><div class="coin" id="coin">•</div></div><div class="hint">Tocca la moneta per rilanciarla</div></div>`);
-setTimeout(flipCoin,40)
-});
+/* =========================================================
+   COIN
+========================================================= */
+
+$("#coinBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    openModal(
+      "Moneta",
+      `
+      <div class="coin-wrap">
+
+        <div class="coin-stage">
+
+          <div
+            class="coin"
+            id="coin">
+            •
+          </div>
+
+        </div>
+
+        <div class="hint">
+          Tocca la moneta per rilanciarla
+        </div>
+
+      </div>
+      `
+    );
+
+    setTimeout(
+      flipCoin,
+      40
+    );
+  }
+);
 
 function flipCoin(){
-const coin=$("#coin");if(!coin||coinBusy)return;
-coinBusy=true;const final=secureCoin();
-coin.textContent="•";coin.classList.remove("flip");void coin.offsetWidth;coin.classList.add("flip");
-setTimeout(()=>{
-if(!coin.isConnected){coinBusy=false;return}
-coin.textContent=final;coin.classList.remove("flip");coinBusy=false
-},1080)
+
+  const coin=$("#coin");
+
+  if(
+    !coin||
+    coinBusy
+  )return;
+
+  coinBusy=true;
+
+  const final=
+    nextCoinResult();
+
+  coin.textContent="•";
+
+  coin.classList.remove(
+    "flip"
+  );
+
+  void coin.offsetWidth;
+
+  coin.classList.add(
+    "flip"
+  );
+
+  setTimeout(
+    ()=>{
+
+      if(!coin.isConnected){
+
+        coinBusy=false;
+        return;
+      }
+
+      coin.textContent=final;
+
+      coin.classList.remove(
+        "flip"
+      );
+
+      coinBusy=false;
+
+    },
+    1080
+  );
 }
 
-modalBody.addEventListener("pointerdown",e=>{
-if(e.target.id==="die"){e.preventDefault();rollDie()}
-if(e.target.id==="coin"){e.preventDefault();flipCoin()}
-});
+modalBody.addEventListener(
+  "pointerdown",
+  e=>{
+
+    if(e.target.id==="die"){
+
+      e.preventDefault();
+
+      rollDie();
+    }
+
+    if(e.target.id==="coin"){
+
+      e.preventDefault();
+
+      flipCoin();
+    }
+
+  }
+);
+
+/* =========================================================
+   TIMER
+========================================================= */
 
 function formatTime(s){
-s=Math.max(0,Math.floor(s));
-const h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;
-return h?[String(h).padStart(2,"0"),String(m).padStart(2,"0"),String(sec).padStart(2,"0")].join(":"):[String(m).padStart(2,"0"),String(sec).padStart(2,"0")].join(":")
+
+  s=Math.max(
+    0,
+    Math.floor(s)
+  );
+
+  const h=
+    Math.floor(s/3600);
+
+  const m=
+    Math.floor(
+      s%3600/60
+    );
+
+  const sec=
+    s%60;
+
+  return h
+    ?[
+        String(h).padStart(2,"0"),
+        String(m).padStart(2,"0"),
+        String(sec).padStart(2,"0")
+      ].join(":")
+    :[
+        String(m).padStart(2,"0"),
+        String(sec).padStart(2,"0")
+      ].join(":");
 }
 
 function stopTimer(){
-if(timerInterval!==null){clearInterval(timerInterval);timerInterval=null}
-timerRunning=false
+
+  if(
+    timerInterval!==null
+  ){
+
+    clearInterval(
+      timerInterval
+    );
+
+    timerInterval=null;
+  }
+
+  timerRunning=false;
 }
 
 function updateTimerDisplay(){
-const d=$("#timerDisplay");if(!d)return;
-d.textContent=formatTime(state.timerSeconds);
-d.classList.remove("warning","danger");
-if(state.timerSeconds<=60)d.classList.add("danger");
-else if(state.timerSeconds<=300)d.classList.add("warning")
+
+  const d=
+    $("#timerDisplay");
+
+  if(!d)return;
+
+  d.textContent=
+    formatTime(
+      state.timerSeconds
+    );
+
+  d.classList.remove(
+    "warning",
+    "danger"
+  );
+
+  if(
+    state.timerSeconds<=60
+  ){
+
+    d.classList.add(
+      "danger"
+    );
+
+  }else if(
+    state.timerSeconds<=300
+  ){
+
+    d.classList.add(
+      "warning"
+    );
+  }
 }
 
 function updateTimerButtons(){
-const a=$("#timerStart"),p=$("#timerPause");
-if(!a||!p)return;
-a.disabled=timerRunning;p.disabled=!timerRunning;
-a.style.opacity=timerRunning?".45":"1";
-p.style.opacity=timerRunning?"1":".45"
+
+  const a=
+    $("#timerStart");
+
+  const p=
+    $("#timerPause");
+
+  if(!a||!p)return;
+
+  a.disabled=
+    timerRunning;
+
+  p.disabled=
+    !timerRunning;
+
+  a.style.opacity=
+    timerRunning
+      ?".45"
+      :"1";
+
+  p.style.opacity=
+    timerRunning
+      ?"1"
+      :".45";
 }
 
 function startTimer(){
-if(timerRunning||state.timerSeconds<=0)return;
-timerRunning=true;
-timerInterval=setInterval(()=>{
-if(state.timerSeconds<=0){stopTimer();updateTimerDisplay();updateTimerButtons();return}
-state.timerSeconds--;updateTimerDisplay();save()
-},1000);
-updateTimerButtons()
+
+  if(
+    timerRunning||
+    state.timerSeconds<=0
+  )return;
+
+  timerRunning=true;
+
+  timerInterval=
+    setInterval(
+      ()=>{
+
+        if(
+          state.timerSeconds<=0
+        ){
+
+          stopTimer();
+
+          updateTimerDisplay();
+          updateTimerButtons();
+
+          return;
+        }
+
+        state.timerSeconds--;
+
+        updateTimerDisplay();
+
+        save();
+
+      },
+      1000
+    );
+
+  updateTimerButtons();
 }
 
-function pauseTimer(){stopTimer();updateTimerButtons();save()}
+function pauseTimer(){
+
+  stopTimer();
+
+  updateTimerButtons();
+
+  save();
+}
 
 function resetTimer(){
-stopTimer();state.timerSeconds=state.timerInitialSeconds;
-updateTimerDisplay();updateTimerButtons();save()
+
+  stopTimer();
+
+  state.timerSeconds=
+    state.timerInitialSeconds;
+
+  updateTimerDisplay();
+  updateTimerButtons();
+
+  save();
 }
 
 function openTimer(){
-stopTimer();
-openModal("Timer duello",`
-<div class="timer-display" id="timerDisplay">${formatTime(state.timerSeconds)}</div>
-<button class="timer-edit" id="timerEdit" type="button">CAMBIA DURATA</button>
-<div class="timer-controls">
-<button class="timer-btn" id="timerStart" type="button">▶ AVVIA</button>
-<button class="timer-btn" id="timerPause" type="button">❚❚ PAUSA</button>
-<button class="timer-btn" id="timerReset" type="button">↻ RESET</button>
-</div>`);
-updateTimerDisplay();updateTimerButtons();
 
-$("#timerStart").addEventListener("pointerdown",e=>{e.preventDefault();startTimer()});
-$("#timerPause").addEventListener("pointerdown",e=>{e.preventDefault();pauseTimer()});
-$("#timerReset").addEventListener("pointerdown",e=>{e.preventDefault();resetTimer()});
-$("#timerEdit").addEventListener("pointerdown",e=>{e.preventDefault();openTimerKeypad()})
+  stopTimer();
+
+  openModal(
+    "Timer duello",
+    `
+    <div
+      class="timer-display"
+      id="timerDisplay">
+      ${formatTime(
+        state.timerSeconds
+      )}
+    </div>
+
+    <button
+      class="timer-edit"
+      id="timerEdit"
+      type="button">
+      CAMBIA DURATA
+    </button>
+
+    <div class="timer-controls">
+
+      <button
+        class="timer-btn"
+        id="timerStart"
+        type="button">
+        ▶ AVVIA
+      </button>
+
+      <button
+        class="timer-btn"
+        id="timerPause"
+        type="button">
+        ❚❚ PAUSA
+      </button>
+
+      <button
+        class="timer-btn"
+        id="timerReset"
+        type="button">
+        ↻ RESET
+      </button>
+
+    </div>
+    `
+  );
+
+  updateTimerDisplay();
+  updateTimerButtons();
+
+  $("#timerStart").addEventListener(
+    "pointerdown",
+    e=>{
+
+      e.preventDefault();
+
+      startTimer();
+
+    }
+  );
+
+  $("#timerPause").addEventListener(
+    "pointerdown",
+    e=>{
+
+      e.preventDefault();
+
+      pauseTimer();
+
+    }
+  );
+
+  $("#timerReset").addEventListener(
+    "pointerdown",
+    e=>{
+
+      e.preventDefault();
+
+      resetTimer();
+
+    }
+  );
+
+  $("#timerEdit").addEventListener(
+    "pointerdown",
+    e=>{
+
+      e.preventDefault();
+
+      openTimerKeypad();
+
+    }
+  );
 }
+
+/* =========================================================
+   TIMER NUMERIC KEYPAD
+========================================================= */
 
 function openTimerKeypad(){
-let v="";
-openModal("Durata timer",`
-<div class="keypad-operation">INSERISCI I MINUTI · DEFAULT 45</div>
-<div class="keypad-value" id="timerKeyValue">45</div>
-<div class="keypad">
-<button class="key" data-k="1" type="button">1</button><button class="key" data-k="2" type="button">2</button><button class="key" data-k="3" type="button">3</button>
-<button class="key" data-k="4" type="button">4</button><button class="key" data-k="5" type="button">5</button><button class="key" data-k="6" type="button">6</button>
-<button class="key" data-k="7" type="button">7</button><button class="key" data-k="8" type="button">8</button><button class="key" data-k="9" type="button">9</button>
-<button class="key clear" data-k="c" type="button">C</button><button class="key" data-k="0" type="button">0</button><button class="key action" data-k="b" type="button">⌫</button>
-</div>`);
-const display=$("#timerKeyValue");
-const update=()=>display.textContent=v||"0";
 
-$$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{
-e.preventDefault();e.stopPropagation();
-const k=b.dataset.k;
-if(/\d/.test(k)){
-if(v.length>=3)return;
-v=v==="0"?k:v+k;
-update();
-clearTimeout(window.timerAutoSet);
-window.timerAutoSet=setTimeout(()=>applyTimerMinutes(v),500)
-}else if(k==="c"){
-v="";update();clearTimeout(window.timerAutoSet)
-}else if(k==="b"){
-v=v.slice(0,-1);update();
-clearTimeout(window.timerAutoSet);
-if(v)window.timerAutoSet=setTimeout(()=>applyTimerMinutes(v),500)
-}
-}))
+  let v="";
+
+  openModal(
+    "Durata timer",
+    `
+    <div class="keypad-wrap">
+
+      <div class="keypad-operation">
+        INSERISCI I MINUTI · DEFAULT 45
+      </div>
+
+      <div
+        class="keypad-value"
+        id="timerKeyValue">
+        0
+      </div>
+
+      <div class="keypad">
+
+        <button class="key" data-k="1" type="button">1</button>
+        <button class="key" data-k="2" type="button">2</button>
+        <button class="key" data-k="3" type="button">3</button>
+
+        <button class="key" data-k="4" type="button">4</button>
+        <button class="key" data-k="5" type="button">5</button>
+        <button class="key" data-k="6" type="button">6</button>
+
+        <button class="key" data-k="7" type="button">7</button>
+        <button class="key" data-k="8" type="button">8</button>
+        <button class="key" data-k="9" type="button">9</button>
+
+        <button class="key clear" data-k="c" type="button">C</button>
+        <button class="key" data-k="0" type="button">0</button>
+        <button class="key action" data-k="b" type="button">⌫</button>
+
+        <button
+          class="key confirm"
+          data-k="ok"
+          type="button"
+          style="grid-column:1/-1">
+          CONFERMA
+        </button>
+
+      </div>
+
+    </div>
+    `
+  );
+
+  const display=
+    $("#timerKeyValue");
+
+  const update=()=>{
+    display.textContent=
+      v||"0";
+  };
+
+  $$(".key",modalBody).forEach(
+    b=>b.addEventListener(
+      "pointerdown",
+      e=>{
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const k=b.dataset.k;
+
+        if(/\d/.test(k)){
+
+          if(v.length>=3)return;
+
+          v=
+            v==="0"
+              ?k
+              :v+k;
+
+          update();
+
+        }else if(k==="c"){
+
+          v="";
+          update();
+
+        }else if(k==="b"){
+
+          v=v.slice(0,-1);
+          update();
+
+        }else if(k==="ok"){
+
+          applyTimerMinutes(v);
+
+        }
+
+      }
+    )
+  );
 }
 
 function applyTimerMinutes(value){
-const min=Math.max(1,parseInt(value,10)||0);
-state.timerInitialSeconds=min*60;
-state.timerSeconds=min*60;
-stopTimer();
-save();
-closeModal();
-openTimer()
+
+  const min=
+    Math.max(
+      1,
+      parseInt(
+        value,
+        10
+      )||0
+    );
+
+  state.timerInitialSeconds=
+    min*60;
+
+  state.timerSeconds=
+    min*60;
+
+  stopTimer();
+
+  save();
+
+  closeModal();
+
+  openTimer();
 }
 
-$("#timerBtn").addEventListener("pointerdown",e=>{e.preventDefault();openTimer()});
+$("#timerBtn").addEventListener(
+  "pointerdown",
+  e=>{
 
-$("#bgBtn").addEventListener("pointerdown",e=>{e.preventDefault();$("#bgInput").click()});
-$("#bgInput").addEventListener("change",async e=>{
-const f=e.target.files?.[0];if(!f)return;
-try{
-if(!f.type.startsWith("image/"))throw new Error("file");
-state.bg=await compressImage(f,1600,.78);applyBackground();save()
-}catch(err){console.error(err);alert("Non è stato possibile caricare lo sfondo.")}
-finally{e.target.value=""}
-});
+    e.preventDefault();
 
-$("#resetBtn").addEventListener("pointerdown",e=>{
-e.preventDefault();
-if(!confirm("Vuoi iniziare una nuova partita?\n\nLP, storico, timer e appunti verranno azzerati."))return;
-stopTimer();
-state.lp=[8000,8000];state.history=[];state.notes="";
-state.timerInitialSeconds=2700;state.timerSeconds=2700;
-diceRolling=false;coinBusy=false;render();closeModal()
-});
+    openTimer();
+
+  }
+);
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+$("#bgBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    $("#bgInput").click();
+
+  }
+);
+
+$("#bgInput").addEventListener(
+  "change",
+  async e=>{
+
+    const f=e.target.files?.[0];
+
+    if(!f)return;
+
+    try{
+
+      if(!f.type.startsWith("image/")){
+        throw new Error("file");
+      }
+
+      state.bg=
+        await compressImage(
+          f,
+          1600,
+          .78
+        );
+
+      applyBackground();
+      save();
+
+    }catch(err){
+
+      console.error(err);
+
+      alert(
+        "Non è stato possibile caricare lo sfondo."
+      );
+
+    }finally{
+
+      e.target.value="";
+
+    }
+  }
+);
+
+/* =========================================================
+   REFRESH / NUOVA PARTITA
+=========================================================
+
+   NIENTE confirm().
+   Il pulsante esegue immediatamente il reset.
+
+   Inoltre:
+   - reset dado
+   - reset moneta
+
+   Le sequenze vengono quindi:
+   DADO  -> 4..6, 1..3, casuale...
+   MONETA -> TESTA, TESTA, CROCE, casuale...
+========================================================= */
+
+$("#resetBtn").addEventListener(
+  "pointerdown",
+  e=>{
+
+    e.preventDefault();
+
+    stopTimer();
+
+    state.lp=[
+      8000,
+      8000
+    ];
+
+    state.history=[];
+
+    state.notes="";
+
+    state.timerInitialSeconds=
+      2700;
+
+    state.timerSeconds=
+      2700;
+
+    diceRolling=false;
+    coinBusy=false;
+
+    /*
+      Questo è il punto che rinnova
+      le sequenze ad ogni refresh.
+    */
+    resetRandomSequences();
+
+    render();
+
+    closeModal();
+
+  }
+);
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
 
 loadState();
-if(!state.timerInitialSeconds||state.timerInitialSeconds<1){
-state.timerInitialSeconds=2700;state.timerSeconds=2700
+
+if(
+  !state.timerInitialSeconds||
+  state.timerInitialSeconds<1
+){
+
+  state.timerInitialSeconds=
+    2700;
+
+  state.timerSeconds=
+    2700;
 }
+
+/*
+  Dopo un vero reload della pagina
+  queste variabili partono naturalmente
+  da zero.
+*/
+resetRandomSequences();
+
 applyBackground();
-setupImageSlot(1);setupImageSlot(2);render();
+
+setupImageSlot(1);
+setupImageSlot(2);
+
+render();
+
 </script>
+
 </body>
 </html>
