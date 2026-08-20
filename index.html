@@ -20,7 +20,7 @@
 <style>
 :root{
   --bg:#0b0d12;
-  --card:rgba(18,22,31,.78);
+  --card:rgba(18,22,31,.48);
   --line:rgba(255,255,255,.13);
   --txt:#f6f7fb;
   --muted:#aeb5c4;
@@ -55,7 +55,7 @@ body{
   position:fixed;
   inset:0;
   background:
-    linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),
+    linear-gradient(135deg,rgba(5,7,12,.38),rgba(5,7,12,.16)),
     var(--user-bg);
   background-size:cover;
   background-position:center;
@@ -88,6 +88,7 @@ button:active{
 }
 
 /* APP */
+
 .app{
   width:100%;
   max-width:720px;
@@ -99,7 +100,6 @@ button:active{
   display:flex;
   flex-direction:column;
 
-  /* circa 4 mm più in basso */
   padding:
     max(15px,calc(var(--safe-top) + 15px))
     max(9px,var(--safe-right))
@@ -118,6 +118,7 @@ button:active{
 }
 
 /* TOP BAR */
+
 .topbar{
   height:44px;
   min-height:44px;
@@ -134,7 +135,7 @@ button:active{
   width:100%;
   border-radius:14px;
   border:1px solid var(--line);
-  background:rgba(12,15,22,.78);
+  background:rgba(12,15,22,.52);
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
   box-shadow:0 8px 30px #0004;
@@ -151,6 +152,7 @@ button:active{
 .icon.background{color:#bdefff}
 
 /* PLAYERS */
+
 .players{
   flex:1;
   min-height:0;
@@ -202,7 +204,7 @@ button:active{
   height:58px;
   border-radius:15px;
   border:1px solid rgba(255,255,255,.16);
-  background:rgba(12,15,22,.66);
+  background:rgba(12,15,22,.52);
   backdrop-filter:blur(15px);
   -webkit-backdrop-filter:blur(15px);
   box-shadow:0 10px 30px #0006;
@@ -303,19 +305,34 @@ button:active{
     box-shadow .3s ease;
 }
 
+/*
+  LP CONTROLS
+  Tre pulsanti identici sulla stessa riga:
+  −   +   ½
+*/
+
 .controls{
   display:grid;
-  grid-template-columns:46px minmax(0,1fr) 46px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:6px;
   max-width:390px;
   width:100%;
 }
 
-.lp-op,.lp-amount{
+.lp-op,
+.half-btn{
+  width:100%;
   height:39px;
+  min-width:0;
+  min-height:39px;
+  margin:0;
   border-radius:12px;
   background:#ffffff12;
   border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:none;
 }
 
 .lp-op{
@@ -327,43 +344,18 @@ button:active{
 .lp-op.plus{color:#8cf3ff}
 .lp-op.selected{background:#ffffff25}
 
-.lp-amount{
-  width:100%;
-  color:var(--txt);
-  text-align:center;
-  outline:none;
-  font-weight:750;
-  font-size:14px;
-  cursor:pointer;
-  -webkit-user-select:none;
-  user-select:none;
-}
-
-.lp-amount::placeholder{
-  color:#8e96a6;
-}
-
 .half-btn{
-  margin-top:6px;
-  width:46px;
-  height:39px;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:center;
   color:#e9edf6;
-  box-shadow:0 6px 20px #0003;
 }
 
 .half-btn .half-icon{
-  font-size:22px;
+  font-size:19px;
   line-height:1;
   font-weight:900;
 }
 
 /* BOTTOM */
+
 .bottom{
   height:51px;
   min-height:51px;
@@ -385,6 +377,7 @@ button:active{
 .tool.undo{color:#ffd27d}
 
 /* MODAL */
+
 .modal{
   position:fixed;
   inset:0;
@@ -439,6 +432,7 @@ button:active{
 }
 
 /* HISTORY */
+
 .history{
   overflow:auto;
   max-height:64svh;
@@ -476,6 +470,7 @@ button:active{
 }
 
 /* DICE / COIN */
+
 .dice-wrap,.coin-wrap{
   height:55svh;
   height:55dvh;
@@ -591,6 +586,7 @@ button:active{
 }
 
 /* TIMER */
+
 .timer-display{
   text-align:center;
   font-variant-numeric:tabular-nums;
@@ -641,6 +637,7 @@ button:active{
 }
 
 /* KEYPADS */
+
 .keypad-wrap{
   width:100%;
   max-height:66dvh;
@@ -708,6 +705,7 @@ button:active{
 }
 
 /* NAME KEYPAD */
+
 .text-editor{
   display:flex;
   flex-direction:column;
@@ -795,6 +793,7 @@ button:active{
 }
 
 /* NOTES */
+
 .notes-editor{
   display:flex;
   flex-direction:column;
@@ -828,7 +827,9 @@ button:active{
 }
 
 /* MOBILE */
+
 @media(max-height:680px){
+
   .app{
     padding:
       max(8px,calc(var(--safe-top) + 8px))
@@ -866,11 +867,15 @@ button:active{
   .lp{margin:3px 0 6px}
   .life-bar{margin-bottom:7px}
 
-  .lp-op,.lp-amount,.half-btn{height:35px}
+  .lp-op,
+  .half-btn{
+    height:35px;
+    min-height:35px;
+  }
 
   .half-btn{
-    width:46px;
-    margin-top:4px;
+    width:100%;
+    margin-top:0;
   }
 
   .bottom{
@@ -895,6 +900,7 @@ button:active{
 }
 
 @media(max-width:390px){
+
   .text-row{gap:4px}
 
   .text-key{
@@ -908,6 +914,7 @@ button:active{
 }
 
 @media(orientation:landscape) and (max-height:500px){
+
   .app{max-width:1000px}
 
   .players{
@@ -921,6 +928,7 @@ button:active{
 }
 
 @media(prefers-reduced-motion:reduce){
+
   *,*::before,*::after{
     animation-duration:.01ms!important;
     animation-iteration-count:1!important;
@@ -970,15 +978,13 @@ button:active{
 
     <button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button>
 
-    <input class="lp-amount" id="amount1" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 1">
-
     <button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button>
 
-  </div>
+    <button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza Life Points">
+      <span class="half-icon">½</span>
+    </button>
 
-  <button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza Life Points">
-    <span class="half-icon">½</span>
-  </button>
+  </div>
 
 </section>
 
@@ -1002,15 +1008,13 @@ button:active{
 
     <button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button>
 
-    <input class="lp-amount" id="amount2" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 2">
-
     <button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button>
 
-  </div>
+    <button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza Life Points">
+      <span class="half-icon">½</span>
+    </button>
 
-  <button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza Life Points">
-    <span class="half-icon">½</span>
-  </button>
+  </div>
 
 </section>
 
@@ -1078,31 +1082,38 @@ function resetRandomSequences(){
 }
 
 function nextDieResult(){
+
   if(diceSequenceIndex===0){
     diceSequenceIndex++;
     return 4+secureRandomInt(3);
   }
+
   if(diceSequenceIndex===1){
     diceSequenceIndex++;
     return 1+secureRandomInt(3);
   }
+
   diceSequenceIndex++;
   return secureDie();
 }
 
 function nextCoinResult(){
+
   if(coinSequenceIndex===0){
     coinSequenceIndex++;
     return "TESTA";
   }
+
   if(coinSequenceIndex===1){
     coinSequenceIndex++;
     return "TESTA";
   }
+
   if(coinSequenceIndex===2){
     coinSequenceIndex++;
     return "CROCE";
   }
+
   coinSequenceIndex++;
   return secureCoin();
 }
@@ -1122,6 +1133,7 @@ const imageLongPressTimers={};
 const imageLongPressTriggered={};
 
 function safeSet(k,v){
+
   try{
     localStorage.setItem(k,v);
     return true;
@@ -1149,6 +1161,7 @@ function save(){
   }
 
   state.images.forEach((x,i)=>{
+
     if(x){
       safeSet("ygo-image-"+(i+1),x);
     }else{
@@ -1518,21 +1531,14 @@ $$(".lp-op").forEach(b=>b.addEventListener("pointerdown",e=>{
 
   const wrap=b.parentElement;
 
-  wrap.querySelectorAll(".lp-op").forEach(x=>x.classList.remove("selected"));
+  wrap.querySelectorAll(".lp-op").forEach(x=>{
+    x.classList.remove("selected");
+  });
 
   b.classList.add("selected");
-}));
 
-$$(".lp-amount").forEach(input=>input.addEventListener("pointerdown",e=>{
-
-  e.preventDefault();
-
-  const p=Number(input.id.replace("amount",""));
-
-  const selected=input.parentElement.querySelector(".lp-op.selected");
-
-  currentAmountPlayer=p;
-  currentAmountSign=Number(selected?.dataset.sign||-1);
+  currentAmountPlayer=Number(b.dataset.p);
+  currentAmountSign=Number(b.dataset.sign||-1);
 
   openKeypad();
 }));
@@ -2734,5 +2740,7 @@ render();
 
 </script>
 
+</body>
+</html>
 </body>
 </html>
