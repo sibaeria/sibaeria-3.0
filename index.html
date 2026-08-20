@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#0b0d12">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-touch-fullscreen" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Duel">
 <meta name="format-detection" content="telephone=no">
@@ -36,8 +37,7 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body{
+html,body{
   margin:0;
   width:100%;
   height:100%;
@@ -54,30 +54,21 @@ html{
 body{
   position:fixed;
   inset:0;
-
   background:
     linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),
     var(--user-bg);
-
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
-
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-
   color:var(--txt);
-
   -webkit-text-size-adjust:100%;
-
   touch-action:manipulation;
-
   user-select:none;
   -webkit-user-select:none;
 }
 
-button,
-input,
-textarea{
+button,input,textarea{
   font:inherit;
 }
 
@@ -96,110 +87,73 @@ button:active{
   display:none!important;
 }
 
-/* =========================
-   APP
-========================= */
-
+/* APP */
 .app{
   width:100%;
   max-width:720px;
-
   height:100vh;
   height:100svh;
   height:100dvh;
-
   min-height:0;
-
   margin:auto;
-
   display:flex;
   flex-direction:column;
 
+  /* circa 4 mm più in basso */
   padding:
-    max(8px,var(--safe-top))
+    max(15px,calc(var(--safe-top) + 15px))
     max(9px,var(--safe-right))
     max(8px,var(--safe-bottom))
     max(9px,var(--safe-left));
 
   gap:8px;
-
   overflow:hidden;
 }
 
-@media all and (display-mode: standalone){
+@media all and (display-mode:standalone){
   .app{
     height:100vh;
     height:100dvh;
   }
 }
 
-/* =========================
-   TOP BAR
-========================= */
-
+/* TOP BAR */
 .topbar{
   height:44px;
   min-height:44px;
   flex:0 0 44px;
-
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:7px;
 }
 
-.icon,
-.tool{
+.icon,.tool{
   min-width:0;
   min-height:0;
-
   height:100%;
   width:100%;
-
   border-radius:14px;
-
   border:1px solid var(--line);
   background:rgba(12,15,22,.78);
-
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
-
   box-shadow:0 8px 30px #0004;
-
   font-size:19px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   -webkit-touch-callout:none;
 }
 
-.icon.timer,
-.tool.timer{
-  color:#8cf3ff;
-}
+.icon.timer,.tool.timer{color:#8cf3ff}
+.icon.undo,.tool.undo{color:#ffd27d}
+.icon.refresh{color:#f6f7fb}
+.icon.background{color:#bdefff}
 
-.icon.undo,
-.tool.undo{
-  color:#ffd27d;
-}
-
-.icon.refresh{
-  color:#f6f7fb;
-}
-
-.icon.background{
-  color:#bdefff;
-}
-
-/* =========================
-   PLAYERS
-========================= */
-
+/* PLAYERS */
 .players{
   flex:1;
   min-height:0;
-
   display:grid;
   grid-template-rows:1fr 1fr;
   gap:8px;
@@ -207,24 +161,17 @@ button:active{
 
 .player{
   min-height:0;
-
   border:1px solid var(--line);
   border-radius:24px;
-
   background:var(--card);
-
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
-
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-
   padding:12px;
-
   box-shadow:0 20px 60px #0004;
-
   position:relative;
   overflow:hidden;
   isolation:isolate;
@@ -251,28 +198,18 @@ button:active{
   position:absolute;
   top:9px;
   left:9px;
-
   width:58px;
   height:58px;
-
   border-radius:15px;
-
   border:1px solid rgba(255,255,255,.16);
-
   background:rgba(12,15,22,.66);
-
   backdrop-filter:blur(15px);
   -webkit-backdrop-filter:blur(15px);
-
   box-shadow:0 10px 30px #0006;
-
   display:grid;
   place-items:center;
-
   overflow:hidden;
-
   touch-action:manipulation;
-
   user-select:none;
   -webkit-user-select:none;
 }
@@ -298,14 +235,11 @@ button:active{
 
 .player-image.empty:after{
   content:"IMG";
-
   position:absolute;
   bottom:4px;
   left:0;
   right:0;
-
   text-align:center;
-
   font-size:7px;
   letter-spacing:.12em;
   color:#6f7787;
@@ -318,24 +252,16 @@ button:active{
 .pname{
   font-size:12px;
   color:var(--muted);
-
   letter-spacing:.12em;
   text-transform:uppercase;
-
   text-align:center;
-
   padding:7px 12px;
-
   border-radius:10px;
-
   transition:.2s;
-
   max-width:70%;
-
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-
   cursor:pointer;
 }
 
@@ -344,51 +270,33 @@ button:active{
   transform:scale(.97);
 }
 
-.p1 .pname{
-  color:#a9edff;
-}
-
-.p2 .pname{
-  color:#d1bdff;
-}
+.p1 .pname{color:#a9edff}
+.p2 .pname{color:#d1bdff}
 
 .lp{
   font-size:clamp(48px,13vw,82px);
-
   font-weight:800;
-
   letter-spacing:-.05em;
-
   line-height:1;
-
   margin:5px 0 8px;
-
   text-shadow:0 5px 30px #0008;
-
   font-variant-numeric:tabular-nums;
 }
 
 .life-bar{
   width:min(440px,92%);
-
   height:7px;
-
   border-radius:999px;
-
   background:#ffffff12;
   border:1px solid #ffffff14;
-
   overflow:hidden;
-
   margin:0 auto 10px;
 }
 
 .life-fill{
   height:100%;
   width:100%;
-
   border-radius:inherit;
-
   transition:
     width .3s ease,
     background-color .3s ease,
@@ -397,23 +305,16 @@ button:active{
 
 .controls{
   display:grid;
-
   grid-template-columns:46px minmax(0,1fr) 46px;
-
   gap:6px;
-
   max-width:390px;
   width:100%;
 }
 
-.lp-op,
-.lp-amount{
+.lp-op,.lp-amount{
   height:39px;
-
   border-radius:12px;
-
   background:#ffffff12;
-
   border:1px solid var(--line);
 }
 
@@ -422,32 +323,18 @@ button:active{
   font-size:22px;
 }
 
-.lp-op.minus{
-  color:#ff8da4;
-}
-
-.lp-op.plus{
-  color:#8cf3ff;
-}
-
-.lp-op.selected{
-  background:#ffffff25;
-}
+.lp-op.minus{color:#ff8da4}
+.lp-op.plus{color:#8cf3ff}
+.lp-op.selected{background:#ffffff25}
 
 .lp-amount{
   width:100%;
-
   color:var(--txt);
-
   text-align:center;
-
   outline:none;
-
   font-weight:750;
   font-size:14px;
-
   cursor:pointer;
-
   -webkit-user-select:none;
   user-select:none;
 }
@@ -456,28 +343,17 @@ button:active{
   color:#8e96a6;
 }
 
-/* =========================
-   HALF BUTTON
-========================= */
-
 .half-btn{
   margin-top:6px;
-
   width:46px;
   height:39px;
-
   border-radius:12px;
-
   background:#ffffff12;
-
   border:1px solid var(--line);
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   color:#e9edf6;
-
   box-shadow:0 6px 20px #0003;
 }
 
@@ -487,21 +363,14 @@ button:active{
   font-weight:900;
 }
 
-/* =========================
-   BOTTOM
-========================= */
-
+/* BOTTOM */
 .bottom{
   height:51px;
   min-height:51px;
   flex:0 0 51px;
-
   display:grid;
-
   grid-template-columns:repeat(4,minmax(0,1fr));
-
   gap:7px;
-
   overflow:visible;
 }
 
@@ -511,44 +380,26 @@ button:active{
   overflow:hidden;
 }
 
-.tool{
-  font-size:19px;
-}
+.tool{font-size:19px}
+.tool.timer{color:#8cf3ff}
+.tool.undo{color:#ffd27d}
 
-.tool.timer{
-  color:#8cf3ff;
-}
-
-.tool.undo{
-  color:#ffd27d;
-}
-
-/* =========================
-   MODAL
-========================= */
-
+/* MODAL */
 .modal{
   position:fixed;
   inset:0;
-
   background:#0009;
-
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
-
   display:none;
-
   align-items:flex-end;
   justify-content:center;
-
   padding:
     9px
     max(9px,var(--safe-right))
     max(9px,var(--safe-bottom))
     max(9px,var(--safe-left));
-
   z-index:20;
-
   overscroll-behavior:none;
 }
 
@@ -558,20 +409,13 @@ button:active{
 
 .sheet{
   width:min(700px,100%);
-
   max-height:92svh;
   max-height:92dvh;
-
   background:rgba(17,21,30,.98);
-
   border:1px solid var(--line);
-
   border-radius:23px;
-
   padding:13px;
-
   box-shadow:0 30px 100px #000b;
-
   overflow:hidden;
 }
 
@@ -579,103 +423,50 @@ button:active{
   display:flex;
   justify-content:space-between;
   align-items:center;
-
   margin-bottom:8px;
 }
 
-.sheethead b{
-  font-size:17px;
-}
+.sheethead b{font-size:17px}
 
 .close{
   width:38px;
   height:38px;
-
   flex:0 0 38px;
-
   border-radius:11px;
-
   background:#ffffff10;
-
   border:1px solid var(--line);
-
   font-size:22px;
 }
 
-/* =========================
-   HISTORY
-========================= */
-
+/* HISTORY */
 .history{
   overflow:auto;
-
   max-height:64svh;
   max-height:64dvh;
-
   display:flex;
   flex-direction:column;
-
   gap:6px;
-
   -webkit-overflow-scrolling:touch;
 }
 
 .history-row{
   display:grid;
-
   grid-template-columns:minmax(0,1fr) auto;
-
   gap:8px;
-
   padding:10px 11px;
-
   border-radius:13px;
-
   background:#ffffff0d;
-
   border:1px solid #ffffff12;
 }
 
-.history-main{
-  min-width:0;
-}
-
-.history-title{
-  font-size:13px;
-  font-weight:750;
-}
-
-.history-meta{
-  color:var(--muted);
-
-  font-size:10px;
-
-  margin-top:3px;
-}
-
-.history-values{
-  text-align:right;
-  white-space:nowrap;
-}
-
-.history-change{
-  font-weight:800;
-  font-size:13px;
-}
-
-.history-change.gain{
-  color:#83f0c4;
-}
-
-.history-change.loss{
-  color:#ff8ba3;
-}
-
-.history-after{
-  color:#aeb5c4;
-  font-size:10px;
-  margin-top:3px;
-}
+.history-main{min-width:0}
+.history-title{font-size:13px;font-weight:750}
+.history-meta{color:var(--muted);font-size:10px;margin-top:3px}
+.history-values{text-align:right;white-space:nowrap}
+.history-change{font-weight:800;font-size:13px}
+.history-change.gain{color:#83f0c4}
+.history-change.loss{color:#ff8ba3}
+.history-after{color:#aeb5c4;font-size:10px;margin-top:3px}
 
 .empty-state{
   color:#8d96a7;
@@ -684,60 +475,36 @@ button:active{
   font-size:13px;
 }
 
-/* =========================
-   DICE / COIN
-========================= */
-
-.dice-wrap,
-.coin-wrap{
+/* DICE / COIN */
+.dice-wrap,.coin-wrap{
   height:55svh;
   height:55dvh;
-
   min-height:250px;
-
   display:grid;
   place-items:center;
-
   position:relative;
-
   overflow:hidden;
-
   border-radius:18px;
-
-  background:
-    radial-gradient(circle,#242a3c,#0b0e14 65%);
+  background:radial-gradient(circle,#242a3c,#0b0e14 65%);
 }
 
 .die{
   width:100px;
   height:100px;
-
   background:linear-gradient(145deg,#fff,#cdd4df);
-
   border-radius:20px;
-
   display:grid;
   place-items:center;
-
   color:#111;
-
   font-size:48px;
   font-weight:900;
-
-  box-shadow:
-    0 18px 40px #0008,
-    inset 0 2px 3px #fff;
-
+  box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;
   user-select:none;
   -webkit-user-select:none;
-
   transform:translate3d(0,0,0) rotate(0deg) scale(1);
-
   -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
-
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
-
   isolation:isolate;
 }
 
@@ -747,88 +514,30 @@ button:active{
 }
 
 @keyframes diceRollIOS{
-  0%{
-    transform:translate3d(0,72px,0) rotate(0deg) scale(.62);
-    opacity:.35;
-  }
-
-  15%{
-    transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);
-    opacity:1;
-  }
-
-  30%{
-    transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03);
-  }
-
-  45%{
-    transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08);
-  }
-
-  60%{
-    transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04);
-  }
-
-  75%{
-    transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01);
-  }
-
-  88%{
-    transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1);
-  }
-
-  100%{
-    transform:translate3d(0,0,0) rotate(720deg) scale(1);
-    opacity:1;
-  }
+  0%{transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35}
+  15%{transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1}
+  30%{transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)}
+  45%{transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)}
+  60%{transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)}
+  75%{transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)}
+  88%{transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)}
+  100%{transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1}
 }
 
 @-webkit-keyframes diceRollIOS{
-  0%{
-    -webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);
-    opacity:.35;
-  }
-
-  15%{
-    -webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);
-    opacity:1;
-  }
-
-  30%{
-    -webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03);
-  }
-
-  45%{
-    -webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08);
-  }
-
-  60%{
-    -webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04);
-  }
-
-  75%{
-    -webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01);
-  }
-
-  88%{
-    -webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1);
-  }
-
-  100%{
-    -webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);
-    opacity:1;
-  }
+  0%{-webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35}
+  15%{-webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1}
+  30%{-webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)}
+  45%{-webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)}
+  60%{-webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)}
+  75%{-webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)}
+  88%{-webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)}
+  100%{-webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1}
 }
-
-/* =========================
-   COIN
-   INVARIATA
-========================= */
 
 .coin-stage{
   width:150px;
   height:180px;
-
   display:grid;
   place-items:center;
 }
@@ -836,36 +545,17 @@ button:active{
 .coin{
   width:118px;
   height:118px;
-
   border-radius:50%;
-
   display:grid;
   place-items:center;
-
-  background:
-    radial-gradient(
-      circle at 32% 27%,
-      #fff8cf 0 7%,
-      #f7dd72 20%,
-      #d7a72d 62%,
-      #a87817 100%
-    );
-
+  background:radial-gradient(circle at 32% 27%,#fff8cf 0 7%,#f7dd72 20%,#d7a72d 62%,#a87817 100%);
   border:5px solid #f6dc73;
-
   color:#654700;
-
   font-size:22px;
   font-weight:900;
-
-  box-shadow:
-    inset 0 2px 4px #fff8,
-    0 18px 35px #0008;
-
+  box-shadow:inset 0 2px 4px #fff8,0 18px 35px #0008;
   transform:translate3d(0,0,0) rotate(0deg) scale(1);
-
   -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
-
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
 }
@@ -876,78 +566,37 @@ button:active{
 }
 
 @keyframes coinFlipIOS{
-  0%{
-    transform:translate3d(0,88px,0) rotate(0deg) scale(.72);
-  }
-
-  25%{
-    transform:translate3d(0,-45px,0) rotate(360deg) scale(.92);
-  }
-
-  50%{
-    transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07);
-  }
-
-  75%{
-    transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03);
-  }
-
-  100%{
-    transform:translate3d(0,0,0) rotate(1440deg) scale(1);
-  }
+  0%{transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
+  25%{transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
+  50%{transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
+  75%{transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
+  100%{transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
 }
 
 @-webkit-keyframes coinFlipIOS{
-  0%{
-    -webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72);
-  }
-
-  25%{
-    -webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92);
-  }
-
-  50%{
-    -webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07);
-  }
-
-  75%{
-    -webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03);
-  }
-
-  100%{
-    -webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1);
-  }
+  0%{-webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
+  25%{-webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
+  50%{-webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
+  75%{-webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
+  100%{-webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
 }
 
 .hint{
   position:absolute;
-
   bottom:14px;
-
   color:#8891a2;
-
   font-size:11px;
-
   text-align:center;
-
   width:100%;
 }
 
-/* =========================
-   TIMER
-========================= */
-
+/* TIMER */
 .timer-display{
   text-align:center;
-
   font-variant-numeric:tabular-nums;
-
   font-size:clamp(52px,17vw,82px);
-
   font-weight:800;
-
   letter-spacing:-.05em;
-
   margin:8px 0 14px;
 }
 
@@ -969,13 +618,9 @@ button:active{
 
 .timer-btn{
   height:46px;
-
   border-radius:13px;
-
   background:#ffffff15;
-
   border:1px solid var(--line);
-
   font-weight:800;
 }
 
@@ -986,68 +631,42 @@ button:active{
 .timer-edit{
   height:42px;
   width:100%;
-
   border-radius:12px;
-
   background:#ffffff0d;
-
   border:1px solid var(--line);
-
   margin-bottom:9px;
-
   color:#cfd5e1;
-
   font-size:12px;
-
   font-weight:800;
 }
 
-/* =========================
-   KEYPADS
-========================= */
-
+/* KEYPADS */
 .keypad-wrap{
   width:100%;
-
   max-height:66dvh;
-
   overflow:auto;
-
   -webkit-overflow-scrolling:touch;
 }
 
 .keypad{
   width:min(330px,100%);
-
   margin:auto;
-
   display:grid;
-
   grid-template-columns:repeat(3,1fr);
-
   gap:7px;
 }
 
 .key{
   min-height:46px;
-
   border-radius:13px;
-
   background:#ffffff0d;
-
   border:1px solid var(--line);
-
   font-size:18px;
-
   font-weight:700;
-
   color:#f3f5fa;
-
   touch-action:manipulation;
-
   -webkit-user-select:none;
   user-select:none;
-
   display:flex;
   align-items:center;
   justify-content:center;
@@ -1058,65 +677,37 @@ button:active{
   transform:scale(.95);
 }
 
-.key.action{
-  background:#ffffff15;
-}
+.key.action{background:#ffffff15}
 
 .key.confirm{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(98,217,255,.23),
-      rgba(98,217,255,.12)
-    );
-
+  background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
   border-color:rgba(98,217,255,.35);
-
   color:#bdf3ff;
 }
 
-.key.clear{
-  color:#ff9bad;
-}
-
-.key.wide{
-  grid-column:span 2;
-}
+.key.clear{color:#ff9bad}
+.key.wide{grid-column:span 2}
 
 .keypad-value{
   text-align:center;
-
   font-size:27px;
-
   font-weight:800;
-
   min-height:38px;
-
   margin:2px 0 8px;
-
   overflow:hidden;
-
   text-overflow:ellipsis;
-
   font-variant-numeric:tabular-nums;
 }
 
 .keypad-operation{
   text-align:center;
-
   color:#8f98a9;
-
   font-size:11px;
-
   margin-top:-3px;
-
   margin-bottom:3px;
 }
 
-/* =========================
-   NAME TEXT KEYPAD
-========================= */
-
+/* NAME KEYPAD */
 .text-editor{
   display:flex;
   flex-direction:column;
@@ -1125,54 +716,34 @@ button:active{
 
 .text-preview{
   width:100%;
-
   min-height:54px;
   max-height:125px;
-
   overflow:auto;
-
   padding:12px;
-
   border-radius:14px;
-
   background:#0b0e14;
-
   border:1px solid var(--line);
-
   color:#f6f7fb;
-
   font-size:16px;
-
   line-height:1.35;
-
   white-space:pre-wrap;
-
   word-break:break-word;
-
   -webkit-overflow-scrolling:touch;
 }
 
-.text-preview.empty{
-  color:#727b8d;
-}
+.text-preview.empty{color:#727b8d}
 
 .text-editor-info{
   text-align:center;
-
   color:#818a9b;
-
   font-size:10px;
-
   min-height:14px;
 }
 
 .text-keypad{
   width:100%;
-
   display:flex;
-
   flex-direction:column;
-
   gap:6px;
 }
 
@@ -1181,42 +752,22 @@ button:active{
   gap:5px;
 }
 
-.text-row.row10{
-  grid-template-columns:repeat(10,1fr);
-}
-
-.text-row.row9{
-  grid-template-columns:repeat(9,1fr);
-  padding:0 4.5%;
-}
-
-.text-row.row7{
-  grid-template-columns:repeat(7,1fr);
-  padding:0 13%;
-}
+.text-row.row10{grid-template-columns:repeat(10,1fr)}
+.text-row.row9{grid-template-columns:repeat(9,1fr);padding:0 4.5%}
+.text-row.row7{grid-template-columns:repeat(7,1fr);padding:0 13%}
 
 .text-key{
   min-width:0;
-
   height:42px;
-
   border-radius:10px;
-
   background:#ffffff0d;
-
   border:1px solid var(--line);
-
   font-size:14px;
-
   font-weight:700;
-
   color:#f3f5fa;
-
   display:flex;
-
   align-items:center;
   justify-content:center;
-
   touch-action:manipulation;
 }
 
@@ -1225,49 +776,25 @@ button:active{
   transform:scale(.95);
 }
 
-.text-key.special{
-  background:#ffffff15;
-}
-
-.text-key.back{
-  color:#ff9bad;
-}
-
-.text-key.space{
-  font-size:11px;
-  letter-spacing:.05em;
-}
+.text-key.special{background:#ffffff15}
+.text-key.back{color:#ff9bad}
+.text-key.space{font-size:11px;letter-spacing:.05em}
 
 .text-key.confirm{
   color:#bdf3ff;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(98,217,255,.23),
-      rgba(98,217,255,.12)
-    );
-
+  background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
   border-color:rgba(98,217,255,.35);
 }
 
-.text-key.clear{
-  color:#ff9bad;
-}
-
-.text-key.shift{
-  color:#8cf3ff;
-}
+.text-key.clear{color:#ff9bad}
+.text-key.shift{color:#8cf3ff}
 
 .text-key.shift.active{
   background:rgba(98,217,255,.22);
   border-color:rgba(98,217,255,.4);
 }
 
-/* =========================
-   NOTES
-========================= */
-
+/* NOTES */
 .notes-editor{
   display:flex;
   flex-direction:column;
@@ -1276,68 +803,38 @@ button:active{
 
 .notes-textarea{
   width:100%;
-
   min-height:220px;
   max-height:50dvh;
-
   resize:none;
-
   padding:13px;
-
   border-radius:14px;
-
   background:#0b0e14;
-
   border:1px solid var(--line);
-
   color:var(--txt);
-
   outline:none;
-
   font-size:16px;
-
   line-height:1.45;
-
   -webkit-user-select:text;
   user-select:text;
-
   -webkit-appearance:none;
   appearance:none;
 }
 
-.notes-textarea::placeholder{
-  color:#727b8d;
-}
+.notes-textarea::placeholder{color:#727b8d}
 
 .notes-textarea:focus{
   border-color:rgba(98,217,255,.4);
-
-  box-shadow:
-    0 0 0 2px
-    rgba(98,217,255,.08);
+  box-shadow:0 0 0 2px rgba(98,217,255,.08);
 }
 
-.notes-actions{
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:7px;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
+/* MOBILE */
 @media(max-height:680px){
-
   .app{
     padding:
-      max(6px,var(--safe-top))
+      max(8px,calc(var(--safe-top) + 8px))
       max(6px,var(--safe-right))
       max(6px,var(--safe-bottom))
       max(6px,var(--safe-left));
-
     gap:6px;
   }
 
@@ -1345,17 +842,11 @@ button:active{
     height:40px;
     min-height:40px;
     flex-basis:40px;
-
     gap:6px;
   }
 
-  .icon{
-    border-radius:12px;
-  }
-
-  .players{
-    gap:6px;
-  }
+  .icon{border-radius:12px}
+  .players{gap:6px}
 
   .player{
     border-radius:21px;
@@ -1365,30 +856,17 @@ button:active{
   .player-image{
     width:51px;
     height:51px;
-
     top:7px;
     left:7px;
-
     border-radius:13px;
   }
 
-  .player-image img{
-    border-radius:12px;
-  }
+  .player-image img{border-radius:12px}
 
-  .lp{
-    margin:3px 0 6px;
-  }
+  .lp{margin:3px 0 6px}
+  .life-bar{margin-bottom:7px}
 
-  .life-bar{
-    margin-bottom:7px;
-  }
-
-  .lp-op,
-  .lp-amount,
-  .half-btn{
-    height:35px;
-  }
+  .lp-op,.lp-amount,.half-btn{height:35px}
 
   .half-btn{
     width:46px;
@@ -1399,42 +877,25 @@ button:active{
     height:45px;
     min-height:45px;
     flex-basis:45px;
-
     gap:6px;
   }
 
-  .tool{
-    border-radius:12px;
-  }
+  .tool{border-radius:12px}
 
-  .sheet{
-    padding:11px;
-  }
+  .sheet{padding:11px}
 
-  .dice-wrap,
-  .coin-wrap{
+  .dice-wrap,.coin-wrap{
     height:50svh;
     height:50dvh;
   }
 
-  .key{
-    min-height:42px;
-  }
-
-  .text-key{
-    height:38px;
-  }
-
-  .notes-textarea{
-    min-height:180px;
-  }
+  .key{min-height:42px}
+  .text-key{height:38px}
+  .notes-textarea{min-height:180px}
 }
 
 @media(max-width:390px){
-
-  .text-row{
-    gap:4px;
-  }
+  .text-row{gap:4px}
 
   .text-key{
     height:39px;
@@ -1442,41 +903,25 @@ button:active{
     font-size:13px;
   }
 
-  .text-row.row9{
-    padding:0 4%;
-  }
-
-  .text-row.row7{
-    padding:0 11%;
-  }
+  .text-row.row9{padding:0 4%}
+  .text-row.row7{padding:0 11%}
 }
 
 @media(orientation:landscape) and (max-height:500px){
-
-  .app{
-    max-width:1000px;
-  }
+  .app{max-width:1000px}
 
   .players{
     grid-template-columns:1fr 1fr;
     grid-template-rows:1fr;
   }
 
-  .sheet{
-    max-height:94vh;
-  }
+  .sheet{max-height:94vh}
 
-  .dice-wrap,
-  .coin-wrap{
-    height:60vh;
-  }
+  .dice-wrap,.coin-wrap{height:60vh}
 }
 
 @media(prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
+  *,*::before,*::after{
     animation-duration:.01ms!important;
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
@@ -1491,43 +936,15 @@ button:active{
 
 <header class="topbar">
 
-  <button
-    class="icon undo"
-    id="undoBtn"
-    type="button"
-    aria-label="Annulla">
-    ↶
-  </button>
+  <button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button>
 
-  <button
-    class="icon timer"
-    id="timerBtn"
-    type="button"
-    aria-label="Timer">
-    ◷
-  </button>
+  <button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button>
 
-  <button
-    class="icon background"
-    id="bgBtn"
-    type="button"
-    aria-label="Cambia sfondo">
-    ▧
-  </button>
+  <button class="icon background" id="bgBtn" type="button" aria-label="Cambia sfondo. Tieni premuto per eliminarlo">▧</button>
 
-  <button
-    class="icon refresh"
-    id="resetBtn"
-    type="button"
-    aria-label="Refresh">
-    ↻
-  </button>
+  <button class="icon refresh" id="resetBtn" type="button" aria-label="Refresh">↻</button>
 
-  <input
-    id="bgInput"
-    class="hidden-file"
-    type="file"
-    accept="image/*">
+  <input id="bgInput" class="hidden-file" type="file" accept="image/*">
 
 </header>
 
@@ -1535,203 +952,82 @@ button:active{
 
 <section class="player p1">
 
-  <div
-    class="player-image empty"
-    id="imageSlot1"
-    title="Immagine Player 1">
-
-    <input
-      type="file"
-      id="imageInput1"
-      accept="image/*">
-
+  <div class="player-image empty" id="imageSlot1" title="Immagine Player 1">
+    <input type="file" id="imageInput1" accept="image/*">
   </div>
 
-  <div
-    class="pname"
-    id="name1"
-    data-player="1"
-    role="button"
-    tabindex="0">
+  <div class="pname" id="name1" data-player="1" role="button" tabindex="0">
     PLAYER 1
   </div>
 
-  <div
-    class="lp"
-    id="lp1">
-    8000
-  </div>
+  <div class="lp" id="lp1">8000</div>
 
   <div class="life-bar">
-    <div
-      class="life-fill"
-      id="lifeFill1">
-    </div>
+    <div class="life-fill" id="lifeFill1"></div>
   </div>
 
   <div class="controls">
 
-    <button
-      class="lp-op minus selected"
-      type="button"
-      data-p="1"
-      data-sign="-1">
-      −
-    </button>
+    <button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button>
 
-    <input
-      class="lp-amount"
-      id="amount1"
-      type="text"
-      readonly
-      inputmode="none"
-      placeholder="Cifra"
-      aria-label="Cifra LP Player 1">
+    <input class="lp-amount" id="amount1" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 1">
 
-    <button
-      class="lp-op plus"
-      type="button"
-      data-p="1"
-      data-sign="1">
-      +
-    </button>
+    <button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button>
 
   </div>
 
-  <button
-    class="half-btn"
-    type="button"
-    data-half-player="1"
-    aria-label="Dimezza Life Points">
-
+  <button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza Life Points">
     <span class="half-icon">½</span>
-
   </button>
 
 </section>
 
 <section class="player p2">
 
-  <div
-    class="player-image empty"
-    id="imageSlot2"
-    title="Immagine Player 2">
-
-    <input
-      type="file"
-      id="imageInput2"
-      accept="image/*">
-
+  <div class="player-image empty" id="imageSlot2" title="Immagine Player 2">
+    <input type="file" id="imageInput2" accept="image/*">
   </div>
 
-  <div
-    class="pname"
-    id="name2"
-    data-player="2"
-    role="button"
-    tabindex="0">
+  <div class="pname" id="name2" data-player="2" role="button" tabindex="0">
     PLAYER 2
   </div>
 
-  <div
-    class="lp"
-    id="lp2">
-    8000
-  </div>
+  <div class="lp" id="lp2">8000</div>
 
   <div class="life-bar">
-    <div
-      class="life-fill"
-      id="lifeFill2">
-    </div>
+    <div class="life-fill" id="lifeFill2"></div>
   </div>
 
   <div class="controls">
 
-    <button
-      class="lp-op minus selected"
-      type="button"
-      data-p="2"
-      data-sign="-1">
-      −
-    </button>
+    <button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button>
 
-    <input
-      class="lp-amount"
-      id="amount2"
-      type="text"
-      readonly
-      inputmode="none"
-      placeholder="Cifra"
-      aria-label="Cifra LP Player 2">
+    <input class="lp-amount" id="amount2" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 2">
 
-    <button
-      class="lp-op plus"
-      type="button"
-      data-p="2"
-      data-sign="1">
-      +
-    </button>
+    <button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button>
 
   </div>
 
-  <button
-    class="half-btn"
-    type="button"
-    data-half-player="2"
-    aria-label="Dimezza Life Points">
-
+  <button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza Life Points">
     <span class="half-icon">½</span>
-
   </button>
 
 </section>
 
 </main>
 
-<nav
-  class="bottom"
-  aria-label="Strumenti">
+<nav class="bottom" aria-label="Strumenti">
 
-  <button
-    class="tool"
-    id="diceBtn"
-    type="button"
-    aria-label="Dado">
-    ⚄
-  </button>
-
-  <button
-    class="tool"
-    id="coinBtn"
-    type="button"
-    aria-label="Moneta">
-    ◉
-  </button>
-
-  <button
-    class="tool"
-    id="historyBtn"
-    type="button"
-    aria-label="Storico">
-    ☷
-  </button>
-
-  <button
-    class="tool"
-    id="notesBtn"
-    type="button"
-    aria-label="Appunti">
-    ✎
-  </button>
+  <button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button>
+  <button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button>
+  <button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button>
+  <button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button>
 
 </nav>
 
 </div>
 
-<div
-  class="modal"
-  id="modal">
+<div class="modal" id="modal">
 
   <div class="sheet">
 
@@ -1739,13 +1035,7 @@ button:active{
 
       <b id="modalTitle"></b>
 
-      <button
-        class="close"
-        id="close"
-        type="button"
-        aria-label="Chiudi">
-        ×
-      </button>
+      <button class="close" id="close" type="button" aria-label="Chiudi">×</button>
 
     </div>
 
@@ -1758,10 +1048,6 @@ button:active{
 <script>
 "use strict";
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 
@@ -1771,29 +1057,17 @@ const modalTitle=$("#modalTitle");
 
 const state={
   lp:[8000,8000],
-
-  names:[
-    "PLAYER 1",
-    "PLAYER 2"
-  ],
-
+  names:["PLAYER 1","PLAYER 2"],
   history:[],
   notes:"",
-
   bg:localStorage.getItem("ygo-bg")||"",
-
   images:[
     localStorage.getItem("ygo-image-1")||"",
     localStorage.getItem("ygo-image-2")||""
   ],
-
   timerSeconds:2700,
   timerInitialSeconds:2700
 };
-
-/* =========================================================
-   RANDOM SEQUENCES
-========================================================= */
 
 let diceSequenceIndex=0;
 let coinSequenceIndex=0;
@@ -1804,45 +1078,34 @@ function resetRandomSequences(){
 }
 
 function nextDieResult(){
-
   if(diceSequenceIndex===0){
     diceSequenceIndex++;
     return 4+secureRandomInt(3);
   }
-
   if(diceSequenceIndex===1){
     diceSequenceIndex++;
     return 1+secureRandomInt(3);
   }
-
   diceSequenceIndex++;
   return secureDie();
 }
 
 function nextCoinResult(){
-
   if(coinSequenceIndex===0){
     coinSequenceIndex++;
     return "TESTA";
   }
-
   if(coinSequenceIndex===1){
     coinSequenceIndex++;
     return "TESTA";
   }
-
   if(coinSequenceIndex===2){
     coinSequenceIndex++;
     return "CROCE";
   }
-
   coinSequenceIndex++;
   return secureCoin();
 }
-
-/* =========================================================
-   GENERAL STATE
-========================================================= */
 
 let currentAmountPlayer=null;
 let currentAmountSign=-1;
@@ -1859,63 +1122,38 @@ const imageLongPressTimers={};
 const imageLongPressTriggered={};
 
 function safeSet(k,v){
-
   try{
-
     localStorage.setItem(k,v);
-
     return true;
-
   }catch(e){
-
     console.warn(e);
-
     return false;
-
   }
 }
 
 function save(){
 
-  safeSet(
-    "ygo-state",
-    JSON.stringify({
-      lp:state.lp,
-      names:state.names,
-      history:state.history,
-      notes:state.notes,
-      timerSeconds:state.timerSeconds,
-      timerInitialSeconds:state.timerInitialSeconds
-    })
-  );
+  safeSet("ygo-state",JSON.stringify({
+    lp:state.lp,
+    names:state.names,
+    history:state.history,
+    notes:state.notes,
+    timerSeconds:state.timerSeconds,
+    timerInitialSeconds:state.timerInitialSeconds
+  }));
 
   if(state.bg){
-
     safeSet("ygo-bg",state.bg);
-
   }else{
-
     localStorage.removeItem("ygo-bg");
-
   }
 
   state.images.forEach((x,i)=>{
-
     if(x){
-
-      safeSet(
-        "ygo-image-"+(i+1),
-        x
-      );
-
+      safeSet("ygo-image-"+(i+1),x);
     }else{
-
-      localStorage.removeItem(
-        "ygo-image-"+(i+1)
-      );
-
+      localStorage.removeItem("ygo-image-"+(i+1));
     }
-
   });
 }
 
@@ -1923,32 +1161,16 @@ function loadState(){
 
   try{
 
-    const x=JSON.parse(
-      localStorage.getItem("ygo-state")||"null"
-    );
+    const x=JSON.parse(localStorage.getItem("ygo-state")||"null");
 
     if(!x)return;
 
-    if(
-      Array.isArray(x.lp)&&
-      x.lp.length===2
-    ){
-
-      state.lp=x.lp.map(
-        v=>Math.max(0,Number(v)||0)
-      );
-
+    if(Array.isArray(x.lp)&&x.lp.length===2){
+      state.lp=x.lp.map(v=>Math.max(0,Number(v)||0));
     }
 
-    if(
-      Array.isArray(x.names)&&
-      x.names.length===2
-    ){
-
-      state.names=x.names.map(
-        v=>String(v||"PLAYER")
-      );
-
+    if(Array.isArray(x.names)&&x.names.length===2){
+      state.names=x.names.map((v,i)=>String(v||"PLAYER "+(i+1)));
     }
 
     if(Array.isArray(x.history)){
@@ -1959,70 +1181,33 @@ function loadState(){
       state.notes=x.notes;
     }
 
-    if(
-      Number.isFinite(
-        Number(x.timerSeconds)
-      )
-    ){
-
-      state.timerSeconds=Math.max(
-        0,
-        Number(x.timerSeconds)
-      );
-
+    if(Number.isFinite(Number(x.timerSeconds))){
+      state.timerSeconds=Math.max(0,Number(x.timerSeconds));
     }
 
-    if(
-      Number.isFinite(
-        Number(x.timerInitialSeconds)
-      )
-    ){
-
-      state.timerInitialSeconds=Math.max(
-        1,
-        Number(x.timerInitialSeconds)
-      );
-
+    if(Number.isFinite(Number(x.timerInitialSeconds))){
+      state.timerInitialSeconds=Math.max(1,Number(x.timerInitialSeconds));
     }
 
   }catch(e){
-
-    console.warn(
-      "Stato locale non valido",
-      e
-    );
-
+    console.warn("Stato locale non valido",e);
   }
 }
 
 function applyBackground(){
 
   if(state.bg){
-
-    document.body.style.setProperty(
-      "--user-bg",
-      `url("${state.bg}")`
-    );
-
+    document.body.style.setProperty("--user-bg",`url("${state.bg}")`);
   }else{
-
-    document.body.style.removeProperty(
-      "--user-bg"
-    );
-
+    document.body.style.removeProperty("--user-bg");
   }
 }
 
-/* =========================================================
-   LIFE POINTS
-========================================================= */
+/* LIFE POINTS */
 
 function lifeColor(v){
 
-  v=Math.max(
-    0,
-    Number(v)||0
-  );
+  v=Math.max(0,Number(v)||0);
 
   const s=[
     [8000,92,235,138],
@@ -2037,230 +1222,126 @@ function lifeColor(v){
   ];
 
   if(v>=8000){
-
-    return[
-      "rgb(92,235,138)",
-      "rgba(92,235,138,.38)"
-    ];
-
+    return["rgb(92,235,138)","rgba(92,235,138,.38)"];
   }
 
-  for(
-    let i=0;
-    i<s.length-1;
-    i++
-  ){
+  for(let i=0;i<s.length-1;i++){
 
     const h=s[i];
     const l=s[i+1];
 
-    if(
-      v<=h[0]&&
-      v>=l[0]
-    ){
+    if(v<=h[0]&&v>=l[0]){
 
-      const p=
-        (h[0]-v)/
-        (h[0]-l[0]);
+      const p=(h[0]-v)/(h[0]-l[0]);
 
-      const r=Math.round(
-        h[1]+
-        (l[1]-h[1])*p
-      );
-
-      const g=Math.round(
-        h[2]+
-        (l[2]-h[2])*p
-      );
-
-      const b=Math.round(
-        h[3]+
-        (l[3]-h[3])*p
-      );
+      const r=Math.round(h[1]+(l[1]-h[1])*p);
+      const g=Math.round(h[2]+(l[2]-h[2])*p);
+      const b=Math.round(h[3]+(l[3]-h[3])*p);
 
       return[
         `rgb(${r},${g},${b})`,
         `rgba(${r},${g},${b},.30)`
       ];
-
     }
-
   }
 
-  return[
-    "rgb(205,42,67)",
-    "rgba(205,42,67,.35)"
-  ];
+  return["rgb(205,42,67)","rgba(205,42,67,.35)"];
 }
 
 function updateLifeBar(p){
 
-  const v=Math.max(
-    0,
-    Number(state.lp[p-1])||0
-  );
-
+  const v=Math.max(0,Number(state.lp[p-1])||0);
   const f=$("#lifeFill"+p);
 
   if(!f)return;
 
-  f.style.width=
-    Math.min(
-      100,
-      v/8000*100
-    )+"%";
+  f.style.width=Math.min(100,v/8000*100)+"%";
 
   const[c,g]=lifeColor(v);
 
   f.style.backgroundColor=c;
-
-  f.style.boxShadow=
-    `0 0 11px ${g}`;
+  f.style.boxShadow=`0 0 11px ${g}`;
 }
 
-/* =========================================================
-   IMAGES
-========================================================= */
+/* IMAGES */
 
-function compressImage(
-  file,
-  maxSide=1200,
-  quality=.86
-){
+function compressImage(file,maxSide=1200,quality=.86){
 
-  return new Promise(
-    (resolve,reject)=>{
+  return new Promise((resolve,reject)=>{
 
-      const r=new FileReader();
+    const r=new FileReader();
 
-      r.onerror=()=>reject(
-        r.error||
-        new Error("Lettura fallita")
-      );
+    r.onerror=()=>reject(r.error||new Error("Lettura fallita"));
 
-      r.onload=()=>{
+    r.onload=()=>{
 
-        const img=new Image();
+      const img=new Image();
 
-        img.onerror=()=>reject(
-          new Error("Immagine non valida")
+      img.onerror=()=>reject(new Error("Immagine non valida"));
+
+      img.onload=()=>{
+
+        const scale=Math.min(
+          1,
+          maxSide/Math.max(
+            img.naturalWidth||1,
+            img.naturalHeight||1
+          )
         );
 
-        img.onload=()=>{
+        const c=document.createElement("canvas");
 
-          const scale=Math.min(
-            1,
-            maxSide/
-            Math.max(
-              img.naturalWidth||1,
-              img.naturalHeight||1
-            )
-          );
+        c.width=Math.max(1,Math.round((img.naturalWidth||1)*scale));
+        c.height=Math.max(1,Math.round((img.naturalHeight||1)*scale));
 
-          const c=
-            document.createElement("canvas");
+        const ctx=c.getContext("2d");
 
-          c.width=Math.max(
-            1,
-            Math.round(
-              (img.naturalWidth||1)*
-              scale
-            )
-          );
+        if(!ctx)return resolve(r.result);
 
-          c.height=Math.max(
-            1,
-            Math.round(
-              (img.naturalHeight||1)*
-              scale
-            )
-          );
+        ctx.fillStyle="#0b0d12";
+        ctx.fillRect(0,0,c.width,c.height);
 
-          const ctx=
-            c.getContext("2d");
+        ctx.drawImage(img,0,0,c.width,c.height);
 
-          if(!ctx){
-            return resolve(r.result);
-          }
+        let out=c.toDataURL("image/jpeg",quality);
 
-          ctx.fillStyle="#0b0d12";
+        if(out.length>3500000){
+          out=c.toDataURL("image/jpeg",.68);
+        }
 
-          ctx.fillRect(
-            0,
-            0,
-            c.width,
-            c.height
-          );
-
-          ctx.drawImage(
-            img,
-            0,
-            0,
-            c.width,
-            c.height
-          );
-
-          let out=
-            c.toDataURL(
-              "image/jpeg",
-              quality
-            );
-
-          if(out.length>3500000){
-
-            out=c.toDataURL(
-              "image/jpeg",
-              .68
-            );
-
-          }
-
-          resolve(out);
-
-        };
-
-        img.src=r.result;
-
+        resolve(out);
       };
 
-      r.readAsDataURL(file);
+      img.src=r.result;
+    };
 
-    }
-  );
+    r.readAsDataURL(file);
+  });
 }
 
 function renderImages(){
 
   for(let p=1;p<=2;p++){
 
-    const slot=
-      $("#imageSlot"+p);
+    const slot=$("#imageSlot"+p);
 
     if(!slot)continue;
 
-    const old=
-      slot.querySelector("img");
+    const old=slot.querySelector("img");
 
     if(old)old.remove();
 
     if(!state.images[p-1]){
-
       slot.classList.add("empty");
-
       continue;
     }
 
     slot.classList.remove("empty");
 
-    const img=
-      document.createElement("img");
+    const img=document.createElement("img");
 
-    img.src=
-      state.images[p-1];
-
-    img.alt=
-      "Immagine Player "+p;
-
+    img.src=state.images[p-1];
+    img.alt="Immagine Player "+p;
     img.draggable=false;
 
     slot.appendChild(img);
@@ -2269,252 +1350,145 @@ function renderImages(){
 
 function setupImageSlot(p){
 
-  const slot=
-    $("#imageSlot"+p);
-
-  const input=
-    $("#imageInput"+p);
+  const slot=$("#imageSlot"+p);
+  const input=$("#imageInput"+p);
 
   if(!slot||!input)return;
 
-  slot.addEventListener(
-    "click",
-    e=>{
+  slot.addEventListener("click",e=>{
 
-      if(
-        imageLongPressTriggered[p]
-      ){
-
-        imageLongPressTriggered[p]=false;
-
-        e.preventDefault();
-
-        return;
-      }
-
-      input.click();
-
-    }
-  );
-
-  input.addEventListener(
-    "change",
-    async e=>{
-
-      const f=e.target.files?.[0];
-
-      if(!f)return;
-
-      try{
-
-        if(!f.type.startsWith("image/")){
-          throw new Error("file");
-        }
-
-        state.images[p-1]=
-          await compressImage(f);
-
-        renderImages();
-        save();
-
-      }catch(err){
-
-        console.error(err);
-
-        alert(
-          "Non è stato possibile caricare l'immagine."
-        );
-
-      }finally{
-
-        input.value="";
-
-      }
-
-    }
-  );
-
-  slot.addEventListener(
-    "pointerdown",
-    e=>{
-
-      if(
-        !state.images[p-1]||
-        e.target.tagName!=="IMG"
-      )return;
-
+    if(imageLongPressTriggered[p]){
       imageLongPressTriggered[p]=false;
-
-      clearTimeout(
-        imageLongPressTimers[p]
-      );
-
-      imageLongPressTimers[p]=
-        setTimeout(()=>{
-
-          imageLongPressTriggered[p]=true;
-
-          state.images[p-1]="";
-
-          renderImages();
-          save();
-
-        },650);
-
+      e.preventDefault();
+      return;
     }
-  );
 
-  [
-    "pointerup",
-    "pointercancel",
-    "pointerleave"
-  ].forEach(t=>{
+    input.click();
+  });
 
-    slot.addEventListener(
-      t,
-      ()=>{
+  input.addEventListener("change",async e=>{
 
-        clearTimeout(
-          imageLongPressTimers[p]
-        );
+    const f=e.target.files?.[0];
 
-        imageLongPressTimers[p]=null;
+    if(!f)return;
 
+    try{
+
+      if(!f.type.startsWith("image/")){
+        throw new Error("file");
       }
-    );
 
+      state.images[p-1]=await compressImage(f);
+
+      renderImages();
+      save();
+
+    }catch(err){
+
+      console.error(err);
+
+      alert("Non è stato possibile caricare l'immagine.");
+
+    }finally{
+
+      input.value="";
+    }
+  });
+
+  slot.addEventListener("pointerdown",e=>{
+
+    if(!state.images[p-1]||e.target.tagName!=="IMG")return;
+
+    imageLongPressTriggered[p]=false;
+
+    clearTimeout(imageLongPressTimers[p]);
+
+    imageLongPressTimers[p]=setTimeout(()=>{
+
+      imageLongPressTriggered[p]=true;
+      state.images[p-1]="";
+      renderImages();
+      save();
+
+    },650);
+  });
+
+  ["pointerup","pointercancel","pointerleave"].forEach(t=>{
+    slot.addEventListener(t,()=>{
+      clearTimeout(imageLongPressTimers[p]);
+      imageLongPressTimers[p]=null;
+    });
   });
 }
 
-/* =========================================================
-   RENDER
-========================================================= */
+/* RENDER */
 
 function render(){
 
-  state.lp.forEach(
-    (v,i)=>{
+  state.lp.forEach((v,i)=>{
 
-      const p=i+1;
+    const p=i+1;
+    const el=$("#lp"+p);
 
-      const el=$("#lp"+p);
-
-      if(el){
-
-        el.textContent=
-          Number(v).toLocaleString("it-IT");
-
-      }
-
-      updateLifeBar(p);
-
+    if(el){
+      el.textContent=Number(v).toLocaleString("it-IT");
     }
-  );
 
-  state.names.forEach(
-    (n,i)=>{
+    updateLifeBar(p);
+  });
 
-      const e=
-        $("#name"+(i+1));
+  state.names.forEach((n,i)=>{
 
-      if(e)e.textContent=n;
+    const e=$("#name"+(i+1));
 
-    }
-  );
+    if(e)e.textContent=n;
+  });
 
   renderImages();
-
   updateTimerButtonIcon();
-
   save();
 }
 
-/* =========================================================
-   HISTORY / LP
-========================================================= */
+/* HISTORY / LP */
 
-function addHistory(
-  player,
-  n,
-  before,
-  after,
-  action
-){
+function addHistory(player,n,before,after,action){
 
   state.history.unshift({
-
     id:Date.now()+Math.random(),
-
     time:new Date().toLocaleTimeString(
       "it-IT",
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
+      {hour:"2-digit",minute:"2-digit",second:"2-digit"}
     ),
-
     player,
     n,
     before,
     after,
     action:action||""
-
   });
 }
 
-function change(
-  player,
-  amount,
-  action=""
-){
+function change(player,amount,action=""){
 
-  const before=Math.max(
-    0,
-    Number(
-      state.lp[player-1]
-    )||0
-  );
+  const before=Math.max(0,Number(state.lp[player-1])||0);
 
-  const after=Math.max(
-    0,
-    before+amount
-  );
+  const after=Math.max(0,before+amount);
 
   state.lp[player-1]=after;
 
-  addHistory(
-    player,
-    amount,
-    before,
-    after,
-    action
-  );
+  addHistory(player,amount,before,after,action);
 
   render();
 }
 
 function halveLP(player){
 
-  const before=Math.max(
-    0,
-    Number(
-      state.lp[player-1]
-    )||0
-  );
+  const before=Math.max(0,Number(state.lp[player-1])||0);
 
-  const after=
-    Math.floor(before/2);
+  const after=Math.floor(before/2);
 
   state.lp[player-1]=after;
 
-  addHistory(
-    player,
-    after-before,
-    before,
-    after,
-    "Dimezza LP"
-  );
+  addHistory(player,after-before,before,after,"Dimezza LP");
 
   render();
 }
@@ -2523,183 +1497,97 @@ function undo(){
 
   if(!state.history.length)return;
 
-  const last=
-    state.history.shift();
+  const last=state.history.shift();
 
   if(
     last&&
     last.player&&
-    Number.isFinite(
-      Number(last.before)
-    )
+    Number.isFinite(Number(last.before))
   ){
-
-    state.lp[last.player-1]=
-      Math.max(
-        0,
-        Number(last.before)
-      );
-
+    state.lp[last.player-1]=Math.max(0,Number(last.before));
   }
 
   render();
 }
 
-/* =========================================================
-   LP CONTROLS
-========================================================= */
+/* LP CONTROLS */
 
-$$(".lp-op").forEach(
-  b=>b.addEventListener(
-    "pointerdown",
-    e=>{
+$$(".lp-op").forEach(b=>b.addEventListener("pointerdown",e=>{
 
-      e.preventDefault();
+  e.preventDefault();
 
-      const wrap=b.parentElement;
+  const wrap=b.parentElement;
 
-      wrap
-        .querySelectorAll(".lp-op")
-        .forEach(
-          x=>x.classList.remove(
-            "selected"
-          )
-        );
+  wrap.querySelectorAll(".lp-op").forEach(x=>x.classList.remove("selected"));
 
-      b.classList.add("selected");
+  b.classList.add("selected");
+}));
 
-    }
-  )
-);
+$$(".lp-amount").forEach(input=>input.addEventListener("pointerdown",e=>{
 
-$$(".lp-amount").forEach(
-  input=>input.addEventListener(
-    "pointerdown",
-    e=>{
+  e.preventDefault();
 
-      e.preventDefault();
+  const p=Number(input.id.replace("amount",""));
 
-      const p=
-        Number(
-          input.id.replace(
-            "amount",
-            ""
-          )
-        );
+  const selected=input.parentElement.querySelector(".lp-op.selected");
 
-      const selected=
-        input.parentElement
-          .querySelector(
-            ".lp-op.selected"
-          );
+  currentAmountPlayer=p;
+  currentAmountSign=Number(selected?.dataset.sign||-1);
 
-      currentAmountPlayer=p;
+  openKeypad();
+}));
 
-      currentAmountSign=
-        Number(
-          selected?.dataset.sign||-1
-        );
+$$(".half-btn").forEach(b=>b.addEventListener("pointerdown",e=>{
 
-      openKeypad();
+  e.preventDefault();
 
-    }
-  )
-);
+  halveLP(Number(b.dataset.halfPlayer));
+}));
 
-$$(".half-btn").forEach(
-  b=>b.addEventListener(
-    "pointerdown",
-    e=>{
+/* MODAL */
 
-      e.preventDefault();
-
-      halveLP(
-        Number(
-          b.dataset.halfPlayer
-        )
-      );
-
-    }
-  )
-);
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-function openModal(
-  title,
-  content
-){
+function openModal(title,content){
 
   modalTitle.textContent=title;
-
   modalBody.innerHTML=content;
-
   modal.classList.add("open");
 }
 
 function closeModal(){
 
   modal.classList.remove("open");
-
   modalBody.innerHTML="";
-
 }
 
-$("#close").addEventListener(
-  "pointerdown",
-  e=>{
+$("#close").addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  closeModal();
+});
 
+modal.addEventListener("pointerdown",e=>{
+
+  if(e.target===modal){
     e.preventDefault();
-
     closeModal();
-
   }
-);
+});
 
-modal.addEventListener(
-  "pointerdown",
-  e=>{
-
-    if(e.target===modal){
-
-      e.preventDefault();
-
-      closeModal();
-
-    }
-
-  }
-);
-
-/* =========================================================
-   NUMERIC KEYPAD - LP
-========================================================= */
+/* LP KEYPAD */
 
 function openKeypad(){
 
   keypadValue="";
 
-  const sign=
-    currentAmountSign<0
-      ?"SOTTRAI"
-      :"AGGIUNGI";
+  const sign=currentAmountSign<0?"SOTTRAI":"AGGIUNGI";
 
-  openModal(
-    "Inserisci LP",
-    `
+  openModal("Inserisci LP",`
     <div class="keypad-wrap">
 
       <div class="keypad-operation">
         PLAYER ${currentAmountPlayer} · ${sign}
       </div>
 
-      <div
-        class="keypad-value"
-        id="keypadValue">
-        0
-      </div>
+      <div class="keypad-value" id="keypadValue">0</div>
 
       <div class="keypad">
 
@@ -2719,47 +1607,28 @@ function openKeypad(){
         <button class="key" data-key="0" type="button">0</button>
         <button class="key action" data-key="back" type="button">⌫</button>
 
-        <button
-          class="key confirm"
-          data-key="confirm"
-          type="button"
-          style="grid-column:1/-1">
+        <button class="key confirm" data-key="confirm" type="button" style="grid-column:1/-1">
           CONFERMA
         </button>
 
       </div>
-
     </div>
-    `
-  );
+  `);
 
-  $$(".key",modalBody).forEach(
-    b=>b.addEventListener(
-      "pointerdown",
-      e=>{
+  $$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{
 
-        e.preventDefault();
-        e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-        handleKeypad(
-          b.dataset.key
-        );
-
-      }
-    )
-  );
+    handleKeypad(b.dataset.key);
+  }));
 }
 
 function updateKeypad(){
 
   const e=$("#keypadValue");
 
-  if(e){
-
-    e.textContent=
-      keypadValue||"0";
-
-  }
+  if(e)e.textContent=keypadValue||"0";
 }
 
 function handleKeypad(k){
@@ -2768,59 +1637,37 @@ function handleKeypad(k){
 
     if(keypadValue.length>=7)return;
 
-    keypadValue=
-      keypadValue==="0"
-        ?k
-        :keypadValue+k;
+    keypadValue=keypadValue==="0"?k:keypadValue+k;
 
     updateKeypad();
-
     return;
   }
 
   if(k==="clear"){
-
     keypadValue="";
-
     updateKeypad();
-
     return;
   }
 
   if(k==="back"){
-
-    keypadValue=
-      keypadValue.slice(0,-1);
-
+    keypadValue=keypadValue.slice(0,-1);
     updateKeypad();
-
     return;
   }
 
   if(k==="confirm"){
 
-    const v=
-      Number(keypadValue);
+    const v=Number(keypadValue);
 
-    if(
-      !Number.isInteger(v)||
-      v<=0
-    )return;
+    if(!Number.isInteger(v)||v<=0)return;
 
-    change(
-      currentAmountPlayer,
-      currentAmountSign*v
-    );
+    change(currentAmountPlayer,currentAmountSign*v);
 
     closeModal();
-
   }
 }
 
-/* =========================================================
-   TEXT KEYPAD
-   SOLO NOMI GIOCATORI
-========================================================= */
+/* NAME KEYPAD */
 
 const TEXT_ROWS=[
   ["Q","W","E","R","T","Y","U","I","O","P"],
@@ -2828,16 +1675,7 @@ const TEXT_ROWS=[
   ["Z","X","C","V","B","N","M"]
 ];
 
-const TEXT_SYMBOLS=[
-  ".",
-  ",",
-  "-",
-  "'",
-  "!",
-  "?",
-  ":",
-  "/"
-];
+const TEXT_SYMBOLS=[".",",","-","'","!","?",":","/"];
 
 let textBuffer="";
 let textMaxLength=18;
@@ -2847,90 +1685,53 @@ let textSaveCallback=null;
 
 function renderTextKeyboard(){
 
-  const preview=
-    $("#textPreview");
+  const preview=$("#textPreview");
 
   if(preview){
 
-    preview.textContent=
-      textBuffer||
-      "Nome giocatore";
+    preview.textContent=textBuffer||"Nome giocatore";
 
-    preview.classList.toggle(
-      "empty",
-      !textBuffer
-    );
-
+    preview.classList.toggle("empty",!textBuffer);
   }
 
-  const count=
-    $("#textCount");
+  const count=$("#textCount");
 
   if(count){
-
-    count.textContent=
-      `${textBuffer.length}/${textMaxLength}`;
-
+    count.textContent=`${textBuffer.length}/${textMaxLength}`;
   }
 
-  $$(".text-key[data-letter]",modalBody)
-    .forEach(
-      key=>{
+  $$(".text-key[data-letter]",modalBody).forEach(key=>{
 
-        const letter=
-          key.dataset.letter;
+    const letter=key.dataset.letter;
 
-        key.textContent=
-          textShift
-            ?letter
-            :letter.toLowerCase();
+    key.textContent=textShift
+      ?letter
+      :letter.toLowerCase();
+  });
 
-      }
-    );
-
-  const shiftButton=
-    $(".text-key.shift",modalBody);
+  const shiftButton=$(".text-key.shift",modalBody);
 
   if(shiftButton){
-
-    shiftButton.classList.toggle(
-      "active",
-      textShift
-    );
-
+    shiftButton.classList.toggle("active",textShift);
   }
 
-  const p=
-    $("#textPreview");
+  const p=$("#textPreview");
 
-  if(p){
-    p.scrollTop=p.scrollHeight;
-  }
+  if(p)p.scrollTop=p.scrollHeight;
 }
 
 function insertText(value){
 
-  if(
-    textBuffer.length>=
-    textMaxLength
-  )return;
+  if(textBuffer.length>=textMaxLength)return;
 
-  const maxAdd=
-    textMaxLength-
-    textBuffer.length;
+  const maxAdd=textMaxLength-textBuffer.length;
 
-  value=
-    value.slice(0,maxAdd);
+  value=value.slice(0,maxAdd);
 
   textBuffer=
-    textBuffer.slice(
-      0,
-      textCursor
-    )+
+    textBuffer.slice(0,textCursor)+
     value+
-    textBuffer.slice(
-      textCursor
-    );
+    textBuffer.slice(textCursor);
 
   textCursor+=value.length;
 
@@ -2942,13 +1743,8 @@ function backspaceText(){
   if(textCursor<=0)return;
 
   textBuffer=
-    textBuffer.slice(
-      0,
-      textCursor-1
-    )+
-    textBuffer.slice(
-      textCursor
-    );
+    textBuffer.slice(0,textCursor-1)+
+    textBuffer.slice(textCursor);
 
   textCursor--;
 
@@ -2963,91 +1759,67 @@ function clearText(){
   renderTextKeyboard();
 }
 
-function openNameKeyboard(
-  player,
-  value
-){
+function openNameKeyboard(player,value){
 
-  textBuffer=
-    String(value||"");
-
+  textBuffer=String(value||"");
   textMaxLength=18;
-
   textShift=true;
-
   textCursor=textBuffer.length;
 
-  textSaveCallback=
-    newValue=>{
+  textSaveCallback=newValue=>{
 
-      state.names[player-1]=
-        newValue.trim()||
-        "PLAYER "+player;
+    state.names[player-1]=
+      newValue.trim()||
+      "PLAYER "+player;
 
-      render();
+    render();
+    closeModal();
+  };
 
-      closeModal();
-
-    };
+  const numberRow=`
+    <div class="text-row row10">
+      ${"1234567890".split("").map(n=>`
+        <button class="text-key" data-text="${n}" type="button">${n}</button>
+      `).join("")}
+    </div>
+  `;
 
   const keyboardRows=
-    TEXT_ROWS.map(
-      row=>{
+    numberRow+
+    TEXT_ROWS.map(row=>{
 
-        const cls=
-          row.length===10
-            ?"row10"
-            :row.length===9
-              ?"row9"
-              :"row7";
+      const cls=
+        row.length===10
+          ?"row10"
+          :row.length===9
+            ?"row9"
+            :"row7";
 
-        return`
-          <div class="text-row ${cls}">
-            ${
-              row.map(
-                letter=>`
-                  <button
-                    class="text-key"
-                    data-letter="${letter}"
-                    type="button">
-                    ${letter}
-                  </button>
-                `
-              ).join("")
-            }
-          </div>
-        `;
-
-      }
-    ).join("");
+      return`
+        <div class="text-row ${cls}">
+          ${row.map(letter=>`
+            <button class="text-key" data-letter="${letter}" type="button">
+              ${letter}
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }).join("");
 
   const symbolButtons=
-    TEXT_SYMBOLS.map(
-      symbol=>`
-        <button
-          class="text-key"
-          data-text="${escapeHtml(symbol)}"
-          type="button">
-          ${escapeHtml(symbol)}
-        </button>
-      `
-    ).join("");
+    TEXT_SYMBOLS.map(symbol=>`
+      <button class="text-key" data-text="${escapeHtml(symbol)}" type="button">
+        ${escapeHtml(symbol)}
+      </button>
+    `).join("");
 
-  openModal(
-    "Nome giocatore",
-    `
+  openModal("Nome giocatore",`
+
     <div class="text-editor">
 
-      <div
-        class="text-preview"
-        id="textPreview">
-      </div>
+      <div class="text-preview" id="textPreview"></div>
 
-      <div
-        class="text-editor-info"
-        id="textCount">
-        0/18
-      </div>
+      <div class="text-editor-info" id="textCount">0/18</div>
 
       <div class="text-keypad">
 
@@ -3055,19 +1827,13 @@ function openNameKeyboard(
 
         <div class="text-row row10">
 
-          <button
-            class="text-key shift"
-            type="button"
-            data-text-action="shift">
+          <button class="text-key shift" type="button" data-text-action="shift">
             ⇧
           </button>
 
           ${symbolButtons}
 
-          <button
-            class="text-key back"
-            type="button"
-            data-text-action="back">
+          <button class="text-key back" type="button" data-text-action="back">
             ⌫
           </button>
 
@@ -3075,125 +1841,99 @@ function openNameKeyboard(
 
         <div class="text-row row7">
 
-          <button
-            class="text-key clear"
-            type="button"
-            data-text-action="clear">
+          <button class="text-key clear" type="button" data-text-action="clear">
             C
           </button>
 
-          <button
-            class="text-key space"
-            type="button"
-            data-text-action="space"
-            style="grid-column:span 4">
+          <button class="text-key space" type="button" data-text-action="space" style="grid-column:span 3">
             SPAZIO
           </button>
 
-          <button
-            class="text-key confirm"
-            type="button"
-            data-text-action="confirm">
+          <button class="text-key special" type="button" data-text-action="undo">
+            UNDO
+          </button>
+
+          <button class="text-key confirm" type="button" data-text-action="confirm">
             ✓
           </button>
 
         </div>
 
       </div>
-
     </div>
-    `
-  );
+  `);
 
-  $$(".text-key",modalBody).forEach(
-    button=>{
+  $$(".text-key",modalBody).forEach(button=>{
 
-      button.addEventListener(
-        "pointerdown",
-        e=>{
+    button.addEventListener("pointerdown",e=>{
 
-          e.preventDefault();
-          e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
 
-          const letter=
-            button.dataset.letter;
+      const letter=button.dataset.letter;
 
-          if(letter){
+      if(letter){
 
-            insertText(
-              textShift
-                ?letter
-                :letter.toLowerCase()
-            );
+        insertText(
+          textShift
+            ?letter
+            :letter.toLowerCase()
+        );
 
-            if(textShift){
-
-              textShift=false;
-
-              renderTextKeyboard();
-
-            }
-
-            return;
-          }
-
-          const text=
-            button.dataset.text;
-
-          if(text){
-
-            insertText(text);
-
-            return;
-          }
-
-          const action=
-            button.dataset.textAction;
-
-          if(action==="shift"){
-
-            textShift=!textShift;
-
-            renderTextKeyboard();
-
-          }else if(action==="back"){
-
-            backspaceText();
-
-          }else if(action==="clear"){
-
-            clearText();
-
-          }else if(action==="space"){
-
-            insertText(" ");
-
-          }else if(action==="confirm"){
-
-            if(
-              typeof textSaveCallback==="function"
-            ){
-
-              textSaveCallback(
-                textBuffer
-              );
-
-            }
-
-          }
-
+        if(textShift){
+          textShift=false;
+          renderTextKeyboard();
         }
-      );
 
-    }
-  );
+        return;
+      }
+
+      const text=button.dataset.text;
+
+      if(text){
+        insertText(text);
+        return;
+      }
+
+      const action=button.dataset.textAction;
+
+      if(action==="shift"){
+
+        textShift=!textShift;
+        renderTextKeyboard();
+
+      }else if(action==="back"){
+
+        backspaceText();
+
+      }else if(action==="clear"){
+
+        clearText();
+
+      }else if(action==="space"){
+
+        insertText(" ");
+
+      }else if(action==="undo"){
+
+        const original="PLAYER "+player;
+
+        textBuffer=original;
+        textCursor=original.length;
+
+        renderTextKeyboard();
+
+      }else if(action==="confirm"){
+
+        if(typeof textSaveCallback==="function"){
+          textSaveCallback(textBuffer);
+        }
+      }
+    });
+  });
 
   renderTextKeyboard();
 }
-
-/* =========================================================
-   ESCAPE
-========================================================= */
 
 function escapeHtml(v){
 
@@ -3203,253 +1943,140 @@ function escapeHtml(v){
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
 }
 
-/* =========================================================
-   NAMES
-========================================================= */
+/* NAMES */
 
-function openNameEditor(p){
+[1,2].forEach(p=>{
 
-  openNameKeyboard(
-    p,
-    state.names[p-1]
-  );
-}
+  const e=$("#name"+p);
 
-[1,2].forEach(
-  p=>{
+  e.addEventListener("click",()=>{
+    openNameKeyboard(p,state.names[p-1]);
+  });
 
-    const e=
-      $("#name"+p);
+  e.addEventListener("keydown",x=>{
 
-    e.addEventListener(
-      "click",
-      ()=>{
-        openNameEditor(p);
-      }
-    );
+    if(x.key==="Enter"||x.key===" "){
 
-    e.addEventListener(
-      "keydown",
-      x=>{
+      x.preventDefault();
 
-        if(
-          x.key==="Enter"||
-          x.key===" "
-        ){
-
-          x.preventDefault();
-
-          openNameEditor(p);
-
-        }
-
-      }
-    );
-
-  }
-);
-
-/* =========================================================
-   HISTORY
-========================================================= */
-
-$("#historyBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    if(!state.history.length){
-
-      openModal(
-        "Storico",
-        `
-        <div class="empty-state">
-          Nessuna modifica registrata
-        </div>
-        `
-      );
-
-      return;
+      openNameKeyboard(p,state.names[p-1]);
     }
+  });
+});
 
-    const rows=
-      state.history.map(
-        x=>{
+/* HISTORY */
 
-          const gain=
-            Number(x.n)>=0;
+$("#historyBtn").addEventListener("pointerdown",e=>{
 
-          const action=
-            x.action||
-            (
-              gain
-                ?"Aggiunta LP"
-                :"Perdita LP"
-            );
+  e.preventDefault();
 
-          return`
-            <div class="history-row">
-
-              <div class="history-main">
-
-                <div class="history-title">
-                  ${escapeHtml(action)}
-                  ·
-                  ${escapeHtml(
-                    state.names[x.player-1]
-                  )}
-                </div>
-
-                <div class="history-meta">
-                  ${escapeHtml(x.time)}
-                  ·
-                  ${Number(x.before).toLocaleString("it-IT")}
-                  →
-                  ${Number(x.after).toLocaleString("it-IT")}
-                </div>
-
-              </div>
-
-              <div class="history-values">
-
-                <div
-                  class="history-change ${
-                    gain?"gain":"loss"
-                  }">
-
-                  ${
-                    gain?"+":""
-                  }${
-                    Number(x.n)
-                      .toLocaleString("it-IT")
-                  }
-
-                </div>
-
-                <div class="history-after">
-                  LP ${
-                    Number(x.after)
-                      .toLocaleString("it-IT")
-                  }
-                </div>
-
-              </div>
-
-            </div>
-          `;
-
-        }
-      ).join("");
+  if(!state.history.length){
 
     openModal(
       "Storico",
-      `
-      <div class="history">
-        ${rows}
-      </div>
-      `
+      `<div class="empty-state">Nessuna modifica registrata</div>`
     );
 
+    return;
   }
-);
 
-$("#undoBtn").addEventListener(
-  "pointerdown",
-  e=>{
+  const rows=state.history.map(x=>{
 
-    e.preventDefault();
+    const gain=Number(x.n)>=0;
 
-    undo();
+    const action=
+      x.action||
+      (gain?"Aggiunta LP":"Perdita LP");
 
-  }
-);
+    return`
+      <div class="history-row">
 
-/* =========================================================
-   NOTES
-   EDITOR NORMALE - NESSUN TASTIERINO PERSONALIZZATO
-========================================================= */
+        <div class="history-main">
 
-$("#notesBtn").addEventListener(
-  "pointerdown",
-  e=>{
+          <div class="history-title">
+            ${escapeHtml(action)}
+            ·
+            ${escapeHtml(state.names[x.player-1])}
+          </div>
 
-    e.preventDefault();
+          <div class="history-meta">
+            ${escapeHtml(x.time)}
+            ·
+            ${Number(x.before).toLocaleString("it-IT")}
+            →
+            ${Number(x.after).toLocaleString("it-IT")}
+          </div>
 
-    openModal(
-      "Appunti",
-      `
+        </div>
+
+        <div class="history-values">
+
+          <div class="history-change ${gain?"gain":"loss"}">
+            ${gain?"+":""}${Number(x.n).toLocaleString("it-IT")}
+          </div>
+
+          <div class="history-after">
+            LP ${Number(x.after).toLocaleString("it-IT")}
+          </div>
+
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+  openModal(
+    "Storico",
+    `<div class="history">${rows}</div>`
+  );
+});
+
+$("#undoBtn").addEventListener("pointerdown",e=>{
+
+  e.preventDefault();
+  undo();
+});
+
+/* NOTES
+   - niente focus automatico
+   - niente SALVA
+   - niente CANCELLA
+   - salvataggio automatico
+*/
+
+$("#notesBtn").addEventListener("pointerdown",e=>{
+
+  e.preventDefault();
+
+  openModal(
+    "Appunti",
+    `
       <div class="notes-editor">
 
         <textarea
           id="notesTextarea"
           class="notes-textarea"
           maxlength="1000"
-          placeholder="Scrivi qui i tuoi appunti...">${escapeHtml(state.notes)}</textarea>
-
-        <div class="notes-actions">
-
-          <button
-            class="timer-btn"
-            id="notesClear"
-            type="button">
-            CANCELLA
-          </button>
-
-          <button
-            class="timer-btn"
-            id="notesSave"
-            type="button">
-            SALVA
-          </button>
-
-        </div>
+          placeholder="Scrivi qui i tuoi appunti..."
+        >${escapeHtml(state.notes)}</textarea>
 
       </div>
-      `
-    );
+    `
+  );
 
-    const textarea=
-      $("#notesTextarea");
+  const textarea=$("#notesTextarea");
 
-    textarea.focus();
+  textarea.addEventListener("input",()=>{
 
-    $("#notesClear").addEventListener(
-      "pointerdown",
-      e=>{
+    state.notes=textarea.value.slice(0,1000);
 
-        e.preventDefault();
+    save();
+  });
+});
 
-        textarea.value="";
-
-      }
-    );
-
-    $("#notesSave").addEventListener(
-      "pointerdown",
-      e=>{
-
-        e.preventDefault();
-
-        state.notes=
-          textarea.value.slice(0,1000);
-
-        save();
-
-        closeModal();
-
-      }
-    );
-
-  }
-);
-
-/* =========================================================
-   RANDOM
-========================================================= */
+/* RANDOM */
 
 function secureRandomInt(max){
 
@@ -3458,37 +2085,25 @@ function secureRandomInt(max){
     typeof crypto.getRandomValues==="function"
   ){
 
-    const limit=
-      Math.floor(
-        0x100000000/max
-      )*max;
+    const limit=Math.floor(0x100000000/max)*max;
 
-    const arr=
-      new Uint32Array(1);
+    const arr=new Uint32Array(1);
 
     do{
-
       crypto.getRandomValues(arr);
-
-    }while(
-      arr[0]>=limit
-    );
+    }while(arr[0]>=limit);
 
     return arr[0]%max;
   }
 
-  return Math.floor(
-    Math.random()*max
-  );
+  return Math.floor(Math.random()*max);
 }
 
-const secureDie=
-  ()=>1+secureRandomInt(6);
+const secureDie=()=>1+secureRandomInt(6);
 
-const secureCoin=
-  ()=>secureRandomInt(2)
-    ?"CROCE"
-    :"TESTA";
+const secureCoin=()=>secureRandomInt(2)
+  ?"CROCE"
+  :"TESTA";
 
 function temporaryDie(final){
 
@@ -3501,144 +2116,99 @@ function temporaryDie(final){
   return v;
 }
 
-/* =========================================================
-   DICE
-========================================================= */
+/* DICE */
 
-$("#diceBtn").addEventListener(
-  "pointerdown",
-  e=>{
+$("#diceBtn").addEventListener("pointerdown",e=>{
 
-    e.preventDefault();
+  e.preventDefault();
 
-    openModal(
-      "Dado",
-      `
+  openModal(
+    "Dado",
+    `
       <div class="dice-wrap">
 
-        <div
-          class="die"
-          id="die">
-          •
-        </div>
+        <div class="die" id="die">•</div>
 
         <div class="hint">
           Tocca il dado per rilanciare
         </div>
 
       </div>
-      `
-    );
+    `
+  );
 
-    setTimeout(
-      rollDie,
-      40
-    );
-
-  }
-);
+  setTimeout(rollDie,40);
+});
 
 function rollDie(){
 
   const die=$("#die");
 
-  if(
-    !die||
-    diceRolling
-  )return;
+  if(!die||diceRolling)return;
 
   diceRolling=true;
 
-  const final=
-    nextDieResult();
+  const final=nextDieResult();
 
-  die.textContent=
-    temporaryDie(final);
+  die.textContent=temporaryDie(final);
 
-  die.classList.remove(
-    "rolling"
-  );
+  die.classList.remove("rolling");
 
   void die.offsetWidth;
 
-  die.classList.add(
-    "rolling"
-  );
+  die.classList.add("rolling");
 
-  const start=
-    performance.now();
+  const start=performance.now();
 
   function anim(now){
 
     if(!die.isConnected){
 
       diceRolling=false;
-
       return;
     }
 
-    if(
-      now-start<820
-    ){
+    if(now-start<820){
 
-      die.textContent=
-        temporaryDie(final);
+      die.textContent=temporaryDie(final);
 
-      requestAnimationFrame(
-        anim
-      );
-
+      requestAnimationFrame(anim);
     }
-
   }
 
-  requestAnimationFrame(
-    anim
-  );
+  requestAnimationFrame(anim);
 
-  setTimeout(
-    ()=>{
+  setTimeout(()=>{
 
-      if(!die.isConnected){
-
-        diceRolling=false;
-
-        return;
-      }
-
-      die.textContent=final;
-
-      die.classList.remove(
-        "rolling"
-      );
+    if(!die.isConnected){
 
       diceRolling=false;
+      return;
+    }
 
-    },
-    930
-  );
+    die.textContent=final;
+
+    die.classList.remove("rolling");
+
+    diceRolling=false;
+
+  },930);
 }
 
-/* =========================================================
-   COIN
-========================================================= */
+/* COIN */
 
-$("#coinBtn").addEventListener(
-  "pointerdown",
-  e=>{
+$("#coinBtn").addEventListener("pointerdown",e=>{
 
-    e.preventDefault();
+  e.preventDefault();
 
-    openModal(
-      "Moneta",
-      `
+  openModal(
+    "Moneta",
+    `
       <div class="coin-wrap">
 
         <div class="coin-stage">
 
-          <div
-            class="coin"
-            id="coin">
+          <div class="coin" id="coin">
             •
           </div>
 
@@ -3649,110 +2219,73 @@ $("#coinBtn").addEventListener(
         </div>
 
       </div>
-      `
-    );
+    `
+  );
 
-    setTimeout(
-      flipCoin,
-      40
-    );
-
-  }
-);
+  setTimeout(flipCoin,40);
+});
 
 function flipCoin(){
 
   const coin=$("#coin");
 
-  if(
-    !coin||
-    coinBusy
-  )return;
+  if(!coin||coinBusy)return;
 
   coinBusy=true;
 
-  const final=
-    nextCoinResult();
+  const final=nextCoinResult();
 
   coin.textContent="•";
 
-  coin.classList.remove(
-    "flip"
-  );
+  coin.classList.remove("flip");
 
   void coin.offsetWidth;
 
-  coin.classList.add(
-    "flip"
-  );
+  coin.classList.add("flip");
 
-  setTimeout(
-    ()=>{
+  setTimeout(()=>{
 
-      if(!coin.isConnected){
-
-        coinBusy=false;
-
-        return;
-      }
-
-      coin.textContent=final;
-
-      coin.classList.remove(
-        "flip"
-      );
+    if(!coin.isConnected){
 
       coinBusy=false;
+      return;
+    }
 
-    },
-    1080
-  );
+    coin.textContent=final;
+
+    coin.classList.remove("flip");
+
+    coinBusy=false;
+
+  },1080);
 }
 
-modalBody.addEventListener(
-  "pointerdown",
-  e=>{
+modalBody.addEventListener("pointerdown",e=>{
 
-    if(e.target.id==="die"){
+  if(e.target.id==="die"){
 
-      e.preventDefault();
-
-      rollDie();
-
-    }
-
-    if(e.target.id==="coin"){
-
-      e.preventDefault();
-
-      flipCoin();
-
-    }
-
+    e.preventDefault();
+    rollDie();
   }
-);
 
-/* =========================================================
-   TIMER
-========================================================= */
+  if(e.target.id==="coin"){
+
+    e.preventDefault();
+    flipCoin();
+  }
+});
+
+/* TIMER */
 
 function formatTime(s){
 
-  s=Math.max(
-    0,
-    Math.floor(s)
-  );
+  s=Math.max(0,Math.floor(s));
 
-  const h=
-    Math.floor(s/3600);
+  const h=Math.floor(s/3600);
 
-  const m=
-    Math.floor(
-      s%3600/60
-    );
+  const m=Math.floor(s%3600/60);
 
-  const sec=
-    s%60;
+  const sec=s%60;
 
   return h
     ?[
@@ -3768,85 +2301,54 @@ function formatTime(s){
 
 function updateTimerButtonIcon(){
 
-  const button=
-    $("#timerBtn");
+  const button=$("#timerBtn");
 
   if(!button)return;
 
   if(timerRunning){
 
-    button.textContent=
-      formatTime(
-        state.timerSeconds
-      );
+    button.textContent=formatTime(state.timerSeconds);
 
-    button.setAttribute(
-      "aria-label",
-      "Timer in corso"
-    );
+    button.setAttribute("aria-label","Timer in corso");
 
   }else{
 
     button.textContent="◷";
 
-    button.setAttribute(
-      "aria-label",
-      "Timer"
-    );
-
+    button.setAttribute("aria-label","Timer");
   }
 }
 
 function updateTimerDisplay(){
 
-  const d=
-    $("#timerDisplay");
+  const d=$("#timerDisplay");
 
   if(!d)return;
 
-  d.textContent=
-    formatTime(
-      state.timerSeconds
-    );
+  d.textContent=formatTime(state.timerSeconds);
 
-  d.classList.remove(
-    "warning",
-    "danger"
-  );
+  d.classList.remove("warning","danger");
 
-  if(
-    state.timerSeconds<=60
-  ){
+  if(state.timerSeconds<=60){
 
-    d.classList.add(
-      "danger"
-    );
+    d.classList.add("danger");
 
-  }else if(
-    state.timerSeconds<=300
-  ){
+  }else if(state.timerSeconds<=300){
 
-    d.classList.add(
-      "warning"
-    );
-
+    d.classList.add("warning");
   }
 }
 
 function updateTimerButtons(){
 
-  const a=
-    $("#timerStart");
+  const a=$("#timerStart");
 
   if(!a)return;
 
-  a.disabled=
-    timerRunning||
-    state.timerSeconds<=0;
+  a.disabled=timerRunning||state.timerSeconds<=0;
 
   a.style.opacity=
-    timerRunning||
-    state.timerSeconds<=0
+    timerRunning||state.timerSeconds<=0
       ?".45"
       :"1";
 }
@@ -3857,21 +2359,18 @@ function updateTimerFromClock(){
 
   const now=Date.now();
 
-  const elapsed=
-    Math.floor(
-      (now-timerLastTick)/1000
-    );
+  const elapsed=Math.floor(
+    (now-timerLastTick)/1000
+  );
 
   if(elapsed<=0)return;
 
-  timerLastTick +=
-    elapsed*1000;
+  timerLastTick+=elapsed*1000;
 
-  state.timerSeconds=
-    Math.max(
-      0,
-      state.timerSeconds-elapsed
-    );
+  state.timerSeconds=Math.max(
+    0,
+    state.timerSeconds-elapsed
+  );
 
   updateTimerDisplay();
   updateTimerButtonIcon();
@@ -3885,47 +2384,37 @@ function updateTimerFromClock(){
     updateTimerDisplay();
     updateTimerButtons();
     updateTimerButtonIcon();
-
   }
 }
 
 function startTimer(){
 
-  if(
-    timerRunning||
-    state.timerSeconds<=0
-  )return;
+  if(timerRunning||state.timerSeconds<=0)return;
 
   timerRunning=true;
 
   timerLastTick=Date.now();
 
-  timerInterval=
-    setInterval(
-      updateTimerFromClock,
-      250
-    );
+  timerInterval=setInterval(
+    updateTimerFromClock,
+    250
+  );
 
   updateTimerDisplay();
   updateTimerButtons();
   updateTimerButtonIcon();
-
 }
 
 function stopTimer(){
 
   if(timerInterval!==null){
 
-    clearInterval(
-      timerInterval
-    );
+    clearInterval(timerInterval);
 
     timerInterval=null;
-
   }
 
   timerRunning=false;
-
   timerLastTick=0;
 
   updateTimerButtonIcon();
@@ -3935,8 +2424,7 @@ function resetTimer(){
 
   stopTimer();
 
-  state.timerSeconds=
-    state.timerInitialSeconds;
+  state.timerSeconds=state.timerInitialSeconds;
 
   updateTimerDisplay();
   updateTimerButtons();
@@ -3947,47 +2435,39 @@ function resetTimer(){
 
 function openTimer(){
 
-  /*
-    IMPORTANTE:
-    NON fermare il timer quando la finestra
-    viene aperta o chiusa.
-  */
-
   openModal(
     "Timer duello",
     `
-    <div
-      class="timer-display"
-      id="timerDisplay">
-      ${formatTime(
-        state.timerSeconds
-      )}
-    </div>
-
-    <button
-      class="timer-edit"
-      id="timerEdit"
-      type="button">
-      CAMBIA DURATA
-    </button>
-
-    <div class="timer-controls">
+      <div
+        class="timer-display"
+        id="timerDisplay">
+        ${formatTime(state.timerSeconds)}
+      </div>
 
       <button
-        class="timer-btn"
-        id="timerStart"
+        class="timer-edit"
+        id="timerEdit"
         type="button">
-        ▶ AVVIA
+        CAMBIA DURATA
       </button>
 
-      <button
-        class="timer-btn"
-        id="timerReset"
-        type="button">
-        ↻ RESET
-      </button>
+      <div class="timer-controls">
 
-    </div>
+        <button
+          class="timer-btn"
+          id="timerStart"
+          type="button">
+          ▶ AVVIA
+        </button>
+
+        <button
+          class="timer-btn"
+          id="timerReset"
+          type="button">
+          ↻ RESET
+        </button>
+
+      </div>
     `
   );
 
@@ -3995,43 +2475,26 @@ function openTimer(){
   updateTimerButtons();
   updateTimerButtonIcon();
 
-  $("#timerStart").addEventListener(
-    "pointerdown",
-    e=>{
+  $("#timerStart").addEventListener("pointerdown",e=>{
 
-      e.preventDefault();
+    e.preventDefault();
+    startTimer();
+  });
 
-      startTimer();
+  $("#timerReset").addEventListener("pointerdown",e=>{
 
-    }
-  );
+    e.preventDefault();
+    resetTimer();
+  });
 
-  $("#timerReset").addEventListener(
-    "pointerdown",
-    e=>{
+  $("#timerEdit").addEventListener("pointerdown",e=>{
 
-      e.preventDefault();
-
-      resetTimer();
-
-    }
-  );
-
-  $("#timerEdit").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      openTimerKeypad();
-
-    }
-  );
+    e.preventDefault();
+    openTimerKeypad();
+  });
 }
 
-/* =========================================================
-   TIMER KEYPAD
-========================================================= */
+/* TIMER KEYPAD */
 
 function openTimerKeypad(){
 
@@ -4040,250 +2503,214 @@ function openTimerKeypad(){
   openModal(
     "Durata timer",
     `
-    <div class="keypad-wrap">
+      <div class="keypad-wrap">
 
-      <div class="keypad-operation">
-        INSERISCI I MINUTI · DEFAULT 45
+        <div class="keypad-operation">
+          INSERISCI I MINUTI · DEFAULT 45
+        </div>
+
+        <div class="keypad-value" id="timerKeyValue">
+          0
+        </div>
+
+        <div class="keypad">
+
+          <button class="key" data-k="1" type="button">1</button>
+          <button class="key" data-k="2" type="button">2</button>
+          <button class="key" data-k="3" type="button">3</button>
+
+          <button class="key" data-k="4" type="button">4</button>
+          <button class="key" data-k="5" type="button">5</button>
+          <button class="key" data-k="6" type="button">6</button>
+
+          <button class="key" data-k="7" type="button">7</button>
+          <button class="key" data-k="8" type="button">8</button>
+          <button class="key" data-k="9" type="button">9</button>
+
+          <button class="key clear" data-k="c" type="button">C</button>
+          <button class="key" data-k="0" type="button">0</button>
+          <button class="key action" data-k="b" type="button">⌫</button>
+
+          <button
+            class="key confirm"
+            data-k="ok"
+            type="button"
+            style="grid-column:1/-1">
+            CONFERMA
+          </button>
+
+        </div>
       </div>
-
-      <div
-        class="keypad-value"
-        id="timerKeyValue">
-        0
-      </div>
-
-      <div class="keypad">
-
-        <button class="key" data-k="1" type="button">1</button>
-        <button class="key" data-k="2" type="button">2</button>
-        <button class="key" data-k="3" type="button">3</button>
-
-        <button class="key" data-k="4" type="button">4</button>
-        <button class="key" data-k="5" type="button">5</button>
-        <button class="key" data-k="6" type="button">6</button>
-
-        <button class="key" data-k="7" type="button">7</button>
-        <button class="key" data-k="8" type="button">8</button>
-        <button class="key" data-k="9" type="button">9</button>
-
-        <button class="key clear" data-k="c" type="button">C</button>
-        <button class="key" data-k="0" type="button">0</button>
-        <button class="key action" data-k="b" type="button">⌫</button>
-
-        <button
-          class="key confirm"
-          data-k="ok"
-          type="button"
-          style="grid-column:1/-1">
-          CONFERMA
-        </button>
-
-      </div>
-
-    </div>
     `
   );
 
-  const display=
-    $("#timerKeyValue");
+  const display=$("#timerKeyValue");
 
   const update=()=>{
-
-    display.textContent=
-      v||"0";
-
+    display.textContent=v||"0";
   };
 
-  $$(".key",modalBody).forEach(
-    b=>b.addEventListener(
-      "pointerdown",
-      e=>{
+  $$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{
 
-        e.preventDefault();
-        e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-        const k=b.dataset.k;
+    const k=b.dataset.k;
 
-        if(/^\d$/.test(k)){
+    if(/^\d$/.test(k)){
 
-          if(v.length>=3)return;
+      if(v.length>=3)return;
 
-          v=
-            v==="0"
-              ?k
-              :v+k;
+      v=v==="0"?k:v+k;
 
-          update();
+      update();
 
-        }else if(k==="c"){
+    }else if(k==="c"){
 
-          v="";
+      v="";
+      update();
 
-          update();
+    }else if(k==="b"){
 
-        }else if(k==="b"){
+      v=v.slice(0,-1);
+      update();
 
-          v=v.slice(0,-1);
+    }else if(k==="ok"){
 
-          update();
-
-        }else if(k==="ok"){
-
-          applyTimerMinutes(v);
-
-        }
-
-      }
-    )
-  );
+      applyTimerMinutes(v);
+    }
+  }));
 }
 
 function applyTimerMinutes(value){
 
-  const min=
-    Math.max(
-      1,
-      parseInt(
-        value,
-        10
-      )||0
-    );
+  const min=Math.max(
+    1,
+    parseInt(value,10)||0
+  );
 
-  state.timerInitialSeconds=
-    min*60;
-
-  state.timerSeconds=
-    min*60;
+  state.timerInitialSeconds=min*60;
+  state.timerSeconds=min*60;
 
   stopTimer();
-
   save();
-
   closeModal();
-
   openTimer();
 }
 
-$("#timerBtn").addEventListener(
-  "pointerdown",
-  e=>{
+$("#timerBtn").addEventListener("pointerdown",e=>{
 
-    e.preventDefault();
+  e.preventDefault();
+  openTimer();
+});
 
-    openTimer();
+/* BACKGROUND
+   tap = cambia
+   long press = elimina
+*/
 
-  }
-);
+let bgLongPress=null;
+let bgLongPressed=false;
 
-/* =========================================================
-   BACKGROUND
-========================================================= */
+$("#bgBtn").addEventListener("pointerdown",e=>{
 
-$("#bgBtn").addEventListener(
-  "click",
-  e=>{
+  e.preventDefault();
 
-    e.preventDefault();
+  bgLongPressed=false;
 
-    const input=
-      $("#bgInput");
+  clearTimeout(bgLongPress);
 
-    if(input){
+  bgLongPress=setTimeout(()=>{
 
-      input.value="";
+    bgLongPressed=true;
 
-      input.click();
+    state.bg="";
 
-    }
+    applyBackground();
+    save();
 
-  }
-);
+  },650);
+});
 
-$("#bgInput").addEventListener(
-  "change",
-  async e=>{
+["pointerup","pointercancel","pointerleave"].forEach(t=>{
 
-    const f=e.target.files?.[0];
+  $("#bgBtn").addEventListener(t,e=>{
 
-    if(!f)return;
+    clearTimeout(bgLongPress);
 
-    try{
+    if(
+      t==="pointerup"&&
+      !bgLongPressed
+    ){
 
-      if(!f.type.startsWith("image/")){
-        throw new Error("file");
+      const input=$("#bgInput");
+
+      if(input){
+
+        input.value="";
+        input.click();
       }
+    }
+  });
+});
 
-      state.bg=
-        await compressImage(
-          f,
-          1600,
-          .78
-        );
+$("#bgInput").addEventListener("change",async e=>{
 
-      applyBackground();
+  const f=e.target.files?.[0];
 
-      save();
+  if(!f)return;
 
-    }catch(err){
+  try{
 
-      console.error(err);
-
-      alert(
-        "Non è stato possibile caricare lo sfondo."
-      );
-
-    }finally{
-
-      e.target.value="";
-
+    if(!f.type.startsWith("image/")){
+      throw new Error("file");
     }
 
+    state.bg=await compressImage(
+      f,
+      1600,
+      .78
+    );
+
+    applyBackground();
+    save();
+
+  }catch(err){
+
+    console.error(err);
+
+    alert("Non è stato possibile caricare lo sfondo.");
+
+  }finally{
+
+    e.target.value="";
   }
-);
+});
 
-/* =========================================================
-   RESET / NUOVA PARTITA
-========================================================= */
+/* RESET / NUOVA PARTITA */
 
-$("#resetBtn").addEventListener(
-  "pointerdown",
-  e=>{
+$("#resetBtn").addEventListener("pointerdown",e=>{
 
-    e.preventDefault();
+  e.preventDefault();
 
-    stopTimer();
+  stopTimer();
 
-    state.lp=[
-      8000,
-      8000
-    ];
+  state.lp=[8000,8000];
+  state.history=[];
+  state.notes="";
+  state.timerInitialSeconds=2700;
+  state.timerSeconds=2700;
 
-    state.history=[];
+  diceRolling=false;
+  coinBusy=false;
 
-    state.notes="";
+  resetRandomSequences();
 
-    state.timerInitialSeconds=
-      2700;
+  render();
+  closeModal();
+});
 
-    state.timerSeconds=
-      2700;
-
-    diceRolling=false;
-
-    coinBusy=false;
-
-    resetRandomSequences();
-
-    render();
-
-    closeModal();
-
-  }
-);
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
+/* INITIALIZATION */
 
 loadState();
 
@@ -4292,11 +2719,8 @@ if(
   state.timerInitialSeconds<1
 ){
 
-  state.timerInitialSeconds=
-    2700;
-
-  state.timerSeconds=
-    2700;
+  state.timerInitialSeconds=2700;
+  state.timerSeconds=2700;
 }
 
 resetRandomSequences();
