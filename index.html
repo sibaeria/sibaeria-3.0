@@ -1,165 +1,851 @@
-<!doctype html><html lang="it"><head>
+<!doctype html>
+<html lang="it">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Duel</title>
-<link rel="manifest" href="./manifest.json?v=4"><link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=4"><link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=4">
-<meta name="theme-color" content="#0b0d12"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Duel"><meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="./manifest.json?v=4">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=4">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=4">
+<meta name="theme-color" content="#0b0d12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Duel">
+<meta name="format-detection" content="telephone=no">
+
 <style>
-:root{--bg:#0b0d12;--card:rgba(18,22,31,.78);--line:rgba(255,255,255,.13);--txt:#f6f7fb;--muted:#aeb5c4;--p1:#62d9ff;--p2:#b58cff;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+:root{
+--bg:#0b0d12;--card:rgba(18,22,31,.78);--line:rgba(255,255,255,.13);
+--txt:#f6f7fb;--muted:#aeb5c4;--p1:#62d9ff;--p2:#b58cff;
+--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--txt)}
-body{background-image:linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),var(--user-bg);background-size:cover;background-position:center}
-button,input,textarea{font:inherit}button{color:inherit;border:0;cursor:pointer}button:active{transform:scale(.95)}
-.app{height:100dvh;width:100%;max-width:1100px;margin:auto;display:flex;flex-direction:column;padding:calc(10px + var(--safe-top)) 10px calc(10px + var(--safe-bottom));gap:9px}
-.topbar{height:48px;display:flex;align-items:center;justify-content:flex-end;gap:7px}
-.icon{width:43px;height:43px;border-radius:14px;border:1px solid var(--line);background:rgba(12,15,22,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 30px #0004;font-size:19px}.hidden-file{display:none!important}
-.players{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.player{min-height:0;border:1px solid var(--line);border-radius:25px;background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:15px;box-shadow:0 20px 60px #0004;position:relative;overflow:hidden;isolation:isolate}
-.player:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.075}.p1:before{background:radial-gradient(circle at 50% 0,var(--p1),transparent 55%)}.p2:before{background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%)}
-.player-image{position:absolute;top:10px;left:10px;width:64px;height:64px;border-radius:16px;border:1px solid #ffffff29;background:#0c0f16a8;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);box-shadow:0 10px 30px #0006;display:grid;place-items:center;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none}
-.player-image img{width:100%;height:100%;object-fit:contain;border-radius:15px;display:block}.player-image.empty{cursor:pointer}.player-image.empty:before{content:"+";color:#9ca5b6;font-size:23px}.player-image.empty:after{content:"IMG";position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:7px;letter-spacing:.12em;color:#6f7787}.player-image input{display:none}
-.pname{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:7px 12px;border-radius:10px;transition:.2s;max-width:75%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pname:active{background:#ffffff12;transform:scale(.97)}.p1 .pname{color:#a9edff}.p2 .pname{color:#d1bdff}
-.lp{font-size:clamp(48px,9vw,88px);font-weight:800;letter-spacing:-.05em;line-height:1;margin:6px 0 9px;text-shadow:0 5px 30px #0008}
-.life-bar{width:min(520px,92%);height:7px;border-radius:999px;background:#ffffff12;border:1px solid #ffffff14;overflow:hidden;margin:0 auto 12px}.life-fill{height:100%;width:100%;border-radius:inherit;transition:width .3s ease,background-color .3s ease,box-shadow .3s ease}
-.controls{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:6px;max-width:440px;width:100%}.lp-op,.lp-amount{height:40px;border-radius:12px;background:#ffffff12;border:1px solid var(--line)}.lp-op{font-weight:800;font-size:22px}.lp-op.minus{color:#ff8da4}.lp-op.plus{color:#8cf3ff}.lp-op.selected{background:#ffffff25}.lp-amount{width:100%;color:var(--txt);text-align:center;outline:0;font-weight:750;font-size:14px;cursor:pointer}.lp-amount::placeholder{color:#8e96a6}
-.half-btn{margin-top:6px;width:48px;height:40px;border-radius:12px;background:#ffffff10;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:4px;color:#e9edf6;font-size:9px;font-weight:800;letter-spacing:.03em;box-shadow:0 6px 20px #0003}.half-btn .half-icon{font-size:16px;font-weight:900;color:#d8dee9}.half-btn span:last-child{display:none}
-.bottom{height:58px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.tool{border-radius:15px;font-size:19px;border:1px solid var(--line);background:#0c0f16bf;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 30px #0004}.tool.undo{color:#ffd27d}.tool.timer{color:#8cf3ff}.tool:disabled{opacity:.35;cursor:default;transform:none}
-.modal{position:fixed;inset:0;background:#0009;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;padding:10px 10px calc(10px + var(--safe-bottom));z-index:20}.modal.open{display:flex}.sheet{width:min(700px,100%);max-height:90dvh;background:#11151ef7;border:1px solid var(--line);border-radius:25px;padding:14px;box-shadow:0 30px 100px #000b;overflow:hidden}.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.sheethead b{font-size:17px}.close{width:36px;height:36px;border-radius:11px;background:#ffffff10;border:1px solid var(--line);font-size:22px}
-.history{overflow:auto;max-height:64dvh;display:flex;flex-direction:column;gap:6px}.history-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:10px 11px;border-radius:13px;background:#ffffff0d;border:1px solid #ffffff12}.history-main{min-width:0}.history-title{font-size:13px;font-weight:750}.history-meta{color:var(--muted);font-size:10px;margin-top:3px}.history-values{text-align:right;white-space:nowrap}.history-change{font-weight:800;font-size:13px}.history-change.gain{color:#83f0c4}.history-change.loss{color:#ff8ba3}.history-after{color:#aeb5c4;font-size:10px;margin-top:3px}.empty-state{color:#8d96a7;text-align:center;padding:45px 10px;font-size:13px}
-textarea{width:100%;height:55dvh;resize:none;background:#0b0e14;color:var(--txt);border:1px solid var(--line);border-radius:16px;padding:14px;outline:0;font-size:15px}
-.dice-wrap,.coin-wrap{height:55dvh;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:18px;background:radial-gradient(circle,#242a3c,#0b0e14 65%)}.die{width:100px;height:100px;background:linear-gradient(145deg,#fff,#cdd4df);border-radius:20px;display:grid;place-items:center;color:#111;font-size:48px;font-weight:900;box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;user-select:none;transform:translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0);will-change:transform}.die.rolling{animation:diceRoll .9s cubic-bezier(.16,.82,.22,1) both}@keyframes diceRoll{0%{transform:translate3d(0,75px,0) rotateX(0) rotateY(0) rotateZ(0) scale(.62);opacity:.35}22%{transform:translate3d(22px,-55px,0) rotateX(120deg) rotateY(100deg) rotateZ(70deg) scale(.92);opacity:1}45%{transform:translate3d(-26px,-88px,0) rotateX(270deg) rotateY(230deg) rotateZ(155deg) scale(1.07)}68%{transform:translate3d(18px,-35px,0) rotateX(470deg) rotateY(390deg) rotateZ(245deg) scale(1.03)}85%{transform:translate3d(-7px,-8px,0) rotateX(600deg) rotateY(510deg) rotateZ(315deg) scale(1.01)}100%{transform:translate3d(0,0,0) rotateX(680deg) rotateY(570deg) rotateZ(360deg) scale(1);opacity:1}}
-.coin-stage{width:150px;height:180px;display:grid;place-items:center;perspective:900px}.coin{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 32% 27%,#fff8cf 0 7%,#f7dd72 20%,#d7a72d 62%,#a87817 100%);border:5px solid #f6dc73;color:#654700;font-size:22px;font-weight:900;box-shadow:inset 0 2px 4px #fff8,0 18px 35px #0008;will-change:transform}.coin.flip{animation:coinFlip 1.05s cubic-bezier(.14,.72,.2,1) both}@keyframes coinFlip{0%{transform:translateY(88px) rotateX(0) scale(.72)}50%{transform:translateY(-80px) rotateX(1440deg) scale(1.07)}100%{transform:translateY(0) rotateX(2700deg) scale(1)}}
+html{
+margin:0;width:100%;height:100%;overflow:hidden;
+overscroll-behavior:none;background:var(--bg)
+}
+body{
+position:fixed;inset:0;margin:0;width:100%;height:100%;
+overflow:hidden;overscroll-behavior:none;
+background:var(--bg);
+background-image:linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),var(--user-bg);
+background-size:cover;background-position:center;
+font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--txt);
+-webkit-text-size-adjust:100%;
+touch-action:manipulation
+}
+button,input,textarea{font:inherit}
+button{color:inherit;border:0;cursor:pointer;touch-action:manipulation}
+button:active{transform:scale(.96)}
+.hidden-file{display:none!important}
+
+.app{
+width:100%;height:100svh;max-width:720px;margin:auto;
+display:flex;flex-direction:column;
+padding:calc(8px + var(--safe-top)) 9px calc(8px + var(--safe-bottom));
+gap:8px
+}
+
+.topbar{
+height:44px;flex:0 0 44px;
+display:grid;grid-template-columns:repeat(4,1fr);gap:7px
+}
+.icon,.tool{
+height:100%;width:100%;border-radius:14px;
+border:1px solid var(--line);
+background:rgba(12,15,22,.78);
+backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+box-shadow:0 8px 30px #0004;font-size:19px
+}
+.icon.timer,.tool.timer{color:#8cf3ff}
+.icon.undo,.tool.undo{color:#ffd27d}
+
+.players{
+flex:1;min-height:0;
+display:grid;grid-template-rows:1fr 1fr;gap:8px
+}
+.player{
+min-height:0;border:1px solid var(--line);border-radius:24px;
+background:var(--card);
+backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+display:flex;flex-direction:column;justify-content:center;align-items:center;
+padding:12px;box-shadow:0 20px 60px #0004;
+position:relative;overflow:hidden;isolation:isolate
+}
+.player:before{
+content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.075
+}
+.p1:before{background:radial-gradient(circle at 50% 0%,var(--p1),transparent 55%)}
+.p2:before{background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%)}
+
+.player-image{
+position:absolute;top:9px;left:9px;width:58px;height:58px;
+border-radius:15px;border:1px solid rgba(255,255,255,.16);
+background:rgba(12,15,22,.66);
+backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
+box-shadow:0 10px 30px #0006;display:grid;place-items:center;
+overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none
+}
+.player-image img{width:100%;height:100%;object-fit:contain;border-radius:14px;display:block}
+.player-image.empty{cursor:pointer}
+.player-image.empty:before{content:"+";color:#9ca5b6;font-size:23px;line-height:1}
+.player-image.empty:after{
+content:"IMG";position:absolute;bottom:4px;left:0;right:0;
+text-align:center;font-size:7px;letter-spacing:.12em;color:#6f7787
+}
+.player-image input{display:none}
+
+.pname{
+font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;
+text-align:center;padding:7px 12px;border-radius:10px;transition:.2s;
+max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+.pname:active{background:#ffffff12;transform:scale(.97)}
+.p1 .pname{color:#a9edff}.p2 .pname{color:#d1bdff}
+
+.lp{
+font-size:clamp(48px,13vw,82px);font-weight:800;letter-spacing:-.05em;
+line-height:1;margin:5px 0 8px;text-shadow:0 5px 30px #0008;
+font-variant-numeric:tabular-nums
+}
+
+.life-bar{
+width:min(440px,92%);height:7px;border-radius:999px;
+background:#ffffff12;border:1px solid #ffffff14;overflow:hidden;margin:0 auto 10px
+}
+.life-fill{
+height:100%;width:100%;border-radius:inherit;
+transition:width .3s ease,background-color .3s ease,box-shadow .3s ease
+}
+
+.controls{
+display:grid;grid-template-columns:46px minmax(0,1fr) 46px;
+gap:6px;max-width:390px;width:100%
+}
+.lp-op,.lp-amount{
+height:39px;border-radius:12px;background:#ffffff12;border:1px solid var(--line)
+}
+.lp-op{font-weight:800;font-size:22px}
+.lp-op.minus{color:#ff8da4}.lp-op.plus{color:#8cf3ff}.lp-op.selected{background:#ffffff25}
+.lp-amount{
+width:100%;color:var(--txt);text-align:center;outline:none;
+font-weight:750;font-size:14px;cursor:pointer;
+-webkit-user-select:none;user-select:none
+}
+.lp-amount::placeholder{color:#8e96a6}
+
+.half-btn{
+margin-top:6px;width:98px;height:39px;border-radius:12px;
+background:#ffffff10;border:1px solid var(--line);
+display:flex;align-items:center;justify-content:center;gap:5px;
+color:#e9edf6;font-size:9px;font-weight:800;letter-spacing:.05em;
+box-shadow:0 6px 20px #0003
+}
+.half-btn .half-icon{font-size:16px;line-height:1;font-weight:900}
+
+.bottom{
+height:51px;flex:0 0 51px;
+display:grid;grid-template-columns:repeat(4,1fr);gap:7px
+}
+.tool{font-size:19px}
+.tool.timer{color:#8cf3ff}.tool.undo{color:#ffd27d}
+
+.modal{
+position:fixed;inset:0;background:#0009;
+backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+display:none;align-items:flex-end;justify-content:center;
+padding:9px 9px calc(9px + var(--safe-bottom));z-index:20;
+overscroll-behavior:none
+}
+.modal.open{display:flex}
+.sheet{
+width:min(700px,100%);max-height:90svh;
+background:rgba(17,21,30,.98);border:1px solid var(--line);
+border-radius:23px;padding:13px;box-shadow:0 30px 100px #000b;
+overflow:hidden
+}
+.sheethead{
+display:flex;justify-content:space-between;align-items:center;margin-bottom:8px
+}
+.sheethead b{font-size:17px}
+.close{
+width:35px;height:35px;border-radius:11px;background:#ffffff10;
+border:1px solid var(--line);font-size:22px
+}
+
+.history{
+overflow:auto;max-height:64svh;display:flex;flex-direction:column;gap:6px;
+-webkit-overflow-scrolling:touch
+}
+.history-row{
+display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;
+padding:10px 11px;border-radius:13px;background:#ffffff0d;border:1px solid #ffffff12
+}
+.history-main{min-width:0}
+.history-title{font-size:13px;font-weight:750}
+.history-meta{color:var(--muted);font-size:10px;margin-top:3px}
+.history-values{text-align:right;white-space:nowrap}
+.history-change{font-weight:800;font-size:13px}
+.history-change.gain{color:#83f0c4}.history-change.loss{color:#ff8ba3}
+.history-after{color:#aeb5c4;font-size:10px;margin-top:3px}
+.empty-state{color:#8d96a7;text-align:center;padding:45px 10px;font-size:13px}
+
+textarea{
+width:100%;height:55svh;resize:none;background:#0b0e14;color:var(--txt);
+border:1px solid var(--line);border-radius:16px;padding:14px;outline:none;font-size:15px
+}
+
+.dice-wrap,.coin-wrap{
+height:55svh;display:grid;place-items:center;position:relative;overflow:hidden;
+border-radius:18px;background:radial-gradient(circle,#242a3c,#0b0e14 65%)
+}
+.die{
+width:100px;height:100px;background:linear-gradient(145deg,#fff,#cdd4df);
+border-radius:20px;display:grid;place-items:center;color:#111;font-size:48px;font-weight:900;
+box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;user-select:none;
+transform:translate3d(0,0,0);will-change:transform
+}
+.die.rolling{animation:diceRoll .9s cubic-bezier(.16,.82,.22,1) both}
+@keyframes diceRoll{
+0%{transform:translate3d(0,75px,0) rotateX(0) rotateY(0) rotateZ(0) scale(.62);opacity:.35}
+22%{transform:translate3d(22px,-55px,0) rotateX(120deg) rotateY(100deg) rotateZ(70deg) scale(.92);opacity:1}
+45%{transform:translate3d(-26px,-88px,0) rotateX(270deg) rotateY(230deg) rotateZ(155deg) scale(1.07)}
+68%{transform:translate3d(18px,-35px,0) rotateX(470deg) rotateY(390deg) rotateZ(245deg) scale(1.03)}
+85%{transform:translate3d(-7px,-8px,0) rotateX(600deg) rotateY(510deg) rotateZ(315deg) scale(1.01)}
+100%{transform:translate3d(0,0,0) rotateX(680deg) rotateY(570deg) rotateZ(360deg) scale(1);opacity:1}
+}
+
+.coin-stage{width:150px;height:180px;display:grid;place-items:center;perspective:900px}
+.coin{
+width:118px;height:118px;border-radius:50%;display:grid;place-items:center;
+background:radial-gradient(circle at 32% 27%,#fff8cf 0 7%,#f7dd72 20%,#d7a72d 62%,#a87817 100%);
+border:5px solid #f6dc73;color:#654700;font-size:22px;font-weight:900;
+box-shadow:inset 0 2px 4px #fff8,0 18px 35px #0008;will-change:transform
+}
+.coin.flip{animation:coinFlip 1.05s cubic-bezier(.14,.72,.2,1) both}
+@keyframes coinFlip{
+0%{transform:translateY(88px) rotateX(0) scale(.72)}
+50%{transform:translateY(-80px) rotateX(1440deg) scale(1.07)}
+100%{transform:translateY(0) rotateX(2700deg) scale(1)}
+}
 .hint{position:absolute;bottom:14px;color:#8891a2;font-size:11px;text-align:center;width:100%}
-.name-editor{display:flex;flex-direction:column;gap:10px}.name-editor input{width:100%;height:48px;border-radius:13px;background:#0b0e14;border:1px solid var(--line);color:#fff;padding:0 13px;outline:0;font-size:16px}.primary-btn{height:44px;border-radius:13px;background:#ffffff15;border:1px solid var(--line);font-weight:800}
-.timer-display{text-align:center;font-variant-numeric:tabular-nums;font-size:clamp(52px,17vw,82px);font-weight:800;letter-spacing:-.05em;margin:10px 0 14px}.timer-display.warning{color:#ffbd6f;text-shadow:0 0 25px #ffbd6f59}.timer-display.danger{color:#ff718b;text-shadow:0 0 25px #ff718b59}.timer-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px}.timer-btn{height:44px;border-radius:13px;background:#ffffff12;border:1px solid var(--line);font-weight:800}.timer-settings{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px}.timer-settings input{width:100%;height:40px;background:#0b0e14;color:#fff;border:1px solid var(--line);border-radius:11px;text-align:center;outline:0}.timer-presets{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:9px}.timer-preset{height:34px;border-radius:10px;background:#ffffff0d;border:1px solid var(--line);color:#cfd5e1;font-size:11px}
-.keypad{width:min(330px,100%);margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.key{height:48px;border-radius:13px;background:#ffffff0d;border:1px solid var(--line);font-size:18px;font-weight:700;color:#f3f5fa;touch-action:manipulation}.key.action{background:#ffffff15}.key.confirm{background:linear-gradient(180deg,#62d9ff3b,#62d9ff1f);border-color:#62d9ff59;color:#bdf3ff}.key.clear{color:#ff9bad}.keypad-value{text-align:center;font-size:29px;font-weight:800;min-height:42px;margin:3px 0 10px;overflow:hidden;text-overflow:ellipsis}.keypad-operation{text-align:center;color:#8f98a9;font-size:11px;margin-top:-5px;margin-bottom:4px}
-@media(max-width:700px){.players{grid-template-columns:1fr;grid-template-rows:1fr 1fr}}
-@media(max-height:680px){.app{padding:calc(7px + var(--safe-top)) 7px calc(7px + var(--safe-bottom));gap:6px}.topbar{height:42px}.icon{width:38px;height:38px}.players{gap:6px}.player{border-radius:21px;padding:10px}.player-image{width:54px;height:54px;top:8px;left:8px;border-radius:14px}.player-image img{border-radius:13px}.lp{margin:4px 0 7px}.life-bar{margin-bottom:8px}.lp-op,.lp-amount{height:36px}.half-btn{height:36px;margin-top:5px}.bottom{height:51px}.tool{border-radius:13px;font-size:17px}.sheet{padding:12px}.dice-wrap,.coin-wrap{height:50dvh}.key{height:45px}}
-</style></head><body>
+
+.name-editor{display:flex;flex-direction:column;gap:10px}
+.name-editor input{
+width:100%;height:48px;border-radius:13px;background:#0b0e14;border:1px solid var(--line);
+color:white;padding:0 13px;outline:none;font-size:16px
+}
+.primary-btn,.timer-btn{
+height:44px;border-radius:13px;background:#ffffff15;border:1px solid var(--line);font-weight:800
+}
+
+.timer-display{
+text-align:center;font-variant-numeric:tabular-nums;
+font-size:clamp(52px,17vw,82px);font-weight:800;letter-spacing:-.05em;margin:8px 0 14px
+}
+.timer-display.warning{color:#ffbd6f;text-shadow:0 0 25px rgba(255,189,111,.35)}
+.timer-display.danger{color:#ff718b;text-shadow:0 0 25px rgba(255,113,139,.35)}
+.timer-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.timer-btn:disabled{pointer-events:none}
+.timer-edit{
+height:40px;width:100%;border-radius:12px;background:#ffffff0d;border:1px solid var(--line);
+margin-bottom:9px;color:#cfd5e1;font-size:12px;font-weight:800
+}
+
+.keypad{
+width:min(290px,100%);margin:auto;
+display:grid;grid-template-columns:repeat(3,1fr);gap:6px
+}
+.key{
+height:44px;border-radius:12px;background:#ffffff0d;border:1px solid var(--line);
+font-size:17px;font-weight:700;color:#f3f5fa;touch-action:manipulation;
+-webkit-user-select:none;user-select:none
+}
+.key.action{background:#ffffff15}.key.confirm{
+background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
+border-color:rgba(98,217,255,.35);color:#bdf3ff
+}
+.key.clear{color:#ff9bad}
+.keypad-value{
+text-align:center;font-size:27px;font-weight:800;min-height:38px;margin:2px 0 8px;
+overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums
+}
+.keypad-operation{text-align:center;color:#8f98a9;font-size:11px;margin-top:-3px;margin-bottom:3px}
+
+@media(max-height:680px){
+.app{padding:calc(6px + var(--safe-top)) 6px calc(6px + var(--safe-bottom));gap:6px}
+.topbar{height:40px;flex-basis:40px;gap:6px}.icon{border-radius:12px}
+.players{gap:6px}.player{border-radius:21px;padding:9px}
+.player-image{width:51px;height:51px;top:7px;left:7px;border-radius:13px}
+.player-image img{border-radius:12px}
+.lp{margin:3px 0 6px}.life-bar{margin-bottom:7px}
+.lp-op,.lp-amount,.half-btn{height:35px}.half-btn{margin-top:4px}
+.bottom{height:45px;flex-basis:45px;gap:6px}.tool{border-radius:12px}
+.sheet{padding:11px}.dice-wrap,.coin-wrap{height:50svh}
+.key{height:42px}
+}
+
+@media(orientation:landscape) and (max-height:500px){
+.app{max-width:1000px}
+.players{grid-template-columns:1fr 1fr;grid-template-rows:1fr}
+}
+</style>
+</head>
+
+<body>
 <div class="app">
-<div class="topbar"><button class="icon" id="bgBtn" type="button" aria-label="Sfondo">▧</button><input id="bgInput" class="hidden-file" type="file" accept="image/*"><button class="icon" id="resetBtn" type="button" aria-label="Nuova partita">↻</button></div>
+
+<header class="topbar">
+<button class="icon" id="bgBtn" type="button" aria-label="Sfondo">▧</button>
+<input id="bgInput" class="hidden-file" type="file" accept="image/*">
+<button class="icon" id="resetBtn" type="button" aria-label="Nuova partita">↻</button>
+<button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button>
+<button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button>
+</header>
+
 <main class="players">
-<section class="player p1"><div class="player-image empty" id="imageSlot1"><input type="file" id="imageInput1" accept="image/*"></div><div class="pname" id="name1" data-player="1" role="button" tabindex="0">PLAYER 1</div><div class="lp" id="lp1">8000</div><div class="life-bar"><div class="life-fill" id="lifeFill1"></div></div><div class="controls"><button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button><input class="lp-amount" id="amount1" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 1"><button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button></div><button class="half-btn" type="button" data-half-player="1"><span class="half-icon">½</span><span>DIMEZZA</span></button></section>
-<section class="player p2"><div class="player-image empty" id="imageSlot2"><input type="file" id="imageInput2" accept="image/*"></div><div class="pname" id="name2" data-player="2" role="button" tabindex="0">PLAYER 2</div><div class="lp" id="lp2">8000</div><div class="life-bar"><div class="life-fill" id="lifeFill2"></div></div><div class="controls"><button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button><input class="lp-amount" id="amount2" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 2"><button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button></div><button class="half-btn" type="button" data-half-player="2"><span class="half-icon">½</span><span>DIMEZZA</span></button></section>
-</main>
-<nav class="bottom" aria-label="Strumenti"><button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button><button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button><button class="tool timer" id="timerBtn" type="button" aria-label="Timer">◷</button><button class="tool undo" id="undoBtn" type="button" aria-label="Annulla" disabled>↶</button><button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button><button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button></nav>
+
+<section class="player p1">
+<div class="player-image empty" id="imageSlot1" title="Immagine Player 1">
+<input type="file" id="imageInput1" accept="image/*">
 </div>
-<div class="modal" id="modal"><div class="sheet"><div class="sheethead"><b id="modalTitle"></b><button class="close" id="close" type="button" aria-label="Chiudi">×</button></div><div id="modalBody"></div></div></div>
+<div class="pname" id="name1" data-player="1" role="button" tabindex="0">PLAYER 1</div>
+<div class="lp" id="lp1">8000</div>
+<div class="life-bar"><div class="life-fill" id="lifeFill1"></div></div>
+<div class="controls">
+<button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button>
+<input class="lp-amount" id="amount1" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 1">
+<button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button>
+</div>
+<button class="half-btn" type="button" data-half-player="1"><span class="half-icon">½</span><span>DIMEZZA</span></button>
+</section>
+
+<section class="player p2">
+<div class="player-image empty" id="imageSlot2" title="Immagine Player 2">
+<input type="file" id="imageInput2" accept="image/*">
+</div>
+<div class="pname" id="name2" data-player="2" role="button" tabindex="0">PLAYER 2</div>
+<div class="lp" id="lp2">8000</div>
+<div class="life-bar"><div class="life-fill" id="lifeFill2"></div></div>
+<div class="controls">
+<button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button>
+<input class="lp-amount" id="amount2" type="text" readonly inputmode="none" placeholder="Cifra" aria-label="Cifra LP Player 2">
+<button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button>
+</div>
+<button class="half-btn" type="button" data-half-player="2"><span class="half-icon">½</span><span>DIMEZZA</span></button>
+</section>
+
+</main>
+
+<nav class="bottom" aria-label="Strumenti">
+<button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button>
+<button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button>
+<button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button>
+<button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button>
+</nav>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="sheet">
+<div class="sheethead">
+<b id="modalTitle"></b>
+<button class="close" id="close" type="button" aria-label="Chiudi">×</button>
+</div>
+<div id="modalBody"></div>
+</div>
+</div>
+
 <script>
 "use strict";
-const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],modal=$("#modal"),body=$("#modalBody"),title=$("#modalTitle");
-const state={lp:[8000,8000],names:["PLAYER 1","PLAYER 2"],history:[],notes:"",bg:localStorage.getItem("ygo-bg")||"",images:[localStorage.getItem("ygo-image-1")||"",localStorage.getItem("ygo-image-2")||""],timerSeconds:2400,timerInitialSeconds:2400};
-let currentAmountPlayer=null,currentAmountSign=-1,keypadValue="",diceRolling=false,dieVal=1,coinBusy=false,coinVal="TESTA",timerInterval=null,timerRunning=false,longPress={},longPressed={};
 
-function safeSet(k,v){try{localStorage.setItem(k,v);return 1}catch(e){console.warn("Storage:",e);return 0}}
-function save(){
- safeSet("ygo-state",JSON.stringify({lp:state.lp,names:state.names,history:state.history,notes:state.notes,timerSeconds:state.timerSeconds,timerInitialSeconds:state.timerInitialSeconds}));
- if(state.bg)safeSet("ygo-bg",state.bg);else localStorage.removeItem("ygo-bg");
- state.images.forEach((v,i)=>v?safeSet("ygo-image-"+(i+1),v):localStorage.removeItem("ygo-image-"+(i+1)));
- updateUndo();
-}
-function loadState(){
- try{
-  const s=JSON.parse(localStorage.getItem("ygo-state")||"null");if(!s)return;
-  if(Array.isArray(s.lp)&&s.lp.length===2)state.lp=s.lp.map(v=>Math.max(0,Number(v)||0));
-  if(Array.isArray(s.names)&&s.names.length===2)state.names=s.names.map((v,i)=>String(v||"PLAYER "+(i+1)).slice(0,18));
-  if(Array.isArray(s.history))state.history=s.history;
-  if(typeof s.notes==="string")state.notes=s.notes;
-  if(Number.isFinite(+s.timerSeconds))state.timerSeconds=Math.max(0,+s.timerSeconds);
-  if(Number.isFinite(+s.timerInitialSeconds)&&+s.timerInitialSeconds>0)state.timerInitialSeconds=Math.max(1,+s.timerInitialSeconds);
- }catch(e){console.warn("Stato non valido",e)}
-}
-function applyBackground(){if(state.bg)document.body.style.setProperty("--user-bg",`url("${state.bg}")`);else document.body.style.removeProperty("--user-bg")}
-function lifeColor(v){
- const a=[[8000,92,235,138],[7000,105,228,126],[6000,151,225,91],[5000,196,222,70],[4000,232,218,58],[3000,245,181,50],[2000,245,133,48],[1000,239,91,67],[0,205,42,67]];
- v=Math.max(0,+v||0);if(v>=8000)return["rgb(92,235,138)","rgba(92,235,138,.38)"];
- for(let i=0;i<a.length-1;i++){let h=a[i],l=a[i+1];if(v<=h[0]&&v>=l[0]){let p=(h[0]-v)/(h[0]-l[0]),r=Math.round(h[1]+(l[1]-h[1])*p),g=Math.round(h[2]+(l[2]-h[2])*p),b=Math.round(h[3]+(l[3]-h[3])*p);return[`rgb(${r},${g},${b})`,`rgba(${r},${g},${b},.3)`]}}
- return["rgb(205,42,67)","rgba(205,42,67,.35)"];
-}
-function updateLifeBar(p){let v=Math.max(0,+state.lp[p-1]||0),f=$("#lifeFill"+p);if(!f)return;f.style.width=Math.min(100,v/8000*100)+"%";let c=lifeColor(v);f.style.backgroundColor=c[0];f.style.boxShadow=`0 0 11px ${c[1]}`}
-function compressImage(file,maxSide=1200,quality=.86){
- return new Promise((resolve,reject)=>{let r=new FileReader;r.onerror=()=>reject(r.error||Error("Lettura immagine fallita"));r.onload=()=>{let img=new Image;img.onerror=()=>reject(Error("Immagine non valida"));img.onload=()=>{let s=Math.min(1,maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1)),c=document.createElement("canvas"),w=Math.max(1,Math.round((img.naturalWidth||1)*s)),h=Math.max(1,Math.round((img.naturalHeight||1)*s));c.width=w;c.height=h;let x=c.getContext("2d");if(!x)return resolve(r.result);x.fillStyle="#0b0d12";x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);let out=c.toDataURL("image/jpeg",quality);if(out.length>3500000)out=c.toDataURL("image/jpeg",.68);resolve(out)};img.src=r.result};r.readAsDataURL(file)})
-}
-function renderImages(){
- for(let p=1;p<=2;p++){let s=$("#imageSlot"+p);if(!s)continue;s.querySelector("img")?.remove();let v=state.images[p-1];s.classList.toggle("empty",!v);if(v){let i=document.createElement("img");i.src=v;i.alt="Immagine Player "+p;i.draggable=false;s.appendChild(i)}}
-}
-function setupImageSlot(p){
- let s=$("#imageSlot"+p),i=$("#imageInput"+p);if(!s||!i)return;
- s.onclick=e=>{if(longPressed[p]){longPressed[p]=false;e.preventDefault();return}i.click()};
- i.onchange=async e=>{let f=e.target.files?.[0];if(!f)return;try{if(!f.type.startsWith("image/"))throw Error();state.images[p-1]=await compressImage(f);renderImages();save()}catch(x){alert("Non è stato possibile caricare l'immagine.")}finally{i.value=""}};
- s.onpointerdown=e=>{if(!state.images[p-1]||e.target.tagName!=="IMG")return;longPressed[p]=false;clearTimeout(longPress[p]);longPress[p]=setTimeout(()=>{longPressed[p]=true;state.images[p-1]="";renderImages();save()},650)};
- ["pointerup","pointercancel","pointerleave"].forEach(t=>s.addEventListener(t,()=>clearTimeout(longPress[p])));
-}
-function render(){
- state.lp.forEach((v,i)=>{$("#lp"+(i+1)).textContent=Number(v).toLocaleString("it-IT");updateLifeBar(i+1)});
- state.names.forEach((v,i)=>$("#name"+(i+1)).textContent=v);
- renderImages();save();
-}
-function addHistory(p,n,b,a,action=""){state.history.unshift({id:Date.now()+Math.random(),time:new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),player:p,n, before:b,after:a,action})}
-function change(p,n,action=""){let b=Math.max(0,+state.lp[p-1]||0),a=Math.max(0,b+n);state.lp[p-1]=a;addHistory(p,n,b,a,action);render()}
-function halveLP(p){let b=Math.max(0,+state.lp[p-1]||0),a=Math.floor(b/2);state.lp[p-1]=a;addHistory(p,a-b,b,a,"Dimezza LP");render()}
-function undo(){let x=state.history.shift();if(!x)return;state.lp[x.player-1]=Math.max(0,+x.before||0);render()}
-function updateUndo(){$("#undoBtn").disabled=!state.history.length}
-$$(".lp-op").forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll(".lp-op").forEach(x=>x.classList.remove("selected"));b.classList.add("selected")});
-$$(".lp-amount").forEach(i=>i.onclick=()=>{let p=+i.id.replace("amount",""),sel=i.parentElement.querySelector(".selected");currentAmountPlayer=p;currentAmountSign=+(sel?.dataset.sign||-1);openKeypad()});
-$$(".half-btn").forEach(b=>b.onclick=()=>halveLP(+b.dataset.halfPlayer));
-function openModal(t,c){title.textContent=t;body.innerHTML=c;modal.classList.add("open")}
-function closeModal(){modal.classList.remove("open");body.innerHTML=""}
-$("#close").onclick=closeModal;
-modal.onclick=e=>{if(e.target===modal)closeModal()};
-function openKeypad(){
- keypadValue="";let sign=currentAmountSign<0?"SOTTRAI":"AGGIUNGI";
- openModal("Inserisci LP",`<div class="keypad-operation">PLAYER ${currentAmountPlayer} · ${sign}</div><div class="keypad-value" id="keypadValue">0</div><div class="keypad"><button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button><button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button><button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button><button class="key clear" data-key="clear">C</button><button class="key" data-key="0">0</button><button class="key action" data-key="back">⌫</button><button class="key confirm" data-key="confirm" style="grid-column:1/-1">CONFERMA</button></div>`);
- $$(".key").forEach(b=>b.onclick=()=>handleKeypad(b.dataset.key));
-}
-function updateKeypad(){let e=$("#keypadValue");if(e)e.textContent=keypadValue||"0"}
-function handleKeypad(k){
- if(/^\d$/.test(k)){if(keypadValue.length<7)keypadValue=keypadValue==="0"?k:keypadValue+k;updateKeypad();return}
- if(k==="clear"){keypadValue="";updateKeypad();return}
- if(k==="back"){keypadValue=keypadValue.slice(0,-1);updateKeypad();return}
- if(k==="confirm"){let v=+keypadValue;if(v>0&&Number.isInteger(v)){change(currentAmountPlayer,currentAmountSign*v);closeModal()}}
-}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function openNameEditor(p){
- let n=state.names[p-1];
- openModal("Nome giocatore",`<div class="name-editor"><input id="nameInput" type="text" maxlength="18" autocomplete="off" value="${escapeHtml(n)}" placeholder="Nome giocatore"><button class="primary-btn" id="saveNameBtn" type="button">SALVA</button></div>`);
- let i=$("#nameInput");i.focus();i.select();$("#saveNameBtn").onclick=()=>{state.names[p-1]=i.value.trim()||"PLAYER "+p;render();closeModal()};i.onkeydown=e=>{if(e.key==="Enter")$("#saveNameBtn").click()}
-}
-[1,2].forEach(p=>{let e=$("#name"+p);e.onclick=()=>openNameEditor(p);e.onkeydown=x=>{if(x.key==="Enter"||x.key===" "){x.preventDefault();openNameEditor(p)}}});
-$("#historyBtn").onclick=()=>{
- if(!state.history.length)return openModal("Storico",'<div class="empty-state">Nessuna modifica registrata</div>');
- let rows=state.history.map(x=>{let gain=+x.n>=0,a=x.action||(gain?"Aggiunta LP":"Perdita LP");return`<div class="history-row"><div class="history-main"><div class="history-title">${escapeHtml(a)} · ${escapeHtml(state.names[x.player-1])}</div><div class="history-meta">${escapeHtml(x.time)} · ${(+x.before).toLocaleString("it-IT")} → ${(+x.after).toLocaleString("it-IT")}</div></div><div class="history-values"><div class="history-change ${gain?"gain":"loss"}">${gain?"+":""}${(+x.n).toLocaleString("it-IT")}</div><div class="history-after">LP ${(+x.after).toLocaleString("it-IT")}</div></div></div>`}).join("");
- openModal("Storico",`<div class="history">${rows}</div>`)
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const modal=$("#modal"),modalBody=$("#modalBody"),modalTitle=$("#modalTitle");
+
+const state={
+lp:[8000,8000],
+names:["PLAYER 1","PLAYER 2"],
+history:[],
+notes:"",
+bg:localStorage.getItem("ygo-bg")||"",
+images:[
+localStorage.getItem("ygo-image-1")||"",
+localStorage.getItem("ygo-image-2")||""
+],
+timerSeconds:2700,
+timerInitialSeconds:2700
 };
-$("#undoBtn").onclick=undo;
-$("#notesBtn").onclick=()=>{openModal("Appunti",'<textarea id="notes" aria-label="Appunti"></textarea>');let n=$("#notes");n.value=state.notes;n.oninput=e=>{state.notes=e.target.value;save()}};
-function secureRandomInt(max){if(window.crypto?.getRandomValues){let lim=Math.floor(0x100000000/max)*max,a=new Uint32Array(1);do crypto.getRandomValues(a);while(a[0]>=lim);return a[0]%max}return Math.floor(Math.random()*max)}
-const secureDie=()=>1+secureRandomInt(6),secureCoin=()=>secureRandomInt(2)?"CROCE":"TESTA";
-function temporaryDie(f){let v;do v=secureDie();while(v===f);return v}
-$("#diceBtn").onclick=()=>{openModal("Dado",'<div class="dice-wrap"><div class="die" id="die">•</div><div class="hint">Tocca il dado per rilanciare</div></div>');setTimeout(rollDie,40)};
+
+let currentAmountPlayer=null,currentAmountSign=-1,keypadValue="";
+let diceRolling=false,coinBusy=false,timerInterval=null,timerRunning=false;
+const imageLongPressTimers={},imageLongPressTriggered={};
+
+function safeSet(k,v){
+try{localStorage.setItem(k,v);return true}catch(e){console.warn(e);return false}
+}
+
+function save(){
+safeSet("ygo-state",JSON.stringify({
+lp:state.lp,names:state.names,history:state.history,notes:state.notes,
+timerSeconds:state.timerSeconds,timerInitialSeconds:state.timerInitialSeconds
+}));
+if(state.bg)safeSet("ygo-bg",state.bg);else localStorage.removeItem("ygo-bg");
+state.images.forEach((x,i)=>x?safeSet("ygo-image-"+(i+1),x):localStorage.removeItem("ygo-image-"+(i+1)));
+}
+
+function loadState(){
+try{
+const x=JSON.parse(localStorage.getItem("ygo-state")||"null");
+if(!x)return;
+if(Array.isArray(x.lp)&&x.lp.length===2)state.lp=x.lp.map(v=>Math.max(0,Number(v)||0));
+if(Array.isArray(x.names)&&x.names.length===2)state.names=x.names.map(v=>String(v||"PLAYER"));
+if(Array.isArray(x.history))state.history=x.history;
+if(typeof x.notes==="string")state.notes=x.notes;
+if(Number.isFinite(Number(x.timerSeconds)))state.timerSeconds=Math.max(0,Number(x.timerSeconds));
+if(Number.isFinite(Number(x.timerInitialSeconds)))state.timerInitialSeconds=Math.max(1,Number(x.timerInitialSeconds));
+}catch(e){console.warn("Stato locale non valido",e)}
+}
+
+function applyBackground(){
+if(state.bg)document.body.style.setProperty("--user-bg",`url("${state.bg}")`);
+else document.body.style.removeProperty("--user-bg");
+}
+
+function lifeColor(v){
+v=Math.max(0,Number(v)||0);
+const s=[[8000,92,235,138],[7000,105,228,126],[6000,151,225,91],[5000,196,222,70],[4000,232,218,58],[3000,245,181,50],[2000,245,133,48],[1000,239,91,67],[0,205,42,67]];
+if(v>=8000)return["rgb(92,235,138)","rgba(92,235,138,.38)"];
+for(let i=0;i<s.length-1;i++){
+const h=s[i],l=s[i+1];
+if(v<=h[0]&&v>=l[0]){
+const p=(h[0]-v)/(h[0]-l[0]);
+const r=Math.round(h[1]+(l[1]-h[1])*p),g=Math.round(h[2]+(l[2]-h[2])*p),b=Math.round(h[3]+(l[3]-h[3])*p);
+return[`rgb(${r},${g},${b})`,`rgba(${r},${g},${b},.30)`]
+}}
+return["rgb(205,42,67)","rgba(205,42,67,.35)"]
+}
+
+function updateLifeBar(p){
+const v=Math.max(0,Number(state.lp[p-1])||0),f=$("#lifeFill"+p);
+if(!f)return;
+f.style.width=Math.min(100,v/8000*100)+"%";
+const[c,g]=lifeColor(v);f.style.backgroundColor=c;f.style.boxShadow=`0 0 11px ${g}`;
+}
+
+function compressImage(file,maxSide=1200,quality=.86){
+return new Promise((resolve,reject)=>{
+const r=new FileReader();
+r.onerror=()=>reject(r.error||new Error("Lettura fallita"));
+r.onload=()=>{
+const img=new Image();
+img.onerror=()=>reject(new Error("Immagine non valida"));
+img.onload=()=>{
+const scale=Math.min(1,maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+const c=document.createElement("canvas");
+c.width=Math.max(1,Math.round((img.naturalWidth||1)*scale));
+c.height=Math.max(1,Math.round((img.naturalHeight||1)*scale));
+const ctx=c.getContext("2d");
+if(!ctx)return resolve(r.result);
+ctx.fillStyle="#0b0d12";ctx.fillRect(0,0,c.width,c.height);
+ctx.drawImage(img,0,0,c.width,c.height);
+let out=c.toDataURL("image/jpeg",quality);
+if(out.length>3500000)out=c.toDataURL("image/jpeg",.68);
+resolve(out)
+};
+img.src=r.result
+};
+r.readAsDataURL(file)
+})
+}
+
+function renderImages(){
+for(let p=1;p<=2;p++){
+const slot=$("#imageSlot"+p);if(!slot)continue;
+const old=slot.querySelector("img");if(old)old.remove();
+if(!state.images[p-1]){slot.classList.add("empty");continue}
+slot.classList.remove("empty");
+const img=document.createElement("img");
+img.src=state.images[p-1];img.alt="Immagine Player "+p;img.draggable=false;slot.appendChild(img)
+}
+}
+
+function setupImageSlot(p){
+const slot=$("#imageSlot"+p),input=$("#imageInput"+p);if(!slot||!input)return;
+slot.addEventListener("click",e=>{
+if(imageLongPressTriggered[p]){
+imageLongPressTriggered[p]=false;e.preventDefault();return
+}
+input.click()
+});
+input.addEventListener("change",async e=>{
+const f=e.target.files?.[0];if(!f)return;
+try{
+if(!f.type.startsWith("image/"))throw new Error("file");
+state.images[p-1]=await compressImage(f);renderImages();save()
+}catch(err){console.error(err);alert("Non è stato possibile caricare l'immagine.")}
+finally{input.value=""}
+});
+slot.addEventListener("pointerdown",e=>{
+if(!state.images[p-1]||e.target.tagName!=="IMG")return;
+imageLongPressTriggered[p]=false;
+clearTimeout(imageLongPressTimers[p]);
+imageLongPressTimers[p]=setTimeout(()=>{
+imageLongPressTriggered[p]=true;state.images[p-1]="";renderImages();save()
+},650)
+});
+["pointerup","pointercancel","pointerleave"].forEach(t=>slot.addEventListener(t,()=>{
+clearTimeout(imageLongPressTimers[p]);imageLongPressTimers[p]=null
+}))
+}
+
+function render(){
+state.lp.forEach((v,i)=>{
+const p=i+1,el=$("#lp"+p);
+if(el)el.textContent=Number(v).toLocaleString("it-IT");
+updateLifeBar(p)
+});
+state.names.forEach((n,i)=>{const e=$("#name"+(i+1));if(e)e.textContent=n});
+renderImages();save()
+}
+
+function addHistory(player,n,before,after,action){
+state.history.unshift({
+id:Date.now()+Math.random(),
+time:new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),
+player,n,before,after,action:action||""
+})
+}
+
+function change(player,amount,action=""){
+const before=Math.max(0,Number(state.lp[player-1])||0);
+const after=Math.max(0,before+amount);
+state.lp[player-1]=after;
+addHistory(player,amount,before,after,action);
+render()
+}
+
+function halveLP(player){
+const before=Math.max(0,Number(state.lp[player-1])||0);
+const after=Math.floor(before/2);
+state.lp[player-1]=after;
+addHistory(player,after-before,before,after,"Dimezza LP");
+render()
+}
+
+function undo(){
+if(!state.history.length)return;
+const last=state.history.shift();
+if(last&&last.player&&Number.isFinite(Number(last.before)))
+state.lp[last.player-1]=Math.max(0,Number(last.before));
+render()
+}
+
+$$(".lp-op").forEach(b=>b.addEventListener("pointerdown",e=>{
+e.preventDefault();
+const wrap=b.parentElement;
+wrap.querySelectorAll(".lp-op").forEach(x=>x.classList.remove("selected"));
+b.classList.add("selected")
+}));
+
+$$(".lp-amount").forEach(input=>input.addEventListener("pointerdown",e=>{
+e.preventDefault();
+const p=Number(input.id.replace("amount",""));
+const selected=input.parentElement.querySelector(".lp-op.selected");
+currentAmountPlayer=p;
+currentAmountSign=Number(selected?.dataset.sign||-1);
+openKeypad()
+}));
+
+$$(".half-btn").forEach(b=>b.addEventListener("pointerdown",e=>{
+e.preventDefault();halveLP(Number(b.dataset.halfPlayer))
+}));
+
+function openModal(title,content){
+modalTitle.textContent=title;modalBody.innerHTML=content;modal.classList.add("open")
+}
+function closeModal(){
+modal.classList.remove("open");modalBody.innerHTML=""
+}
+$("#close").addEventListener("pointerdown",e=>{e.preventDefault();closeModal()});
+modal.addEventListener("pointerdown",e=>{if(e.target===modal){e.preventDefault();closeModal()}});
+
+function openKeypad(){
+keypadValue="";
+const sign=currentAmountSign<0?"SOTTRAI":"AGGIUNGI";
+openModal("Inserisci LP",`
+<div class="keypad-operation">PLAYER ${currentAmountPlayer} · ${sign}</div>
+<div class="keypad-value" id="keypadValue">0</div>
+<div class="keypad">
+<button class="key" data-key="1" type="button">1</button><button class="key" data-key="2" type="button">2</button><button class="key" data-key="3" type="button">3</button>
+<button class="key" data-key="4" type="button">4</button><button class="key" data-key="5" type="button">5</button><button class="key" data-key="6" type="button">6</button>
+<button class="key" data-key="7" type="button">7</button><button class="key" data-key="8" type="button">8</button><button class="key" data-key="9" type="button">9</button>
+<button class="key clear" data-key="clear" type="button">C</button><button class="key" data-key="0" type="button">0</button><button class="key action" data-key="back" type="button">⌫</button>
+<button class="key confirm" data-key="confirm" type="button" style="grid-column:1/-1">CONFERMA</button>
+</div>`);
+$$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{
+e.preventDefault();e.stopPropagation();handleKeypad(b.dataset.key)
+}))
+}
+
+function updateKeypad(){
+const e=$("#keypadValue");if(e)e.textContent=keypadValue||"0"
+}
+
+function handleKeypad(k){
+if(/^\d$/.test(k)){
+if(keypadValue.length>=7)return;
+keypadValue=keypadValue==="0"?k:keypadValue+k;
+updateKeypad();return
+}
+if(k==="clear"){keypadValue="";updateKeypad();return}
+if(k==="back"){keypadValue=keypadValue.slice(0,-1);updateKeypad();return}
+if(k==="confirm"){
+const v=Number(keypadValue);
+if(!Number.isInteger(v)||v<=0)return;
+change(currentAmountPlayer,currentAmountSign*v);closeModal()
+}
+}
+
+function escapeHtml(v){
+return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")
+}
+
+function openNameEditor(p){
+const current=state.names[p-1];
+openModal("Nome giocatore",`
+<div class="name-editor">
+<input id="nameInput" type="text" maxlength="18" autocomplete="off" value="${escapeHtml(current)}" placeholder="Nome giocatore">
+<button class="primary-btn" id="saveNameBtn" type="button">SALVA</button>
+</div>`);
+const input=$("#nameInput");input.focus();input.select();
+$("#saveNameBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+state.names[p-1]=input.value.trim()||"PLAYER "+p;render();closeModal()
+});
+input.addEventListener("keydown",e=>{if(e.key==="Enter")$("#saveNameBtn").click()})
+}
+
+[1,2].forEach(p=>{
+const e=$("#name"+p);
+e.addEventListener("click",()=>openNameEditor(p));
+e.addEventListener("keydown",x=>{
+if(x.key==="Enter"||x.key===" "){x.preventDefault();openNameEditor(p)}
+})
+});
+
+$("#historyBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+if(!state.history.length){
+openModal("Storico",`<div class="empty-state">Nessuna modifica registrata</div>`);return
+}
+const rows=state.history.map(x=>{
+const gain=Number(x.n)>=0;
+const action=x.action||(gain?"Aggiunta LP":"Perdita LP");
+return `<div class="history-row"><div class="history-main"><div class="history-title">${escapeHtml(action)} · ${escapeHtml(state.names[x.player-1])}</div><div class="history-meta">${escapeHtml(x.time)} · ${Number(x.before).toLocaleString("it-IT")} → ${Number(x.after).toLocaleString("it-IT")}</div></div><div class="history-values"><div class="history-change ${gain?"gain":"loss"}">${gain?"+":""}${Number(x.n).toLocaleString("it-IT")}</div><div class="history-after">LP ${Number(x.after).toLocaleString("it-IT")}</div></div></div>`
+}).join("");
+openModal("Storico",`<div class="history">${rows}</div>`)
+});
+
+$("#undoBtn").addEventListener("pointerdown",e=>{e.preventDefault();undo()});
+
+$("#notesBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+openModal("Appunti",`<textarea id="notes" aria-label="Appunti"></textarea>`);
+const n=$("#notes");n.value=state.notes;
+n.addEventListener("input",e=>{state.notes=e.target.value;save()})
+});
+
+function secureRandomInt(max){
+if(window.crypto&&typeof crypto.getRandomValues==="function"){
+const limit=Math.floor(0x100000000/max)*max,arr=new Uint32Array(1);
+do{crypto.getRandomValues(arr)}while(arr[0]>=limit);
+return arr[0]%max
+}
+return Math.floor(Math.random()*max)
+}
+const secureDie=()=>1+secureRandomInt(6);
+const secureCoin=()=>secureRandomInt(2)?"CROCE":"TESTA";
+function temporaryDie(final){let v;do{v=secureDie()}while(v===final);return v}
+
+$("#diceBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+openModal("Dado",`<div class="dice-wrap"><div class="die" id="die">•</div><div class="hint">Tocca il dado per rilanciare</div></div>`);
+setTimeout(rollDie,40)
+});
+
 function rollDie(){
- let d=$("#die");if(!d||diceRolling)return;diceRolling=true;dieVal=secureDie();d.textContent=temporaryDie(dieVal);d.classList.remove("rolling");void d.offsetWidth;d.classList.add("rolling");let st=performance.now();function anim(t){if(!d.isConnected)return diceRolling=false;if(t-st<820){d.textContent=temporaryDie(dieVal);requestAnimationFrame(anim)}}requestAnimationFrame(anim);setTimeout(()=>{if(!d.isConnected)return diceRolling=false;d.textContent=dieVal;d.classList.remove("rolling");diceRolling=false},930)
+const die=$("#die");if(!die||diceRolling)return;
+diceRolling=true;
+const final=secureDie();
+die.textContent=temporaryDie(final);
+die.classList.remove("rolling");void die.offsetWidth;die.classList.add("rolling");
+const start=performance.now();
+function anim(now){
+if(!die.isConnected){diceRolling=false;return}
+if(now-start<820){die.textContent=temporaryDie(final);requestAnimationFrame(anim)}
 }
-$("#coinBtn").onclick=()=>{openModal("Moneta",'<div class="coin-wrap"><div class="coin-stage"><div class="coin" id="coin">•</div></div><div class="hint">Tocca la moneta per rilanciarla</div></div>');setTimeout(flipCoin,40)};
-function flipCoin(){let c=$("#coin");if(!c||coinBusy)return;coinBusy=true;coinVal=secureCoin();c.textContent="•";c.classList.remove("flip");void c.offsetWidth;c.classList.add("flip");setTimeout(()=>{if(!c.isConnected)return coinBusy=false;c.textContent=coinVal;c.classList.remove("flip");coinBusy=false},1080)}
-body.onclick=e=>{if(e.target.id==="die")rollDie();if(e.target.id==="coin")flipCoin()};
-function formatTime(s){s=Math.max(0,Math.floor(s));let h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?[h,m,x].map(v=>String(v).padStart(2,"0")).join(":"):[m,x].map(v=>String(v).padStart(2,"0")).join(":")}
-function stopTimer(){if(timerInterval!==null)clearInterval(timerInterval);timerInterval=null;timerRunning=false}
-function updateTimerDisplay(){let d=$("#timerDisplay");if(!d)return;d.textContent=formatTime(state.timerSeconds);d.classList.toggle("danger",state.timerSeconds<=60);d.classList.toggle("warning",state.timerSeconds>60&&state.timerSeconds<=300)}
-function updateTimerButtons(){let a=$("#timerStart"),p=$("#timerPause");if(!a||!p)return;a.disabled=timerRunning;p.disabled=!timerRunning;a.style.opacity=timerRunning?".45":"1";p.style.opacity=timerRunning?"1":".45"}
-function startTimer(){if(timerRunning||state.timerSeconds<=0)return;timerRunning=true;timerInterval=setInterval(()=>{if(state.timerSeconds<=0)return stopTimer();state.timerSeconds--;updateTimerDisplay();save();if(state.timerSeconds<=0){stopTimer();updateTimerButtons()}},1000);updateTimerButtons()}
+requestAnimationFrame(anim);
+setTimeout(()=>{
+if(!die.isConnected){diceRolling=false;return}
+die.textContent=final;die.classList.remove("rolling");diceRolling=false
+},930)
+}
+
+$("#coinBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+openModal("Moneta",`<div class="coin-wrap"><div class="coin-stage"><div class="coin" id="coin">•</div></div><div class="hint">Tocca la moneta per rilanciarla</div></div>`);
+setTimeout(flipCoin,40)
+});
+
+function flipCoin(){
+const coin=$("#coin");if(!coin||coinBusy)return;
+coinBusy=true;const final=secureCoin();
+coin.textContent="•";coin.classList.remove("flip");void coin.offsetWidth;coin.classList.add("flip");
+setTimeout(()=>{
+if(!coin.isConnected){coinBusy=false;return}
+coin.textContent=final;coin.classList.remove("flip");coinBusy=false
+},1080)
+}
+
+modalBody.addEventListener("pointerdown",e=>{
+if(e.target.id==="die"){e.preventDefault();rollDie()}
+if(e.target.id==="coin"){e.preventDefault();flipCoin()}
+});
+
+function formatTime(s){
+s=Math.max(0,Math.floor(s));
+const h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;
+return h?[String(h).padStart(2,"0"),String(m).padStart(2,"0"),String(sec).padStart(2,"0")].join(":"):[String(m).padStart(2,"0"),String(sec).padStart(2,"0")].join(":")
+}
+
+function stopTimer(){
+if(timerInterval!==null){clearInterval(timerInterval);timerInterval=null}
+timerRunning=false
+}
+
+function updateTimerDisplay(){
+const d=$("#timerDisplay");if(!d)return;
+d.textContent=formatTime(state.timerSeconds);
+d.classList.remove("warning","danger");
+if(state.timerSeconds<=60)d.classList.add("danger");
+else if(state.timerSeconds<=300)d.classList.add("warning")
+}
+
+function updateTimerButtons(){
+const a=$("#timerStart"),p=$("#timerPause");
+if(!a||!p)return;
+a.disabled=timerRunning;p.disabled=!timerRunning;
+a.style.opacity=timerRunning?".45":"1";
+p.style.opacity=timerRunning?"1":".45"
+}
+
+function startTimer(){
+if(timerRunning||state.timerSeconds<=0)return;
+timerRunning=true;
+timerInterval=setInterval(()=>{
+if(state.timerSeconds<=0){stopTimer();updateTimerDisplay();updateTimerButtons();return}
+state.timerSeconds--;updateTimerDisplay();save()
+},1000);
+updateTimerButtons()
+}
+
 function pauseTimer(){stopTimer();updateTimerButtons();save()}
-function resetTimer(){stopTimer();state.timerSeconds=state.timerInitialSeconds;updateTimerDisplay();updateTimerButtons();save()}
-function setTimerFromInputs(){let m=Math.max(0,parseInt($("#timerMinutes")?.value||0,10)||0),s=Math.min(59,Math.max(0,parseInt($("#timerSeconds")?.value||0,10)||0)),t=m*60+s;if(!t)return;stopTimer();state.timerInitialSeconds=t;state.timerSeconds=t;updateTimerDisplay();updateTimerButtons();save()}
-function openTimer(){
- openModal("Timer duello",`<div class="timer-display" id="timerDisplay">${formatTime(state.timerSeconds)}</div><div class="timer-presets"><button class="timer-preset" data-preset="1800">30 min</button><button class="timer-preset" data-preset="2400">40 min</button><button class="timer-preset" data-preset="3000">50 min</button><button class="timer-preset" data-preset="3600">60 min</button></div><div class="timer-settings"><input id="timerMinutes" type="number" min="0" max="999" inputmode="numeric" placeholder="Minuti"><input id="timerSeconds" type="number" min="0" max="59" inputmode="numeric" placeholder="Secondi"></div><div class="timer-controls"><button class="timer-btn" id="timerStart" type="button">▶ AVVIA</button><button class="timer-btn" id="timerPause" type="button">❚❚ PAUSA</button><button class="timer-btn" id="timerSet" type="button">IMPOSTA</button><button class="timer-btn" id="timerReset" type="button">↻ RESET</button></div>`);
- $("#timerMinutes").value=Math.floor(state.timerInitialSeconds/60);$("#timerSeconds").value=state.timerInitialSeconds%60;updateTimerDisplay();updateTimerButtons();
- $$(".timer-preset").forEach(b=>b.onclick=()=>{let t=+b.dataset.preset;stopTimer();state.timerInitialSeconds=t;state.timerSeconds=t;$("#timerMinutes").value=Math.floor(t/60);$("#timerSeconds").value=t%60;updateTimerDisplay();updateTimerButtons();save()});
- $("#timerStart").onclick=startTimer;$("#timerPause").onclick=pauseTimer;$("#timerSet").onclick=setTimerFromInputs;$("#timerReset").onclick=resetTimer
+
+function resetTimer(){
+stopTimer();state.timerSeconds=state.timerInitialSeconds;
+updateTimerDisplay();updateTimerButtons();save()
 }
-$("#timerBtn").onclick=openTimer;
-$("#bgBtn").onclick=()=>$("#bgInput").click();
-$("#bgInput").onchange=async e=>{let f=e.target.files?.[0];if(!f)return;try{if(!f.type.startsWith("image/"))throw Error();state.bg=await compressImage(f,1600,.78);applyBackground();save()}catch(x){alert("Non è stato possibile caricare lo sfondo.")}finally{e.target.value=""}};
-$("#resetBtn").onclick=()=>{if(!confirm("Vuoi iniziare una nuova partita?\n\nLP, storico, timer e appunti verranno azzerati."))return;stopTimer();state.lp=[8000,8000];state.history=[];state.notes="";state.timerInitialSeconds=2400;state.timerSeconds=2400;diceRolling=false;coinBusy=false;render();closeModal()};
-loadState();applyBackground();setupImageSlot(1);setupImageSlot(2);render();
-</script></body></html>
+
+function openTimer(){
+stopTimer();
+openModal("Timer duello",`
+<div class="timer-display" id="timerDisplay">${formatTime(state.timerSeconds)}</div>
+<button class="timer-edit" id="timerEdit" type="button">CAMBIA DURATA</button>
+<div class="timer-controls">
+<button class="timer-btn" id="timerStart" type="button">▶ AVVIA</button>
+<button class="timer-btn" id="timerPause" type="button">❚❚ PAUSA</button>
+<button class="timer-btn" id="timerReset" type="button">↻ RESET</button>
+</div>`);
+updateTimerDisplay();updateTimerButtons();
+
+$("#timerStart").addEventListener("pointerdown",e=>{e.preventDefault();startTimer()});
+$("#timerPause").addEventListener("pointerdown",e=>{e.preventDefault();pauseTimer()});
+$("#timerReset").addEventListener("pointerdown",e=>{e.preventDefault();resetTimer()});
+$("#timerEdit").addEventListener("pointerdown",e=>{e.preventDefault();openTimerKeypad()})
+}
+
+function openTimerKeypad(){
+let v="";
+openModal("Durata timer",`
+<div class="keypad-operation">INSERISCI I MINUTI · DEFAULT 45</div>
+<div class="keypad-value" id="timerKeyValue">45</div>
+<div class="keypad">
+<button class="key" data-k="1" type="button">1</button><button class="key" data-k="2" type="button">2</button><button class="key" data-k="3" type="button">3</button>
+<button class="key" data-k="4" type="button">4</button><button class="key" data-k="5" type="button">5</button><button class="key" data-k="6" type="button">6</button>
+<button class="key" data-k="7" type="button">7</button><button class="key" data-k="8" type="button">8</button><button class="key" data-k="9" type="button">9</button>
+<button class="key clear" data-k="c" type="button">C</button><button class="key" data-k="0" type="button">0</button><button class="key action" data-k="b" type="button">⌫</button>
+</div>`);
+const display=$("#timerKeyValue");
+const update=()=>display.textContent=v||"0";
+
+$$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{
+e.preventDefault();e.stopPropagation();
+const k=b.dataset.k;
+if(/\d/.test(k)){
+if(v.length>=3)return;
+v=v==="0"?k:v+k;
+update();
+clearTimeout(window.timerAutoSet);
+window.timerAutoSet=setTimeout(()=>applyTimerMinutes(v),500)
+}else if(k==="c"){
+v="";update();clearTimeout(window.timerAutoSet)
+}else if(k==="b"){
+v=v.slice(0,-1);update();
+clearTimeout(window.timerAutoSet);
+if(v)window.timerAutoSet=setTimeout(()=>applyTimerMinutes(v),500)
+}
+}))
+}
+
+function applyTimerMinutes(value){
+const min=Math.max(1,parseInt(value,10)||0);
+state.timerInitialSeconds=min*60;
+state.timerSeconds=min*60;
+stopTimer();
+save();
+closeModal();
+openTimer()
+}
+
+$("#timerBtn").addEventListener("pointerdown",e=>{e.preventDefault();openTimer()});
+
+$("#bgBtn").addEventListener("pointerdown",e=>{e.preventDefault();$("#bgInput").click()});
+$("#bgInput").addEventListener("change",async e=>{
+const f=e.target.files?.[0];if(!f)return;
+try{
+if(!f.type.startsWith("image/"))throw new Error("file");
+state.bg=await compressImage(f,1600,.78);applyBackground();save()
+}catch(err){console.error(err);alert("Non è stato possibile caricare lo sfondo.")}
+finally{e.target.value=""}
+});
+
+$("#resetBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+if(!confirm("Vuoi iniziare una nuova partita?\n\nLP, storico, timer e appunti verranno azzerati."))return;
+stopTimer();
+state.lp=[8000,8000];state.history=[];state.notes="";
+state.timerInitialSeconds=2700;state.timerSeconds=2700;
+diceRolling=false;coinBusy=false;render();closeModal()
+});
+
+loadState();
+if(!state.timerInitialSeconds||state.timerInitialSeconds<1){
+state.timerInitialSeconds=2700;state.timerSeconds=2700
+}
+applyBackground();
+setupImageSlot(1);setupImageSlot(2);render();
+</script>
+</body>
+</html>
