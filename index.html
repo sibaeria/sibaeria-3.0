@@ -41,6 +41,7 @@ body{
   margin:0;
   width:100%;
   height:100%;
+  min-height:100%;
   overflow:hidden;
   overscroll-behavior:none;
   background:var(--bg);
@@ -53,16 +54,23 @@ html{
 body{
   position:fixed;
   inset:0;
+
   background:
     linear-gradient(135deg,rgba(5,7,12,.84),rgba(5,7,12,.5)),
     var(--user-bg);
+
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
+
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+
   color:var(--txt);
+
   -webkit-text-size-adjust:100%;
+
   touch-action:manipulation;
+
   user-select:none;
   -webkit-user-select:none;
 }
@@ -89,15 +97,19 @@ button:active{
 }
 
 /* =========================
-   APP / IPHONE
+   APP
 ========================= */
 
 .app{
   width:100%;
+  max-width:720px;
+
   height:100vh;
   height:100svh;
   height:100dvh;
-  max-width:720px;
+
+  min-height:0;
+
   margin:auto;
 
   display:flex;
@@ -110,11 +122,14 @@ button:active{
     max(9px,var(--safe-left));
 
   gap:8px;
+
+  overflow:hidden;
 }
 
 @media all and (display-mode: standalone){
   .app{
     height:100vh;
+    height:100dvh;
   }
 }
 
@@ -124,6 +139,7 @@ button:active{
 
 .topbar{
   height:44px;
+  min-height:44px;
   flex:0 0 44px;
 
   display:grid;
@@ -134,8 +150,11 @@ button:active{
 .icon,
 .tool{
   min-width:0;
+  min-height:0;
+
   height:100%;
   width:100%;
+
   border-radius:14px;
 
   border:1px solid var(--line);
@@ -145,6 +164,7 @@ button:active{
   -webkit-backdrop-filter:blur(16px);
 
   box-shadow:0 8px 30px #0004;
+
   font-size:19px;
 
   display:flex;
@@ -236,6 +256,7 @@ button:active{
   height:58px;
 
   border-radius:15px;
+
   border:1px solid rgba(255,255,255,.16);
 
   background:rgba(12,15,22,.66);
@@ -251,6 +272,7 @@ button:active{
   overflow:hidden;
 
   touch-action:manipulation;
+
   user-select:none;
   -webkit-user-select:none;
 }
@@ -276,6 +298,7 @@ button:active{
 
 .player-image.empty:after{
   content:"IMG";
+
   position:absolute;
   bottom:4px;
   left:0;
@@ -295,17 +318,20 @@ button:active{
 .pname{
   font-size:12px;
   color:var(--muted);
+
   letter-spacing:.12em;
   text-transform:uppercase;
 
   text-align:center;
 
   padding:7px 12px;
+
   border-radius:10px;
 
   transition:.2s;
 
   max-width:70%;
+
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -328,8 +354,11 @@ button:active{
 
 .lp{
   font-size:clamp(48px,13vw,82px);
+
   font-weight:800;
+
   letter-spacing:-.05em;
+
   line-height:1;
 
   margin:5px 0 8px;
@@ -341,6 +370,7 @@ button:active{
 
 .life-bar{
   width:min(440px,92%);
+
   height:7px;
 
   border-radius:999px;
@@ -367,7 +397,9 @@ button:active{
 
 .controls{
   display:grid;
+
   grid-template-columns:46px minmax(0,1fr) 46px;
+
   gap:6px;
 
   max-width:390px;
@@ -377,9 +409,11 @@ button:active{
 .lp-op,
 .lp-amount{
   height:39px;
+
   border-radius:12px;
 
   background:#ffffff12;
+
   border:1px solid var(--line);
 }
 
@@ -404,6 +438,7 @@ button:active{
   width:100%;
 
   color:var(--txt);
+
   text-align:center;
 
   outline:none;
@@ -421,34 +456,33 @@ button:active{
   color:#8e96a6;
 }
 
+/* =========================
+   HALF BUTTON
+========================= */
+
 .half-btn{
   margin-top:6px;
 
-  width:98px;
+  width:46px;
   height:39px;
 
   border-radius:12px;
 
-  background:#ffffff10;
+  background:#ffffff12;
+
   border:1px solid var(--line);
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  gap:5px;
-
   color:#e9edf6;
-
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.05em;
 
   box-shadow:0 6px 20px #0003;
 }
 
 .half-btn .half-icon{
-  font-size:16px;
+  font-size:22px;
   line-height:1;
   font-weight:900;
 }
@@ -459,11 +493,22 @@ button:active{
 
 .bottom{
   height:51px;
+  min-height:51px;
   flex:0 0 51px;
 
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:repeat(4,minmax(0,1fr));
+
   gap:7px;
+
+  overflow:visible;
+}
+
+.bottom .tool{
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
 }
 
 .tool{
@@ -513,12 +558,14 @@ button:active{
 
 .sheet{
   width:min(700px,100%);
+
   max-height:92svh;
   max-height:92dvh;
 
   background:rgba(17,21,30,.98);
 
   border:1px solid var(--line);
+
   border-radius:23px;
 
   padding:13px;
@@ -549,6 +596,7 @@ button:active{
   border-radius:11px;
 
   background:#ffffff10;
+
   border:1px solid var(--line);
 
   font-size:22px;
@@ -566,6 +614,7 @@ button:active{
 
   display:flex;
   flex-direction:column;
+
   gap:6px;
 
   -webkit-overflow-scrolling:touch;
@@ -573,6 +622,7 @@ button:active{
 
 .history-row{
   display:grid;
+
   grid-template-columns:minmax(0,1fr) auto;
 
   gap:8px;
@@ -582,6 +632,7 @@ button:active{
   border-radius:13px;
 
   background:#ffffff0d;
+
   border:1px solid #ffffff12;
 }
 
@@ -596,7 +647,9 @@ button:active{
 
 .history-meta{
   color:var(--muted);
+
   font-size:10px;
+
   margin-top:3px;
 }
 
@@ -632,7 +685,7 @@ button:active{
 }
 
 /* =========================
-   DICE
+   DICE / COIN
 ========================= */
 
 .dice-wrap,
@@ -646,6 +699,7 @@ button:active{
   place-items:center;
 
   position:relative;
+
   overflow:hidden;
 
   border-radius:18px;
@@ -676,9 +730,6 @@ button:active{
 
   user-select:none;
   -webkit-user-select:none;
-
-  /* IMPORTANTISSIMO PER SAFARI/iOS:
-     niente rotateX/rotateY/3D matrix */
 
   transform:translate3d(0,0,0) rotate(0deg) scale(1);
 
@@ -771,6 +822,7 @@ button:active{
 
 /* =========================
    COIN
+   INVARIATA
 ========================= */
 
 .coin-stage{
@@ -869,11 +921,13 @@ button:active{
 
 .hint{
   position:absolute;
+
   bottom:14px;
 
   color:#8891a2;
 
   font-size:11px;
+
   text-align:center;
 
   width:100%;
@@ -919,6 +973,7 @@ button:active{
   border-radius:13px;
 
   background:#ffffff15;
+
   border:1px solid var(--line);
 
   font-weight:800;
@@ -935,6 +990,7 @@ button:active{
   border-radius:12px;
 
   background:#ffffff0d;
+
   border:1px solid var(--line);
 
   margin-bottom:9px;
@@ -942,22 +998,27 @@ button:active{
   color:#cfd5e1;
 
   font-size:12px;
+
   font-weight:800;
 }
 
 /* =========================
-   CUSTOM KEYPADS
+   KEYPADS
 ========================= */
 
 .keypad-wrap{
   width:100%;
+
   max-height:66dvh;
+
   overflow:auto;
+
   -webkit-overflow-scrolling:touch;
 }
 
 .keypad{
   width:min(330px,100%);
+
   margin:auto;
 
   display:grid;
@@ -973,9 +1034,11 @@ button:active{
   border-radius:13px;
 
   background:#ffffff0d;
+
   border:1px solid var(--line);
 
   font-size:18px;
+
   font-weight:700;
 
   color:#f3f5fa;
@@ -1024,6 +1087,7 @@ button:active{
   text-align:center;
 
   font-size:27px;
+
   font-weight:800;
 
   min-height:38px;
@@ -1031,6 +1095,7 @@ button:active{
   margin:2px 0 8px;
 
   overflow:hidden;
+
   text-overflow:ellipsis;
 
   font-variant-numeric:tabular-nums;
@@ -1044,11 +1109,12 @@ button:active{
   font-size:11px;
 
   margin-top:-3px;
+
   margin-bottom:3px;
 }
 
 /* =========================
-   TEXT KEYPAD
+   NAME TEXT KEYPAD
 ========================= */
 
 .text-editor{
@@ -1070,14 +1136,17 @@ button:active{
   border-radius:14px;
 
   background:#0b0e14;
+
   border:1px solid var(--line);
 
   color:#f6f7fb;
 
   font-size:16px;
+
   line-height:1.35;
 
   white-space:pre-wrap;
+
   word-break:break-word;
 
   -webkit-overflow-scrolling:touch;
@@ -1101,6 +1170,7 @@ button:active{
   width:100%;
 
   display:flex;
+
   flex-direction:column;
 
   gap:6px;
@@ -1108,7 +1178,6 @@ button:active{
 
 .text-row{
   display:grid;
-
   gap:5px;
 }
 
@@ -1128,19 +1197,23 @@ button:active{
 
 .text-key{
   min-width:0;
+
   height:42px;
 
   border-radius:10px;
 
   background:#ffffff0d;
+
   border:1px solid var(--line);
 
   font-size:14px;
+
   font-weight:700;
 
   color:#f3f5fa;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
@@ -1195,13 +1268,61 @@ button:active{
    NOTES
 ========================= */
 
-.notes-editor .text-preview{
-  min-height:105px;
-  max-height:155px;
+.notes-editor{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
-.notes-editor .text-key{
-  height:40px;
+.notes-textarea{
+  width:100%;
+
+  min-height:220px;
+  max-height:50dvh;
+
+  resize:none;
+
+  padding:13px;
+
+  border-radius:14px;
+
+  background:#0b0e14;
+
+  border:1px solid var(--line);
+
+  color:var(--txt);
+
+  outline:none;
+
+  font-size:16px;
+
+  line-height:1.45;
+
+  -webkit-user-select:text;
+  user-select:text;
+
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+.notes-textarea::placeholder{
+  color:#727b8d;
+}
+
+.notes-textarea:focus{
+  border-color:rgba(98,217,255,.4);
+
+  box-shadow:
+    0 0 0 2px
+    rgba(98,217,255,.08);
+}
+
+.notes-actions{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:7px;
 }
 
 /* =========================
@@ -1222,7 +1343,9 @@ button:active{
 
   .topbar{
     height:40px;
+    min-height:40px;
     flex-basis:40px;
+
     gap:6px;
   }
 
@@ -1242,8 +1365,10 @@ button:active{
   .player-image{
     width:51px;
     height:51px;
+
     top:7px;
     left:7px;
+
     border-radius:13px;
   }
 
@@ -1266,12 +1391,15 @@ button:active{
   }
 
   .half-btn{
+    width:46px;
     margin-top:4px;
   }
 
   .bottom{
     height:45px;
+    min-height:45px;
     flex-basis:45px;
+
     gap:6px;
   }
 
@@ -1295,6 +1423,10 @@ button:active{
 
   .text-key{
     height:38px;
+  }
+
+  .notes-textarea{
+    min-height:180px;
   }
 }
 
@@ -1358,12 +1490,6 @@ button:active{
 <div class="app">
 
 <header class="topbar">
-
-  <!-- ORDINE:
-       Undo | Timer | Cambia sfondo | Refresh
-       Refresh è sempre tutto a destra,
-       sfondo è immediatamente alla sua sinistra.
-  -->
 
   <button
     class="icon undo"
@@ -1475,10 +1601,10 @@ button:active{
   <button
     class="half-btn"
     type="button"
-    data-half-player="1">
+    data-half-player="1"
+    aria-label="Dimezza Life Points">
 
     <span class="half-icon">½</span>
-    <span>DIMEZZA</span>
 
   </button>
 
@@ -1552,10 +1678,10 @@ button:active{
   <button
     class="half-btn"
     type="button"
-    data-half-player="2">
+    data-half-player="2"
+    aria-label="Dimezza Life Points">
 
     <span class="half-icon">½</span>
-    <span>DIMEZZA</span>
 
   </button>
 
@@ -1666,20 +1792,7 @@ const state={
 };
 
 /* =========================================================
-   SESSION RANDOM SEQUENCES
-
-   NON vengono salvate in localStorage.
-
-   DADO:
-   1° -> 4..6
-   2° -> 1..3
-   dal 3° -> 1..6
-
-   MONETA:
-   1° -> TESTA
-   2° -> TESTA
-   3° -> CROCE
-   dal 4° -> casuale
+   RANDOM SEQUENCES
 ========================================================= */
 
 let diceSequenceIndex=0;
@@ -1740,17 +1853,25 @@ let coinBusy=false;
 
 let timerInterval=null;
 let timerRunning=false;
+let timerLastTick=0;
 
 const imageLongPressTimers={};
 const imageLongPressTriggered={};
 
 function safeSet(k,v){
+
   try{
+
     localStorage.setItem(k,v);
+
     return true;
+
   }catch(e){
+
     console.warn(e);
+
     return false;
+
   }
 }
 
@@ -1769,22 +1890,30 @@ function save(){
   );
 
   if(state.bg){
+
     safeSet("ygo-bg",state.bg);
+
   }else{
+
     localStorage.removeItem("ygo-bg");
+
   }
 
   state.images.forEach((x,i)=>{
 
     if(x){
+
       safeSet(
         "ygo-image-"+(i+1),
         x
       );
+
     }else{
+
       localStorage.removeItem(
         "ygo-image-"+(i+1)
       );
+
     }
 
   });
@@ -1804,18 +1933,22 @@ function loadState(){
       Array.isArray(x.lp)&&
       x.lp.length===2
     ){
+
       state.lp=x.lp.map(
         v=>Math.max(0,Number(v)||0)
       );
+
     }
 
     if(
       Array.isArray(x.names)&&
       x.names.length===2
     ){
+
       state.names=x.names.map(
         v=>String(v||"PLAYER")
       );
+
     }
 
     if(Array.isArray(x.history)){
@@ -1831,10 +1964,12 @@ function loadState(){
         Number(x.timerSeconds)
       )
     ){
+
       state.timerSeconds=Math.max(
         0,
         Number(x.timerSeconds)
       );
+
     }
 
     if(
@@ -1842,10 +1977,12 @@ function loadState(){
         Number(x.timerInitialSeconds)
       )
     ){
+
       state.timerInitialSeconds=Math.max(
         1,
         Number(x.timerInitialSeconds)
       );
+
     }
 
   }catch(e){
@@ -1877,7 +2014,7 @@ function applyBackground(){
 }
 
 /* =========================================================
-   LP
+   LIFE POINTS
 ========================================================= */
 
 function lifeColor(v){
@@ -1945,7 +2082,9 @@ function lifeColor(v){
         `rgb(${r},${g},${b})`,
         `rgba(${r},${g},${b},.30)`
       ];
+
     }
+
   }
 
   return[
@@ -1974,6 +2113,7 @@ function updateLifeBar(p){
   const[c,g]=lifeColor(v);
 
   f.style.backgroundColor=c;
+
   f.style.boxShadow=
     `0 0 11px ${g}`;
 }
@@ -2106,8 +2246,8 @@ function renderImages(){
     if(!state.images[p-1]){
 
       slot.classList.add("empty");
-      continue;
 
+      continue;
     }
 
     slot.classList.remove("empty");
@@ -2153,6 +2293,7 @@ function setupImageSlot(p){
       }
 
       input.click();
+
     }
   );
 
@@ -2219,6 +2360,7 @@ function setupImageSlot(p){
           save();
 
         },650);
+
     }
   );
 
@@ -2231,11 +2373,13 @@ function setupImageSlot(p){
     slot.addEventListener(
       t,
       ()=>{
+
         clearTimeout(
           imageLongPressTimers[p]
         );
 
         imageLongPressTimers[p]=null;
+
       }
     );
 
@@ -2279,6 +2423,8 @@ function render(){
   );
 
   renderImages();
+
+  updateTimerButtonIcon();
 
   save();
 }
@@ -2393,6 +2539,7 @@ function undo(){
         0,
         Number(last.before)
       );
+
   }
 
   render();
@@ -2486,6 +2633,7 @@ function openModal(
 ){
 
   modalTitle.textContent=title;
+
   modalBody.innerHTML=content;
 
   modal.classList.add("open");
@@ -2494,6 +2642,7 @@ function openModal(
 function closeModal(){
 
   modal.classList.remove("open");
+
   modalBody.innerHTML="";
 
 }
@@ -2520,6 +2669,7 @@ modal.addEventListener(
       closeModal();
 
     }
+
   }
 );
 
@@ -2605,8 +2755,10 @@ function updateKeypad(){
   const e=$("#keypadValue");
 
   if(e){
+
     e.textContent=
       keypadValue||"0";
+
   }
 }
 
@@ -2661,11 +2813,13 @@ function handleKeypad(k){
     );
 
     closeModal();
+
   }
 }
 
 /* =========================================================
    TEXT KEYPAD
+   SOLO NOMI GIOCATORI
 ========================================================= */
 
 const TEXT_ROWS=[
@@ -2687,8 +2841,6 @@ const TEXT_SYMBOLS=[
 
 let textBuffer="";
 let textMaxLength=18;
-let textMode="name";
-let textPlayer=null;
 let textShift=true;
 let textCursor=0;
 let textSaveCallback=null;
@@ -2702,16 +2854,13 @@ function renderTextKeyboard(){
 
     preview.textContent=
       textBuffer||
-      (
-        textMode==="name"
-          ?"Nome giocatore"
-          :"Scrivi qui..."
-      );
+      "Nome giocatore";
 
     preview.classList.toggle(
       "empty",
       !textBuffer
     );
+
   }
 
   const count=
@@ -2748,6 +2897,7 @@ function renderTextKeyboard(){
       "active",
       textShift
     );
+
   }
 
   const p=
@@ -2813,40 +2963,32 @@ function clearText(){
   renderTextKeyboard();
 }
 
-function openTextKeyboard(options={}){
+function openNameKeyboard(
+  player,
+  value
+){
 
   textBuffer=
-    String(
-      options.value||
-      ""
-    );
+    String(value||"");
 
-  textMaxLength=
-    Number(
-      options.maxLength||
-      18
-    );
-
-  textMode=
-    options.mode||
-    "name";
-
-  textPlayer=
-    options.player||
-    null;
+  textMaxLength=18;
 
   textShift=true;
 
   textCursor=textBuffer.length;
 
   textSaveCallback=
-    options.onSave||
-    null;
+    newValue=>{
 
-  const title=
-    textMode==="name"
-      ?"Nome giocatore"
-      :"Appunti";
+      state.names[player-1]=
+        newValue.trim()||
+        "PLAYER "+player;
+
+      render();
+
+      closeModal();
+
+    };
 
   const keyboardRows=
     TEXT_ROWS.map(
@@ -2892,7 +3034,7 @@ function openTextKeyboard(options={}){
     ).join("");
 
   openModal(
-    title,
+    "Nome giocatore",
     `
     <div class="text-editor">
 
@@ -2904,7 +3046,7 @@ function openTextKeyboard(options={}){
       <div
         class="text-editor-info"
         id="textCount">
-        0/${textMaxLength}
+        0/18
       </div>
 
       <div class="text-keypad">
@@ -2912,6 +3054,7 @@ function openTextKeyboard(options={}){
         ${keyboardRows}
 
         <div class="text-row row10">
+
           <button
             class="text-key shift"
             type="button"
@@ -2927,6 +3070,7 @@ function openTextKeyboard(options={}){
             data-text-action="back">
             ⌫
           </button>
+
         </div>
 
         <div class="text-row row7">
@@ -2983,8 +3127,11 @@ function openTextKeyboard(options={}){
             );
 
             if(textShift){
+
               textShift=false;
+
               renderTextKeyboard();
+
             }
 
             return;
@@ -2996,6 +3143,7 @@ function openTextKeyboard(options={}){
           if(text){
 
             insertText(text);
+
             return;
           }
 
@@ -3005,6 +3153,7 @@ function openTextKeyboard(options={}){
           if(action==="shift"){
 
             textShift=!textShift;
+
             renderTextKeyboard();
 
           }else if(action==="back"){
@@ -3063,28 +3212,10 @@ function escapeHtml(v){
 
 function openNameEditor(p){
 
-  openTextKeyboard({
-
-    mode:"name",
-
-    player:p,
-
-    value:state.names[p-1],
-
-    maxLength:18,
-
-    onSave:value=>{
-
-      state.names[p-1]=
-        value.trim()||
-        "PLAYER "+p;
-
-      render();
-      closeModal();
-
-    }
-
-  });
+  openNameKeyboard(
+    p,
+    state.names[p-1]
+  );
 }
 
 [1,2].forEach(
@@ -3112,10 +3243,12 @@ function openNameEditor(p){
           x.preventDefault();
 
           openNameEditor(p);
+
         }
 
       }
     );
+
   }
 );
 
@@ -3236,7 +3369,8 @@ $("#undoBtn").addEventListener(
 );
 
 /* =========================================================
-   NOTES - CUSTOM TEXT KEYBOARD
+   NOTES
+   EDITOR NORMALE - NESSUN TASTIERINO PERSONALIZZATO
 ========================================================= */
 
 $("#notesBtn").addEventListener(
@@ -3245,25 +3379,70 @@ $("#notesBtn").addEventListener(
 
     e.preventDefault();
 
-    openTextKeyboard({
+    openModal(
+      "Appunti",
+      `
+      <div class="notes-editor">
 
-      mode:"notes",
+        <textarea
+          id="notesTextarea"
+          class="notes-textarea"
+          maxlength="1000"
+          placeholder="Scrivi qui i tuoi appunti...">${escapeHtml(state.notes)}</textarea>
 
-      value:state.notes,
+        <div class="notes-actions">
 
-      maxLength:1000,
+          <button
+            class="timer-btn"
+            id="notesClear"
+            type="button">
+            CANCELLA
+          </button>
 
-      onSave:value=>{
+          <button
+            class="timer-btn"
+            id="notesSave"
+            type="button">
+            SALVA
+          </button>
 
-        state.notes=value;
+        </div>
+
+      </div>
+      `
+    );
+
+    const textarea=
+      $("#notesTextarea");
+
+    textarea.focus();
+
+    $("#notesClear").addEventListener(
+      "pointerdown",
+      e=>{
+
+        e.preventDefault();
+
+        textarea.value="";
+
+      }
+    );
+
+    $("#notesSave").addEventListener(
+      "pointerdown",
+      e=>{
+
+        e.preventDefault();
+
+        state.notes=
+          textarea.value.slice(0,1000);
 
         save();
 
         closeModal();
 
       }
-
-    });
+    );
 
   }
 );
@@ -3355,6 +3534,7 @@ $("#diceBtn").addEventListener(
       rollDie,
       40
     );
+
   }
 );
 
@@ -3369,12 +3549,6 @@ function rollDie(){
 
   diceRolling=true;
 
-  /*
-    IMPORTANTISSIMO:
-    il risultato viene scelto dalla sequenza
-    PRIMA dell'animazione.
-  */
-
   const final=
     nextDieResult();
 
@@ -3384,11 +3558,6 @@ function rollDie(){
   die.classList.remove(
     "rolling"
   );
-
-  /*
-    Forza il reflow senza usare
-    transform 3D.
-  */
 
   void die.offsetWidth;
 
@@ -3404,6 +3573,7 @@ function rollDie(){
     if(!die.isConnected){
 
       diceRolling=false;
+
       return;
     }
 
@@ -3419,6 +3589,7 @@ function rollDie(){
       );
 
     }
+
   }
 
   requestAnimationFrame(
@@ -3431,6 +3602,7 @@ function rollDie(){
       if(!die.isConnected){
 
         diceRolling=false;
+
         return;
       }
 
@@ -3484,6 +3656,7 @@ $("#coinBtn").addEventListener(
       flipCoin,
       40
     );
+
   }
 );
 
@@ -3519,6 +3692,7 @@ function flipCoin(){
       if(!coin.isConnected){
 
         coinBusy=false;
+
         return;
       }
 
@@ -3544,6 +3718,7 @@ modalBody.addEventListener(
       e.preventDefault();
 
       rollDie();
+
     }
 
     if(e.target.id==="coin"){
@@ -3551,6 +3726,7 @@ modalBody.addEventListener(
       e.preventDefault();
 
       flipCoin();
+
     }
 
   }
@@ -3590,20 +3766,35 @@ function formatTime(s){
       ].join(":");
 }
 
-function stopTimer(){
+function updateTimerButtonIcon(){
 
-  if(
-    timerInterval!==null
-  ){
+  const button=
+    $("#timerBtn");
 
-    clearInterval(
-      timerInterval
+  if(!button)return;
+
+  if(timerRunning){
+
+    button.textContent=
+      formatTime(
+        state.timerSeconds
+      );
+
+    button.setAttribute(
+      "aria-label",
+      "Timer in corso"
     );
 
-    timerInterval=null;
-  }
+  }else{
 
-  timerRunning=false;
+    button.textContent="◷";
+
+    button.setAttribute(
+      "aria-label",
+      "Timer"
+    );
+
+  }
 }
 
 function updateTimerDisplay(){
@@ -3638,6 +3829,7 @@ function updateTimerDisplay(){
     d.classList.add(
       "warning"
     );
+
   }
 }
 
@@ -3646,26 +3838,55 @@ function updateTimerButtons(){
   const a=
     $("#timerStart");
 
-  const p=
-    $("#timerPause");
-
-  if(!a||!p)return;
+  if(!a)return;
 
   a.disabled=
-    timerRunning;
-
-  p.disabled=
-    !timerRunning;
+    timerRunning||
+    state.timerSeconds<=0;
 
   a.style.opacity=
-    timerRunning
+    timerRunning||
+    state.timerSeconds<=0
       ?".45"
       :"1";
+}
 
-  p.style.opacity=
-    timerRunning
-      ?"1"
-      :".45";
+function updateTimerFromClock(){
+
+  if(!timerRunning)return;
+
+  const now=Date.now();
+
+  const elapsed=
+    Math.floor(
+      (now-timerLastTick)/1000
+    );
+
+  if(elapsed<=0)return;
+
+  timerLastTick +=
+    elapsed*1000;
+
+  state.timerSeconds=
+    Math.max(
+      0,
+      state.timerSeconds-elapsed
+    );
+
+  updateTimerDisplay();
+  updateTimerButtonIcon();
+
+  save();
+
+  if(state.timerSeconds<=0){
+
+    stopTimer();
+
+    updateTimerDisplay();
+    updateTimerButtons();
+    updateTimerButtonIcon();
+
+  }
 }
 
 function startTimer(){
@@ -3677,42 +3898,37 @@ function startTimer(){
 
   timerRunning=true;
 
+  timerLastTick=Date.now();
+
   timerInterval=
     setInterval(
-      ()=>{
-
-        if(
-          state.timerSeconds<=0
-        ){
-
-          stopTimer();
-
-          updateTimerDisplay();
-          updateTimerButtons();
-
-          return;
-        }
-
-        state.timerSeconds--;
-
-        updateTimerDisplay();
-
-        save();
-
-      },
-      1000
+      updateTimerFromClock,
+      250
     );
 
+  updateTimerDisplay();
   updateTimerButtons();
+  updateTimerButtonIcon();
+
 }
 
-function pauseTimer(){
+function stopTimer(){
 
-  stopTimer();
+  if(timerInterval!==null){
 
-  updateTimerButtons();
+    clearInterval(
+      timerInterval
+    );
 
-  save();
+    timerInterval=null;
+
+  }
+
+  timerRunning=false;
+
+  timerLastTick=0;
+
+  updateTimerButtonIcon();
 }
 
 function resetTimer(){
@@ -3724,13 +3940,18 @@ function resetTimer(){
 
   updateTimerDisplay();
   updateTimerButtons();
+  updateTimerButtonIcon();
 
   save();
 }
 
 function openTimer(){
 
-  stopTimer();
+  /*
+    IMPORTANTE:
+    NON fermare il timer quando la finestra
+    viene aperta o chiusa.
+  */
 
   openModal(
     "Timer duello",
@@ -3761,13 +3982,6 @@ function openTimer(){
 
       <button
         class="timer-btn"
-        id="timerPause"
-        type="button">
-        ❚❚ PAUSA
-      </button>
-
-      <button
-        class="timer-btn"
         id="timerReset"
         type="button">
         ↻ RESET
@@ -3779,6 +3993,7 @@ function openTimer(){
 
   updateTimerDisplay();
   updateTimerButtons();
+  updateTimerButtonIcon();
 
   $("#timerStart").addEventListener(
     "pointerdown",
@@ -3787,17 +4002,6 @@ function openTimer(){
       e.preventDefault();
 
       startTimer();
-
-    }
-  );
-
-  $("#timerPause").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      pauseTimer();
 
     }
   );
@@ -3826,7 +4030,7 @@ function openTimer(){
 }
 
 /* =========================================================
-   TIMER NUMERIC KEYPAD
+   TIMER KEYPAD
 ========================================================= */
 
 function openTimerKeypad(){
@@ -3884,8 +4088,10 @@ function openTimerKeypad(){
     $("#timerKeyValue");
 
   const update=()=>{
+
     display.textContent=
       v||"0";
+
   };
 
   $$(".key",modalBody).forEach(
@@ -3898,7 +4104,7 @@ function openTimerKeypad(){
 
         const k=b.dataset.k;
 
-        if(/\d/.test(k)){
+        if(/^\d$/.test(k)){
 
           if(v.length>=3)return;
 
@@ -3912,11 +4118,13 @@ function openTimerKeypad(){
         }else if(k==="c"){
 
           v="";
+
           update();
 
         }else if(k==="b"){
 
           v=v.slice(0,-1);
+
           update();
 
         }else if(k==="ok"){
@@ -3972,12 +4180,21 @@ $("#timerBtn").addEventListener(
 ========================================================= */
 
 $("#bgBtn").addEventListener(
-  "pointerdown",
+  "click",
   e=>{
 
     e.preventDefault();
 
-    $("#bgInput").click();
+    const input=
+      $("#bgInput");
+
+    if(input){
+
+      input.value="";
+
+      input.click();
+
+    }
 
   }
 );
@@ -4004,6 +4221,7 @@ $("#bgInput").addEventListener(
         );
 
       applyBackground();
+
       save();
 
     }catch(err){
@@ -4019,23 +4237,12 @@ $("#bgInput").addEventListener(
       e.target.value="";
 
     }
+
   }
 );
 
 /* =========================================================
-   REFRESH / NUOVA PARTITA
-=========================================================
-
-   NIENTE confirm().
-   Il pulsante esegue immediatamente il reset.
-
-   Inoltre:
-   - reset dado
-   - reset moneta
-
-   Le sequenze vengono quindi:
-   DADO  -> 4..6, 1..3, casuale...
-   MONETA -> TESTA, TESTA, CROCE, casuale...
+   RESET / NUOVA PARTITA
 ========================================================= */
 
 $("#resetBtn").addEventListener(
@@ -4062,12 +4269,9 @@ $("#resetBtn").addEventListener(
       2700;
 
     diceRolling=false;
+
     coinBusy=false;
 
-    /*
-      Questo è il punto che rinnova
-      le sequenze ad ogni refresh.
-    */
     resetRandomSequences();
 
     render();
@@ -4095,11 +4299,6 @@ if(
     2700;
 }
 
-/*
-  Dopo un vero reload della pagina
-  queste variabili partono naturalmente
-  da zero.
-*/
 resetRandomSequences();
 
 applyBackground();
